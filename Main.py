@@ -56,14 +56,14 @@ class txtButton:
         if self.top_rect.collidepoint(mouse_pos):
             if hover == True:
                 self.primary = color
-            if pygame.mouse.get_pressed()[0] == 1 and self.pressed == False:
+            if pygame.mouse.get_pressed()[0] == 1:
                 self.pressed = True
                 self.cElevation = 0
                 return True
             else:
                 self.cElevation = self.elevation
-            if pygame.mouse.get_pressed()[0] == 0:
-                self.pressed = False
+                if self.pressed == True:
+                    self.pressed = False
         else:
             self.primary = self.hPrimary
             
