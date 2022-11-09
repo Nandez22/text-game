@@ -42,9 +42,13 @@ class txtButton:
         if self.elevation > 0:
             self.top_rect.y = self.staticY - self.cElevation
             self.text_rect.center = self.top_rect.center
-        
+
+            self.bottom_rect.midtop = self.top_rect.midtop
+            self.bottom_rect.height = self.top_rect.height + self.cElevation
         #Draw is for shapes, and things that can be "drawn"
+        pygame.draw.rect(screen, self.bottom_color, self.bottom_rect, border_radius = self.rad)
         pygame.draw.rect(screen, self.primary, self.top_rect, border_radius = self.rad)
+
         #Blit is for not drawn things IE; text and other 'objects'
         screen.blit(self.text_plane,self.text_rect)
             
@@ -82,7 +86,7 @@ gui_font = pygame.font.Font(None,30)
 #INSTANCE DEFINING OF SOME KIND
 #------------------------------
 
-testButton = txtButton('Test',200,40,'#f59542',(150,230),5,5)
+testButton = txtButton('Test',200,40,'#222222',(150,230),5,5)
 
 #------------------------------
 
