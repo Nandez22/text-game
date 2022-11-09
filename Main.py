@@ -1,8 +1,19 @@
 import pygame, sys
 
 pygame.init()
+
+
+#TEMP SPACE FOR BUTTON MAKING -- IT WILL GET ITS OWN FILE MOST LIKLEY
+
+class button:
+    def __init__(self, text, width, height,pos):
+        self.text = text
+        self.width = width
+
+
 #The window is now resizeable (I can't spell that word)
 screen = pygame.display.set_mode(((500,500)), pygame.RESIZABLE)
+#Name of window
 pygame.display.set_caption('The name of our game, which we will need to figure out. I guess we could also make the name of the window update with the action that is happening in the game since it will be sort of an idle game. (this is assuming that the window title can update without the window being closed and reopened)')
 
 #not sure about this one... **Nevermind I think I know
