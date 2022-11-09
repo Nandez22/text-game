@@ -9,13 +9,15 @@ import pygame, sys
 #* -
 #* -
 class txtButton:
-    def __init__(self, text = 'button', width = 200, height = 50, pos = (0,0), rad = 0):
+    def __init__(self, text = 'button', width = 200, height = 50, pos = (0,0), rad = 0, primary = '#000000', secondary = '#FFFFFF'):
         #Primary button surface
         self.top_rect = pygame.Rect(pos,(width,height))
         
         #Setting basic attributes
         self.pressed = False
-        self.primary = '#f59542'
+        self.primary = primary
+        self.hPrimary = primary
+        self.secondary = secondary
         self.rad = rad
         
         #Text
@@ -30,24 +32,30 @@ class txtButton:
         #Blit is for not drawn things IE; text and other 'objects'
         screen.blit(self.text_plane,self.text_rect)
             
-    def checkPress(self):
+            
+    def checkPress(self,hover = False, color = '#333333'):
         #Finds mouse position
-        mouse_pos = pygame.mouse.get_pos()
+        mouse_pos = pygame.mouse.get_pos()     
         #Checks to see if the mouse is overlapping / 'colliding' with the button
         if self.top_rect.collidepoint(mouse_pos):
+            if hover == True:
+                self.primary = color
+                print('hover')
             if pygame.mouse.get_pressed()[0] == 1 and self.pressed == False:
                 self.pressed = True
-                print(True)
+                return True
             if pygame.mouse.get_pressed()[0] == 0:
                 self.pressed = False
-                
+        else:
+            self.primary = self.hPrimary
             
             
-            
+   
             
             
             
 pygame.init()
+mouse_pos = pygame.mouse.get_pos()       
 screen = pygame.display.set_mode(((500,500)), pygame.RESIZABLE)
 pygame.display.set_caption('Name')
 clock = pygame.time.Clock()
@@ -56,7 +64,7 @@ gui_font = pygame.font.Font(None,30)
 #INSTANCE DEFINING OF SOME KIND
 #------------------------------
 
-testButton = txtButton('Test',200,40,(20,20),12)
+testButton = txtButton('Test',200,40,(20,20),12,'#f59542')
 
 #------------------------------
 
@@ -71,7 +79,7 @@ while True:
     #------------------------------
     screen.fill((121,128,241))
     testButton.draw()
-    testButton.checkPress()
+    testButton.checkPress(True)
     #------------------------------
 
     
