@@ -65,6 +65,7 @@ class txtButton:
                 if self.pressed == True:
                     self.pressed = False
         else:
+            self.cElevation = self.elevation
             self.primary = self.hPrimary
             
    
