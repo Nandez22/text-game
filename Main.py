@@ -1,26 +1,36 @@
 import pygame, sys
-
+class txtButton:
+    def __init__(self, text, width, height, pos):
+        
+        self.top_rect = pygame.Rect(pos,(width,height))
+        self.primary = '#f59542'
+    
+        self.text_plane = gui_font.render(text,True,'#FFFFFF')
+        self.text_rect = self.text_plane.get_rect(center = self.top_rect.center)
+        
+    def draw(self):
+        pygame.draw.rect(screen,self.primary,self.top_rect)
+        screen.blit(self.text_plane,self.text_rect)
+            
+            
+            
+            
+            
+            
+            
+            
 pygame.init()
-
-
-#TEMP SPACE FOR BUTTON MAKING -- IT WILL GET ITS OWN FILE MOST LIKLEY
-
-class button:
-    def __init__(self, text, width, height,pos):
-        self.text = text
-        self.width = width
-
-
-#The window is now resizeable (I can't spell that word)
 screen = pygame.display.set_mode(((500,500)), pygame.RESIZABLE)
-#Name of window
-pygame.display.set_caption('The name of our game, which we will need to figure out. I guess we could also make the name of the window update with the action that is happening in the game since it will be sort of an idle game. (this is assuming that the window title can update without the window being closed and reopened)')
-
-#not sure about this one... **Nevermind I think I know
+pygame.display.set_caption('Name')
 clock = pygame.time.Clock()
-
-#Styling
 gui_font = pygame.font.Font(None,30)
+
+#INSTANCE DEFINING OF SOME KIND
+#------------------------------
+
+testButton = txtButton('Test',200,40,(20,20))
+
+#------------------------------
 
 while True:
     #Exit logic
@@ -31,10 +41,11 @@ while True:
     
     #ACTUAL CONTENT GOES BELOW LINE
     #------------------------------
-    
-    #BG color
     screen.fill((121,128,241))
+    testButton.draw()
+    
+    #------------------------------
+
     
     pygame.display.update()
-    #Assuming this keeps the 'fps' or ticks for animation
     clock.tick(60)

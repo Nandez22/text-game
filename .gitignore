@@ -1,6 +1,7 @@
 #Other things I want to add because fuck em'
 .DS_Store
-
+.AppleDouble
+.LSOverride
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
