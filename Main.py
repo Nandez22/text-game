@@ -1,8 +1,9 @@
 import pygame, sys
 
 pygame.init()
-screen = pygame.displayt.set_mode((500,500))
-pygame.display.set_caption('Window Name')
+#The window is now resizeable (I can't spell that word)
+screen = pygame.display.set_mode(((500,500)), pygame.RESIZABLE)
+pygame.display.set_caption('The name of our game, which we will need to figure out. I guess we could also make the name of the window update with the action that is happening in the game since it will be sort of an idle game. (this is assuming that the window title can update without the window being closed and reopened)')
 
 #not sure about this one... **Nevermind I think I know
 clock = pygame.time.Clock()
@@ -24,5 +25,5 @@ while True:
     screen.fill((121,128,241))
     
     pygame.display.update()
-    #Assuming this keeps the 
+    #Assuming this keeps the 'fps' or ticks for animation
     clock.tick(60)
