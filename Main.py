@@ -9,16 +9,28 @@ import pygame, sys
 #* -
 #* -
 class txtButton:
-    def __init__(self, text = 'button', width = 200, height = 50, pos = (0,0), rad = 0, primary = '#000000', secondary = '#FFFFFF'):
-        #Primary button surface
-        self.top_rect = pygame.Rect(pos,(width,height))
+    def __init__(self, text = 'button', width = 200, height = 50, primary = '#000000', pos = (0,0), rad = 0, elevation = 0, secondary = '#FFFFFF',):
+
         
-        #Setting basic attributes
+        #Setting basic attributes --
+        #Dynamic Atributes
         self.pressed = False
+        self.cElevation = elevation
         self.primary = primary
+        
+        #Static Atributes
         self.hPrimary = primary
         self.secondary = secondary
+        self.elevation = elevation
+        self.staticY = pos[1]
         self.rad = rad
+        
+        
+        #Primary button surface
+        self.top_rect = pygame.Rect(pos,(width,height))     
+        #Secondary button surface
+        self.bottom_rect = pygame.Rect(pos,(width,elevation))
+        self.bottom_color = secondary
         
         #Text
         #-- gui_font.render(what,anti-aliased?,color(hex))
@@ -27,6 +39,10 @@ class txtButton:
         self.text_rect = self.text_plane.get_rect(center = self.top_rect.center)
         
     def draw(self):
+        if self.elevation > 0:
+            self.top_rect.y = self.staticY - self.cElevation
+            self.text_rect.center = self.top_rect.center
+        
         #Draw is for shapes, and things that can be "drawn"
         pygame.draw.rect(screen, self.primary, self.top_rect, border_radius = self.rad)
         #Blit is for not drawn things IE; text and other 'objects'
@@ -40,15 +56,16 @@ class txtButton:
         if self.top_rect.collidepoint(mouse_pos):
             if hover == True:
                 self.primary = color
-                print('hover')
             if pygame.mouse.get_pressed()[0] == 1 and self.pressed == False:
                 self.pressed = True
+                self.cElevation = 0
                 return True
+            else:
+                self.cElevation = self.elevation
             if pygame.mouse.get_pressed()[0] == 0:
                 self.pressed = False
         else:
             self.primary = self.hPrimary
-            
             
    
             
@@ -64,7 +81,7 @@ gui_font = pygame.font.Font(None,30)
 #INSTANCE DEFINING OF SOME KIND
 #------------------------------
 
-testButton = txtButton('Test',200,40,(20,20),12,'#f59542')
+testButton = txtButton('Test',200,40,'#f59542',(150,230),5,5)
 
 #------------------------------
 
