@@ -62,4 +62,21 @@ class txtButton:
         else:
             self.cElevation = self.elevation
             self.primary = self.hPrimary
-            
+class imgButton:
+    def __init__(self, image, pos = (0,0), scale = 1, bgWidth, bgHeight):
+        
+        #Image processing / formatting
+        width = image.get_width()
+        height = image.get_height()
+        self.image = image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (pos)
+        
+        #Button surface (for buttons with an image over a standard backgorund)
+        self.bgWidth = bgWidth
+        self.bgHeight = bgHeight
+        
+        self.top_rect = pygame.Rect(pos,(bgWidth,bgHeight))  
+        
+    def draw(self,surface):
+        surface.blit(self.image, (self.rect.x, self.rect.y))

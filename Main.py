@@ -8,9 +8,12 @@ clock = pygame.time.Clock()
 
 #INSTANCE DEFINING OF SOME KIND
 #------------------------------
+img1 = pygame.image.load('AI.png').convert_alpha()
 
 testButton = Button.txtButton('Test',200,40,'#222222',(150,230),5,5)
-button2 = Button.txtButton('Other Button',400,40,'#222222',(200,200),5,5)
+button2 = Button.txtButton('other button',400,40,'#222222',(400,400),5,5)
+
+button3 = Button.imgButton(img1,(100,100),0.1)
 #------------------------------
 
 while True:
@@ -27,6 +30,8 @@ while True:
     print(testButton.checkPress(True))
     button2.draw(screen)
     button2.checkPress(True)
+    
+    button3.draw(screen)
     #------------------------------
 
     
