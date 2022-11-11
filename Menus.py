@@ -3,7 +3,7 @@ import pygame, sys, Button, elements
 
 def start(clock):
     
-    surface = pygame.display.set_mode(((500,500)))
+    surface = elements.set_screen((500,500))
     font = pygame.font.SysFont(None,75)
     
     while True:

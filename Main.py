@@ -2,9 +2,10 @@ import pygame, sys, Button, Menus, elements
 
 pygame.init()
 mouse_pos = pygame.mouse.get_pos()       
-screen = pygame.display.set_mode(((500,500)), pygame.RESIZABLE)
-pygame.display.set_caption('Name')
 clock = pygame.time.Clock()
+
+screen = elements.set_screen((500,500), 'Window', True)
+
 
 #INSTANCE DEFINING OF SOME KIND
 #------------------------------
@@ -17,6 +18,7 @@ button3 = Button.imgButton(img1,(100,100),0.08,(250,250),('#FFFFFF','#000000'),(
 #------------------------------
 
 Menus.start(clock)
+
 
 '''
 while True:
