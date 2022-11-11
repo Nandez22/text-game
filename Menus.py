@@ -3,12 +3,12 @@ import pygame, sys, Button, elements
 
 def start(clock):
     
-    surface = elements.set_screen((500,500))
-    font = pygame.font.SysFont(None,75)
+    surface = elements.set_screen((800,600))
+    font = pygame.font.SysFont('arialblack',40)
     
     while True:
         surface.fill((121,128,241))
-        elements.draw_text('Test Menu', font, '#FFFFFF', surface, (250,75))
+        elements.draw_text('Press SPACE to pause', font, '#FFFFFF', surface, (160,250))
         
         
         for event in pygame.event.get():
