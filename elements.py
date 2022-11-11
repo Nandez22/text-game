@@ -27,5 +27,7 @@ def set_screen(size, caption = False, resize = False):
     # -4. The screen surface (defined by set_screen (see above))
     # -5. Position (entered as (x,y))
 def draw_text(text, font, color, surface, pos = (0,0)):
-    txt = font.render(text, True, color)
-    surface.blit(txt,pos)
+    text_obj = font.render(text, 1, color)
+    text_rect = text_obj.get_rect()
+    text_rect.center = (pos)
+    surface.blit(text_obj, text_rect)
