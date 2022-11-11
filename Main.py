@@ -1,4 +1,4 @@
-import pygame, sys, Button
+import pygame, sys, Button, Menus, elements
 
 pygame.init()
 mouse_pos = pygame.mouse.get_pos()       
@@ -16,6 +16,9 @@ button2 = Button.txtButton('other button',400,40,'#222222',(400,400),5,5)
 button3 = Button.imgButton(img1,(100,100),0.08,(250,250),('#FFFFFF','#000000'),(5,5))
 #------------------------------
 
+Menus.start(clock)
+
+'''
 while True:
     #Exit logic
     for event in pygame.event.get():
@@ -26,10 +29,10 @@ while True:
     #ACTUAL CONTENT GOES BELOW LINE
     #------------------------------
     screen.fill((121,128,241))
-    #testButton.draw(screen)
+    testButton.draw(screen)
     print(testButton.checkPress(True))
-    #button2.draw(screen)
-    #button2.checkPress(True)
+    button2.draw(screen)
+    button2.checkPress(True)
     
     button3.draw(screen)
     print(button3.checkPressed(True))
@@ -38,3 +41,4 @@ while True:
     
     pygame.display.update()
     clock.tick(60)
+'''
