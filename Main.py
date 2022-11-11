@@ -1,6 +1,9 @@
 import pygame, sys, Button, Menus, elements
 
 pygame.init()
+app_icon = pygame.image.load('AI.png')
+pygame.display.set_icon(app_icon)
+
 mouse_pos = pygame.mouse.get_pos()       
 clock = pygame.time.Clock()
 
@@ -16,6 +19,8 @@ button2 = Button.txtButton('other button',400,40,'#222222',(400,400),5,5)
 
 button3 = Button.imgButton(img1,(100,100),0.08,(250,250),('#FFFFFF','#000000'),(5,5))
 #------------------------------
+
+
 
 Menus.start(clock)
 

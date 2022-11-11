@@ -3,15 +3,26 @@ import pygame, sys, Button, elements
 
 def start(clock):
     
-    surface = elements.set_screen((500,500))
-    font = pygame.font.SysFont(None,75)
+    surface = elements.set_screen((800,600))
+    font = pygame.font.SysFont('arialblack',40)
+    
+    gamePaused = False
+    
+    #Buttons
+
     
     while True:
         surface.fill((121,128,241))
-        elements.draw_text('Test Menu', font, '#FFFFFF', surface, (250,75))
-        
-        
+
+        if gamePaused == True:
+            pass
+        else:
+            elements.draw_text('Press ESC to pause', font, '#FFFFFF', surface, (400,300))
+            
         for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    gamePaused = True
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()

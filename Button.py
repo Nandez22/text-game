@@ -1,7 +1,7 @@
 import pygame
 
 class txtButton:
-    def __init__(self, text = 'button', width = 200, height = 50, primary = '#000000', pos = (0,0), rad = 0, elevation = 0, secondary = '#FFFFFF'):
+    def __init__(self, text = 'button', size = (0,0), pos = (0,0), modifiers = (0,0), colors('#000000','#FFFFFF')):
 
         #Setting basic attributes --
         #Dynamic Atributes
@@ -11,14 +11,15 @@ class txtButton:
         
         #Static Atributes
         self.hPrimary = primary
-        self.secondary = secondary
+        self.secondary = colors[1]
         self.elevation = elevation
         self.staticY = pos[1]
+        self.size = size
         self.rad = rad
         self.format = pygame.font.Font(None,30)
         
         #Primary button surface
-        self.top_rect = pygame.Rect(pos,(width,height))     
+        self.top_rect = pygame.Rect(pos,(size{0},size{1}))     
         #Secondary button surface
         self.bottom_rect = pygame.Rect(pos,(width,elevation))
         self.bottom_color = secondary
@@ -64,7 +65,7 @@ class txtButton:
             self.primary = self.hPrimary
             
 class imgButton:
-    def __init__(self, image, pos = (0,0), scale = 1, bgSize = (0,0), colors = ('#000000','#FFFFFF'), RadEl = (0,0)):
+    def __init__(self, image, pos, scale = 1, bgSize = (0,0), colors = ('#000000','#FFFFFF'), RadEl = (0,0)):
         
             #Attributes for press detection and "animations"
         #Static Attributes
@@ -131,3 +132,20 @@ class imgButton:
         else:
             self.dyn_elevation = self.elevation
             self.dny_primary = self.primary
+            
+            
+#BELOW I AM BUILDING THE ULTIMATE BUTTON CLASS
+    #FUCK THIS GARBAGE ABOVE IT WAS AN UNOPTIMIZED STEAMING PILE OF SHIT AND I AM HERE TO AMMEND MY MISTAKES
+class button():
+    def __init__(self, content, size, pos):
+        
+        #Static Attributes
+        self.cont = content
+        self.size = size
+        self.pos = pos
+        #Dynamic Attributes
+        
+        if type(content) == str:
+            #Text button goes here
+        else:
+            #Image button goes here 
