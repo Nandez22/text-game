@@ -64,32 +64,70 @@ class txtButton:
             self.primary = self.hPrimary
             
 class imgButton:
-    def __init__(self, image, pos = (0,0), scale = 1, bgSize = (0,0), primary = '#000000', rad = 0):
+    def __init__(self, image, pos = (0,0), scale = 1, bgSize = (0,0), colors = ('#000000','#FFFFFF'), RadEl = (0,0)):
+        
+            #Attributes for press detection and "animations"
+        #Static Attributes
+        self.pressed = False
+        self.yPos = pos[1]
+        #Dynamic Attributes
+        self.dyn_elevation = RadEl[1]
+        self.dyn_primary = colors[0]
+        
         
         #Image processing / formatting
         width = image.get_width()
         height = image.get_height()
+        
         self.image = image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (pos)
         
         #Button surface (for buttons with an image over a standard backgorund)
-        self.primary = primary
-        
-        self.rad = rad
+        #Colors
+        self.primary = colors[0]
+        self.secondary = colors[1]
+        #Modifiers
+        self.rad = RadEl[0]
+        self.elevation = RadEl[1]
+        #Size
         self.bgWidth = bgSize[0]
         self.bgHeight = bgSize[1]
-        
+        #Rect surfaces
         self.top_rect = pygame.Rect(pos,(self.bgWidth,self.bgHeight))
+        self.bottom_rect = pygame.Rect(pos,(self.bgWidth,self.elevation))
+        #Image centering
         self.img_rect = image.get_rect()
         self.img_rect.center = self.top_rect.center
         
         
-        
-        
     def draw(self,surface):
         
+        if self.elevation > 0:
+            self.top_rect.y = self.yPos - self.dyn_elevation
+            self.img_rect.center = self.top_rect.center
+            
+            self.bottom_rect.midtop = self.top_rect.midtop
+            self.bottom_rect.height = self.top_rect.height + self.dyn_elevation
+        
+        pygame.draw.rect(surface, self.secondary, self.bottom_rect, border_radius = self.rad)
         pygame.draw.rect(surface, self.primary, self.top_rect, border_radius = self.rad)
         surface.blit(self.image, self.img_rect)
         
+    def checkPressed(self, hover = False, color = '#333333'):
+        mouse_pos = pygame.mouse.get_pos()
         
+        if self.top_rect.collidepoint(mouse_pos) or self.img_rect.collidepoint(mouse_pos):
+            if hover == True:
+               self.dny_primary = color
+            if pygame.mouse.get_pressed()[0] == 1:
+                self.pressed = True
+                self.dyn_elevation = 0
+                return True
+            else:
+                self.dyn_elevation = self.elevation
+                if self.pressed == True:
+                    self.pressed = False
+        else:
+            self.dyn_elevation = self.elevation
+            self.dny_primary = self.primary
