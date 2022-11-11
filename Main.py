@@ -1,6 +1,9 @@
 import pygame, sys, Button, Menus, elements
 
 pygame.init()
+app_icon = pygame.image.load('AI.png')
+pygame.display.set_icon(app_icon)
+
 mouse_pos = pygame.mouse.get_pos()       
 clock = pygame.time.Clock()
 
