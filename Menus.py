@@ -1,4 +1,5 @@
-import pygame, sys, Button, elements
+import pygame, sys, elements, time
+from Button import *
 #Add menu functions / classes here instead of Main
 
 def start(clock):
@@ -9,16 +10,22 @@ def start(clock):
     gamePaused = False
     
     #Buttons
-
+    button1 = txtButton('Resume', 200, 50, '#333333',(400,300),3,5,'#FFFFFF')
     
     while True:
+        
         surface.fill((121,128,241))
-
+        
         if gamePaused == True:
-            pass
-        else:
-            elements.draw_text('Press ESC to pause', font, '#FFFFFF', surface, (400,300))
             
+            txtButton.draw(button1,surface)
+            if button1.checkPress(True) == True:
+                gamePaused = False
+        else:
+            
+            elements.draw_text('Press ESC to pause', font, '#FFFFFF', surface, (400,300))
+
+
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:

@@ -13,14 +13,18 @@ class txtButton:
         self.hPrimary = primary
         self.secondary = secondary
         self.elevation = elevation
-        self.staticY = pos[1]
+        
+        self.xPos = (pos[0] - width // 2)
+        self.yPos = (pos[1] - height //2)
+        xyPos = (self.xPos,self.yPos)
+        
         self.rad = rad
         self.format = pygame.font.Font(None,30)
         
         #Primary button surface
-        self.top_rect = pygame.Rect(pos,(width,height))     
+        self.top_rect = pygame.Rect(xyPos,(width,height))     
         #Secondary button surface
-        self.bottom_rect = pygame.Rect(pos,(width,elevation))
+        self.bottom_rect = pygame.Rect(xyPos,(width,elevation))
         self.bottom_color = secondary
         
         #Text
@@ -31,7 +35,7 @@ class txtButton:
         
     def draw(self,surface):
         if self.elevation > 0:
-            self.top_rect.y = self.staticY - self.cElevation
+            self.top_rect.y = self.yPos - self.cElevation
             self.text_rect.center = self.top_rect.center
 
             self.bottom_rect.midtop = self.top_rect.midtop
@@ -54,15 +58,19 @@ class txtButton:
             if pygame.mouse.get_pressed()[0] == 1:
                 self.pressed = True
                 self.cElevation = 0
-                return True
+                
             else:
                 self.cElevation = self.elevation
                 if self.pressed == True:
                     self.pressed = False
+                    return True
         else:
             self.cElevation = self.elevation
             self.primary = self.hPrimary
             
+    #def setFont(self,font,size):
+       
+
 class imgButton:
     def __init__(self, image, pos = (0,0), scale = 1, bgSize = (0,0), colors = ('#000000','#FFFFFF'), RadEl = (0,0)):
         
