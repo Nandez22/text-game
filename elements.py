@@ -6,7 +6,8 @@ import pygame, sys
 #This is for setting the screen dimensions, especially helpful when making new windos / menus
 #Inputs as follows;
     # -1. Size of the window (set as (width,height))
-    # -2. The 'name' of the window (set as "string") *optional* #! If you do not set a window caption / name pygame will automatically set the name of the window to "Window"
+    # -2. The 'name' of the window (set as "string") *optional* 
+        #! If you do not set a window caption / name pygame will automatically set the name of the window to "Window"
     # -3. Set to true if you want the window resizable (input as True or False) *optional*
 def set_screen(size, caption = False, resize = False):
     if caption != False:
