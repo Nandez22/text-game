@@ -11,7 +11,6 @@ def start(clock):
     
     #Buttons
     button1 = txtButton('Resume', 500, 50, '#333333',(400,300),3,5,'#FFFFFF')
-    button1.setFont('arialblack',70)
     
     while True:
         
@@ -20,7 +19,7 @@ def start(clock):
         if gamePaused == True:
             
             txtButton.draw(button1,surface)
-            if button1.checkPress(True) == True:
+            if button1.checkPress(True,'#FFFFFF') == True:
                 gamePaused = False
         else:
             
