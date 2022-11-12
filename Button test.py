@@ -1,5 +1,5 @@
 import pygame, sys
-
+from random import *
 class Button:
     def __init__(self, text, width, height, pos, elevation):
         #Core attributes
@@ -48,6 +48,11 @@ class Button:
         else:
             self.dynamic_elevation = self.elevation
             self.top_color = '#475F77'
+        
+    def setButtonPos(self):
+        width = randint(0, 450)
+        height = randint(0, 450)
+        self.top_rect = pygame.Rect(width, height)
     
     
 pygame.init()
@@ -66,6 +71,10 @@ while True:
 
     screen.fill('#DCDDD8')
     button1.draw()
+    if button1.pressed == True:
+        button1.setButtonPos()
+
+
 
     pygame.display.update()
     clock.tick(60)

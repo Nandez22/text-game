@@ -19,7 +19,7 @@ class txtButton:
         xyPos = (self.xPos,self.yPos)
         
         self.rad = rad
-        self.format = pygame.font.Font(None,30)
+        self.format = pygame.font.SysFont(None,30)
         
         #Primary button surface
         self.top_rect = pygame.Rect(xyPos,(width,height))     
@@ -68,8 +68,8 @@ class txtButton:
             self.cElevation = self.elevation
             self.primary = self.hPrimary
             
-    #def setFont(self,font,size):
-       
+    def setFont(self,font,size):
+       self.format = pygame.font.SysFont(font,size)
 
 class imgButton:
     def __init__(self, image, pos = (0,0), scale = 1, bgSize = (0,0), colors = ('#000000','#FFFFFF'), RadEl = (0,0)):

@@ -10,7 +10,8 @@ def start(clock):
     gamePaused = False
     
     #Buttons
-    button1 = txtButton('Resume', 200, 50, '#333333',(400,300),3,5,'#FFFFFF')
+    button1 = txtButton('Resume', 500, 50, '#333333',(400,300),3,5,'#FFFFFF')
+    button1.setFont('arialblack',70)
     
     while True:
         
