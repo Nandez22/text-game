@@ -98,9 +98,18 @@ class button():
         if self.top_rect.collidepoint(mouse_pos):
             if hover == True:
                 self.dyn_primary = color
+            if pygame.mouse.get_pressed()[0] == 1:
+                self.predded = True
+                self.dyn_Elevation = 0
+                return True
+            else:
+                self.dyn_Elevation = self.elevation
+                if self.pressed == True:
+                    self.pressed = False
         else:
             self.dyn_primary = self.primary
-        
+            self.dyn_Elevation = self.elevation
+            
 def test():  
     txt1 = ('Text',20,'#FFFFFF','arialblack',True)        
     button1 = button(txt1,(100,100),(200,50),('#333333','#FFFFFF'),(5,5))
