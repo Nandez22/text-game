@@ -32,14 +32,7 @@ def draw_text(text, font, color, surface, pos = (0,0)):
     text_rect.center = (pos)
     surface.blit(text_obj, text_rect)
     
-def checkSelect(self,buttons):
-    index = 0
-    indexMax = len(buttons)
     
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP and (index > 0):
-                index -= 1
-            if event.key == pygame.K_DOWN and (index < indexMax ):
-                index -= 1
-        return buttons[index]
+def get_center(rect):
+    center = rect.get_rect().center
+    return center

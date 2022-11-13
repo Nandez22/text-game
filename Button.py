@@ -37,6 +37,10 @@ class button():
             self.top_rect = pygame.Rect(pos,(size[0],size[1]))
             self.bottom_rect = pygame.Rect(pos,(size[0],self.elevation))
             
+            
+            
+            self.top_rect.center = (pos)
+            
             #Text Creation
             self.content_surface = self.format.render(self.text,self.anti_a,self.txt_color)
             self.content_rect = self.content_surface.get_rect(center = self.top_rect.center)
@@ -70,13 +74,14 @@ class button():
             
             #Image Creation
             self.content_rect = (self.content_surface.get_rect())
-            self.content_rect.topleft = (pos)
+            self.content_rect.center = (pos)
             
             #Centering
+            self.top_rect.center = (pos)
             self.content_rect.center = self.top_rect.center
 
     def draw(self,surface):
-        self.top_rect.y = self.pos[0] - self.dyn_Elevation
+        self.top_rect.y = self.pos[1] - self.dyn_Elevation
         self.content_rect.center = self.top_rect.center
         
         self.bottom_rect.midtop = self.top_rect.midtop
@@ -94,13 +99,14 @@ class button():
             if hover == True:
                 self.dyn_primary = color
             if pygame.mouse.get_pressed()[0] == 1:
-                self.predded = True
+                self.pressed = True
                 self.dyn_Elevation = 0
-                return True
+                
             else:
                 self.dyn_Elevation = self.elevation
                 if self.pressed == True:
                     self.pressed = False
+                    return True
         else:
             self.dyn_primary = self.primary
             self.dyn_Elevation = self.elevation
