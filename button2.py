@@ -1,7 +1,10 @@
-import pygame,sys
+import pygame,sys,elements
 
 pygame.init()
 pygame.font.init()
+
+
+screen = elements.set_screen((1000,800),'Get Some', True)
 
 class button():
     def __init__(self,content,pos,size,colors):
@@ -10,8 +13,7 @@ class button():
         self.primary = colors[0]
         self.secondary = colors[1]
         
-        
-        if type(content) == tuple:
+        if type(content[0]) == str:
 
             #Rect attributes
             self.size = size
@@ -35,16 +37,25 @@ class button():
         else:
 
             #Rect attributes
-            self.image = content
-            self.scale = size
+            self.size = size
             
             #Image Attributes
+            width = content[0].get_width()
+            height = content[0].get_height()
+            
+            
+            image = content[0]
+            self.scale = content[1]
+            self.image = pygame.transform.scale(image, (int(width * self.scale), int(height * self.scale)))
+            
+
             
             #Rect Creation
-            self.rect = self.image.get_rect()
-            self.rect.topleft = pos
-            #Image Creation
+            self.top_rect = pygame.Rect(pos,(size[0],size[1]))
             
+            #Image Creation
+            self.content_rect = self.image.get_rect()
+            self.content_rect.topleft = pos
             
             
             
@@ -52,31 +63,33 @@ class button():
 
     def draw(self,surface):
         pygame.draw.rect(surface, self.primary, self.top_rect)
-        screen.blit(self.content_surface, self.content_rect)
+        #screen.blit(self.content_surface, self.content_rect)
         
-        
-        
-sourceTxt = ('Text',12,'#FFFFFF','arialblack',True)        
-button1 = button(sourceTxt,((100,100)),((100,100)),('#333333','#333333'))
-        
-        
-        
+def test():  
+    txt1 = ('Text',12,'#FFFFFF','arialblack',True)        
+    button1 = button(txt1,(100,100),(100,100),('#333333','#333333'))
 
-screen = pygame.display.set_mode((500,500),pygame.RESIZABLE)
-pygame.display.set_caption('Pussy')
-clock = pygame.time.Clock()
+    sImg = pygame.image.load('AI.png').convert_alpha()
+    img1 = (sImg,1)
+    button2 = button(img1,(250,250),(200,50),('#333333','#333333'))
 
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-            
-    screen.fill('#DCDDD8')    
+
+
+    clock = pygame.time.Clock()
     
-    button1.draw(screen)
-    
-    
-    
-    pygame.display.update()
-    clock.tick(60)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+                
+        screen.fill('#DCDDD8')    
+        
+        button1.draw(screen)
+        
+        
+        
+        pygame.display.update()
+        clock.tick(60)
+        
+test()
