@@ -1,7 +1,7 @@
 import pygame, sys, legacy_button, Menus, elements
 
 pygame.init()
-app_icon = pygame.image.load('AI.png')
+app_icon = pygame.image.load('Assets\Icons\AI.png')
 pygame.display.set_icon(app_icon)
 
 mouse_pos = pygame.mouse.get_pos()       
@@ -12,7 +12,7 @@ screen = elements.set_screen((500,500), 'Window', True)
 
 #INSTANCE DEFINING OF SOME KIND
 #------------------------------
-img1 = pygame.image.load('AI.png').convert_alpha()
+img1 = pygame.image.load('Assets\Icons\AI.png').convert_alpha()
 
 #------------------------------
 

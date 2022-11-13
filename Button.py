@@ -46,6 +46,10 @@ class button():
         else:
             
             #Image Attributes
+            
+            if type(content[1]) == tuple:
+                img_width = content[1][1]
+            
             img_width = content[0].get_width()
             img_height = content[0].get_height()
             
