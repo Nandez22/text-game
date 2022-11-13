@@ -46,15 +46,19 @@ class button():
         else:
             
             #Image Attributes
+            image = content[0]
+            
             
             if type(content[1]) == tuple:
-                img_width = content[1][1]
+                img_width = (content[1][0])
+                img_height = (content[1][1])
+                self.scale = 1
+            else:
+                self.scale = content[1]
+                img_width = content[0].get_width()
+                img_height = content[0].get_height()
             
-            img_width = content[0].get_width()
-            img_height = content[0].get_height()
             
-            image = content[0]
-            self.scale = content[1]
             self.content_surface = pygame.transform.scale(image, (int(img_width * self.scale), int(img_height * self.scale)))
             
             #Rect attributes

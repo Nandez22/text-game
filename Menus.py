@@ -19,18 +19,14 @@ def pause(clock):
     options_txt = ('Options',20,'#FFFFFF','arialblack',True)
     exit_txt = ('Exit',20,'#FFFFFF','arialblack',True)
     
-    #Image Loading
-    display_import = (pygame.image.load('Assets\Icons\display_temp.png'),1)
-    sound_import = pygame.image.load('Assets\Icons\sound_temp.png')
-    controls_import = pygame.image.load('Assets\Icons\controls_temp.png')
-    profile_import= pygame.image.load('Assets\Icons\profile_temp.png')
-
-    #Formatted Images
-    display_img = (display_import, 0.05)
-    sound_img = (sound_import, 0.05)
-    controls_img = (controls_import, 0.05)
-    profile_img = (profile_import, 0.05)
+    display_txt = ('Display',20,'#FFFFFF','arialblack',True)
+    audio_txt = ('Sound',20,'#FFFFFF','arialblack',True)
+    controls_txt = ('Controls',20,'#FFFFFF','arialblack',True)
+    profile_txt = ('Profile',20,'#FFFFFF','arialblack',True)
     
+    #Images
+    
+
     #Attributes
     gamePaused = False
     
@@ -40,10 +36,10 @@ def pause(clock):
     exit = button(exit_txt,(400,400),(200,50),('#333333','#FFFFFF'),(5,5))
     
     #Option Buttons
-    display = button(display_import,(400,250),('image','image'),('#333333','#FFFFFF'),(5,5))
-    audio = button(sound_img,(400,325),('image','image'),('#333333','#FFFFFF'),(5,5))
-    controls = button(controls_img,(400,400),('image','image'),('#333333','#FFFFFF'),(5,5))
-    profile = button(profile_img,(400,475),('image','image'),('#333333','#FFFFFF'),(5,5))
+    display = button(display_txt,(300,50),(200,25),('#333333','#FFFFFF'),(5,5))
+    audio = button(audio_txt,(350,50),(200,25),('#333333','#FFFFFF'),(5,5))
+    controls = button(controls_txt,(450,50),(200,25),('#333333','#FFFFFF'),(5,5))
+    profile = button(profile_txt,(500,50),(200,25),('#333333','#FFFFFF'),(5,5))
     
         #Navigation
     #Menus
