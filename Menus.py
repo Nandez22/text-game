@@ -1,5 +1,5 @@
 import pygame, sys, elements, time
-from Button import *
+from legacy_button import *
 #Add menu functions / classes here instead of Main
 
 def start(clock):

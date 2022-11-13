@@ -1,4 +1,4 @@
-import pygame, sys, Button, Menus, elements
+import pygame, sys, legacy_button, Menus, elements
 
 pygame.init()
 app_icon = pygame.image.load('AI.png')
