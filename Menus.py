@@ -6,6 +6,7 @@ def start(clock):
     
     surface = elements.set_screen((800,600),'Weeeee')
     font = pygame.font.SysFont('arialblack',40)
+    font2 = pygame.font.SysFont('arialblack',60)
     
     gamePaused = False
     text = ('Resume',20,'#FFFFFF','arialblack',True)
@@ -18,9 +19,9 @@ def start(clock):
     print(elements.get_center(surface))
     
     #Buttons
-    resume = button(text,(400,175),(200,50),('#333333','#FFFFFF'),(5,5))
-    options = button(text2,(400,275),(200,50),('#333333','#FFFFFF'),(5,5))
-    exit = button(text3,(400,375),(200,50),('#333333','#FFFFFF'),(5,5))
+    resume = button(text,(400,250),(200,50),('#333333','#FFFFFF'),(5,5))
+    options = button(text2,(400,325),(200,50),('#333333','#FFFFFF'),(5,5))
+    exit = button(text3,(400,400),(200,50),('#333333','#FFFFFF'),(5,5))
 
 
     while True:
@@ -28,6 +29,9 @@ def start(clock):
         surface.fill((121,128,241))
         
         if gamePaused == True:
+            
+            elements.draw_text('PAUSED', font2, '#FFFFFF', surface, (400,150))
+            
             resume.draw(surface)
             options.draw(surface)
             exit.draw(surface)

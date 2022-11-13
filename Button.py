@@ -37,8 +37,6 @@ class button():
             self.top_rect = pygame.Rect(pos,(size[0],size[1]))
             self.bottom_rect = pygame.Rect(pos,(size[0],self.elevation))
             
-            
-            
             self.top_rect.center = (pos)
             
             #Text Creation
