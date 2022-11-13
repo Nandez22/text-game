@@ -87,10 +87,11 @@ class button():
         self.bottom_rect.midtop = self.top_rect.midtop
         self.bottom_rect.height = self.top_rect.height + self.dyn_Elevation
         
+        
         pygame.draw.rect(surface, self.secondary, self.bottom_rect, border_radius = self.rad)
         pygame.draw.rect(surface, self.dyn_primary, self.top_rect, border_radius = self.rad)
         surface.blit(self.content_surface, self.content_rect)
-    
+        
     def checkClick(self, hover = False, color = '#FF0000'):
         
         mouse_pos = pygame.mouse.get_pos()

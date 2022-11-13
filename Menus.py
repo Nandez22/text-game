@@ -4,49 +4,44 @@ from button import *
 
 def start(clock):
     
-    surface = elements.set_screen((800,600),'Weeeee',True)
+    surface = elements.set_screen((800,600),'Weeeee')
     font = pygame.font.SysFont('arialblack',40)
     
     gamePaused = False
     text = ('Resume',20,'#FFFFFF','arialblack',True)
     text2 = ('Options',20,'#FFFFFF','arialblack',True)
-    text3 = ('Exit to menu',20,'#FFFFFF','arialblack',True)
+    text3 = ('Exit',20,'#FFFFFF','arialblack',True)
     
     img = pygame.image.load('AI.png')
     img1 = (img,0.05)
     
     print(elements.get_center(surface))
     
-    hair1 = pygame.Rect((0,0),(800,3))
-    hair2 = pygame.Rect((0,0),(3,600))
-    hair1.center = (400,300)
-    hair2.center = (400,300)
-    
     #Buttons
-    button1 = button(text,(400,300),(200,50),('#333333','#FFFFFF'),(5,5))
-    button2 = button(text2,(0,100),(200,50),('#333333','#FFFFFF'),(5,5))
-    button3 = button(text3,(0,-100),(200,50),('#333333','#FFFFFF'),(5,5))
-    button4 = button(img1,(400,300),('image','image'),('#333333','#FFFFFF'),(5,5))
+    resume = button(text,(400,175),(200,50),('#333333','#FFFFFF'),(5,5))
+    options = button(text2,(400,275),(200,50),('#333333','#FFFFFF'),(5,5))
+    exit = button(text3,(400,375),(200,50),('#333333','#FFFFFF'),(5,5))
+
+
     while True:
         
         surface.fill((121,128,241))
-        pygame.draw.rect(surface, '#FFFFFF', hair1)
-        pygame.draw.rect(surface, '#FFFFFF', hair2)
         
         if gamePaused == True:
-            button1.draw(surface)
-            button2.draw(surface)
-            button3.draw(surface)
-            button4.draw(surface)
+            resume.draw(surface)
+            options.draw(surface)
+            exit.draw(surface)
             
-            button2.checkClick(True)
-            button3.checkClick(True)
-            button4.checkClick(True)            
-            
-            if button1.checkClick(True) == True:
+            if resume.checkClick(True) == True:
                 gamePaused = False
-        else:
+            if options.checkClick(True) == True:
+                print('Options')
+            if exit.checkClick(True) == True:
+                pygame.quit()
+                sys.exit()
+                
             
+        else:
             elements.draw_text('Press ESC to pause', font, '#FFFFFF', surface, (400,300))
 
         for event in pygame.event.get():
