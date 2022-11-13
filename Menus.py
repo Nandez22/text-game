@@ -2,7 +2,7 @@ import pygame, sys, elements, time
 from button import *
 #Add menu functions / classes here instead of Main
 
-def start(clock):
+def pause(clock):
     
     surface = elements.set_screen((800,600),'Weeeee')
     font = pygame.font.SysFont('arialblack',40)

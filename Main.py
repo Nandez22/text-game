@@ -18,30 +18,4 @@ img1 = pygame.image.load('AI.png').convert_alpha()
 
 
 
-Menus.start(clock)
-
-
-'''
-while True:
-    #Exit logic
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-    
-    #ACTUAL CONTENT GOES BELOW LINE
-    #------------------------------
-    screen.fill((121,128,241))
-    testButton.draw(screen)
-    print(testButton.checkPress(True))
-    button2.draw(screen)
-    button2.checkPress(True)
-    
-    button3.draw(screen)
-    print(button3.checkPressed(True))
-    #------------------------------
-
-    
-    pygame.display.update()
-    clock.tick(60)
-'''
+Menus.pause(clock)
