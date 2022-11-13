@@ -3,9 +3,7 @@ import pygame,sys,elements
 pygame.init()
 pygame.font.init()
 
-
 screen = elements.set_screen((1000,800),'Get Some', True)
-
 class button():
     def __init__(self,content,pos,size,colors,radEl):
         
@@ -27,7 +25,6 @@ class button():
         #Colors
         self.dyn_primary = colors[0]
 
-        
         if type(content[0]) == str:
 
             #Rect attributes
@@ -91,10 +88,18 @@ class button():
         self.bottom_rect.height = self.top_rect.height + self.dyn_Elevation
         
         pygame.draw.rect(surface, self.secondary, self.bottom_rect, border_radius = self.rad)
-        pygame.draw.rect(surface, self.primary, self.top_rect, border_radius = self.rad)
+        pygame.draw.rect(surface, self.dyn_primary, self.top_rect, border_radius = self.rad)
         surface.blit(self.content_surface, self.content_rect)
+    
+    def checkClick(self, hover = False, color = '#FF0000'):
         
+        mouse_pos = pygame.mouse.get_pos()
         
+        if self.top_rect.collidepoint(mouse_pos):
+            if hover == True:
+                self.dyn_primary = color
+        else:
+            self.dyn_primary = self.primary
         
 def test():  
     txt1 = ('Text',20,'#FFFFFF','arialblack',True)        
@@ -118,7 +123,8 @@ def test():
         
         button1.draw(screen)
         button2.draw(screen)
-        
+        button1.checkClick(True)
+        button2.checkClick(True,'#FFFFFF')
         
         pygame.display.update()
         clock.tick(60)
