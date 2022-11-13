@@ -71,7 +71,6 @@ class txtButton:
     def setFont(self,font,size):
        self.format = pygame.font.SysFont(font,size)
 
-
     def setColors(self, pColor, sColor):
         self.primary = pColor
         self.secondary = sColor

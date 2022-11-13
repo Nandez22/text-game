@@ -7,11 +7,26 @@ pygame.font.init()
 screen = elements.set_screen((1000,800),'Get Some', True)
 
 class button():
-    def __init__(self,content,pos,size,colors):
+    def __init__(self,content,pos,size,colors,radEl):
         
+            #Static
+        #Modifiers
+        self.pressed = False
         self.pos = pos
+        self.rad = radEl[0]
+        self.elevation = radEl[1]
+        
+        #Colors
         self.primary = colors[0]
         self.secondary = colors[1]
+        
+            #Dynamic
+        #Modifiers
+        self.dyn_Elevation = radEl[1]
+        
+        #Colors
+        self.dyn_primary = colors[0]
+
         
         if type(content[0]) == str:
 
@@ -28,50 +43,66 @@ class button():
             self.format = pygame.font.SysFont((self.font_name),(self.font_size))
             #Rect Creation
             self.top_rect = pygame.Rect(pos,(size[0],size[1]))
+            self.bottom_rect = pygame.Rect(pos,(size[0],self.elevation))
             
             #Text Creation
             self.content_surface = self.format.render(self.text,self.anti_a,self.txt_color)
             self.content_rect = self.content_surface.get_rect(center = self.top_rect.center)
             
-            
         else:
-
-            #Rect attributes
-            self.size = size
             
             #Image Attributes
-            width = content[0].get_width()
-            height = content[0].get_height()
-            
+            img_width = content[0].get_width()
+            img_height = content[0].get_height()
             
             image = content[0]
             self.scale = content[1]
-            self.image = pygame.transform.scale(image, (int(width * self.scale), int(height * self.scale)))
+            self.content_surface = pygame.transform.scale(image, (int(img_width * self.scale), int(img_height * self.scale)))
             
-
+            #Rect attributes
+            self.size = size
+            
+            if size[0] == 'image':
+                rect_width = (img_width * self.scale)
+            else:
+                rect_width = size[0]
+                
+            if size[1] == 'image':
+                rect_height = (img_height * self.scale)
+            else:
+                rect_height = size[1]
             
             #Rect Creation
-            self.top_rect = pygame.Rect(pos,(size[0],size[1]))
+            self.top_rect = pygame.Rect(pos,(rect_width,rect_height))
+            self.bottom_rect = pygame.Rect(pos,(rect_width,self.elevation))
             
             #Image Creation
-            self.content_rect = self.image.get_rect()
-            self.content_rect.topleft = pos
+            self.content_rect = (self.content_surface.get_rect())
+            self.content_rect.topleft = (pos)
             
-            
-            
-            
+            #Centering
+            self.content_rect.center = self.top_rect.center
 
     def draw(self,surface):
-        pygame.draw.rect(surface, self.primary, self.top_rect)
-        #screen.blit(self.content_surface, self.content_rect)
+        self.top_rect.y = self.pos[0] - self.dyn_Elevation
+        self.content_rect.center = self.top_rect.center
+        
+        self.bottom_rect.midtop = self.top_rect.midtop
+        self.bottom_rect.height = self.top_rect.height + self.dyn_Elevation
+        
+        pygame.draw.rect(surface, self.secondary, self.bottom_rect, border_radius = self.rad)
+        pygame.draw.rect(surface, self.primary, self.top_rect, border_radius = self.rad)
+        surface.blit(self.content_surface, self.content_rect)
+        
+        
         
 def test():  
-    txt1 = ('Text',12,'#FFFFFF','arialblack',True)        
-    button1 = button(txt1,(100,100),(100,100),('#333333','#333333'))
+    txt1 = ('Text',20,'#FFFFFF','arialblack',True)        
+    button1 = button(txt1,(100,100),(200,50),('#333333','#FFFFFF'),(5,5))
 
     sImg = pygame.image.load('AI.png').convert_alpha()
-    img1 = (sImg,1)
-    button2 = button(img1,(250,250),(200,50),('#333333','#333333'))
+    img1 = (sImg,0.08)
+    button2 = button(img1,(250,250),(250,'image'),('#333333','#FFFFFF'),(5,5))
 
 
 
@@ -86,7 +117,7 @@ def test():
         screen.fill('#DCDDD8')    
         
         button1.draw(screen)
-        
+        button2.draw(screen)
         
         
         pygame.display.update()
