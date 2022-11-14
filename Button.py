@@ -19,7 +19,11 @@ class button():
         
         #Colors
         self.dyn_primary = colors[0]
-
+        
+        #Recovery Properties
+        self.recovP = self.primary
+        self.recovDP = self.dyn_primary
+        
         if type(content[0]) == str:
 
             #Rect attributes
@@ -65,18 +69,18 @@ class button():
             self.size = size
             
             if size[0] == 'image':
-                rect_width = (img_width * self.scale)
+                self.rect_width = (img_width * self.scale)
             else:
-                rect_width = size[0]
+                self.rect_width = size[0]
                 
             if size[1] == 'image':
-                rect_height = (img_height * self.scale)
+                self.rect_height = (img_height * self.scale)
             else:
-                rect_height = size[1]
+                self.rect_height = size[1]
             
             #Rect Creation
-            self.top_rect = pygame.Rect(pos,(rect_width,rect_height))
-            self.bottom_rect = pygame.Rect(pos,(rect_width,self.elevation))
+            self.top_rect = pygame.Rect(pos,(self.rect_width,self.rect_height))
+            self.bottom_rect = pygame.Rect(pos,(self.rect_width,self.elevation))
             
             #Image Creation
             self.content_rect = (self.content_surface.get_rect())
@@ -117,3 +121,10 @@ class button():
         else:
             self.dyn_primary = self.primary
             self.dyn_Elevation = self.elevation
+            
+    def getDimensions(self):
+        return self.rect_width, self.rect_height
+    
+    def active(self,color):
+        self.dyn_primary = color
+        self.dyn_Elevation = 0

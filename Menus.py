@@ -36,15 +36,15 @@ def pause(clock):
     exit = button(exit_txt,(400,400),(200,50),('#333333','#FFFFFF'),(5,5))
     
     #Option Buttons
-    display = button(display_txt,(300,50),(200,25),('#333333','#FFFFFF'),(5,5))
-    audio = button(audio_txt,(350,50),(200,25),('#333333','#FFFFFF'),(5,5))
-    controls = button(controls_txt,(450,50),(200,25),('#333333','#FFFFFF'),(5,5))
-    profile = button(profile_txt,(500,50),(200,25),('#333333','#FFFFFF'),(5,5))
+    display = button(display_txt,(205,125),(100,25),('#333333','#FFFFFF'),(5,5))
+    audio = button(audio_txt,(335,125),(100,25),('#333333','#FFFFFF'),(5,5))
+    controls = button(controls_txt,(465,125),(100,25),('#333333','#FFFFFF'),(5,5))
+    profile = button(profile_txt,(595,125),(100,25),('#333333','#FFFFFF'),(5,5))
     
         #Navigation
     #Menus
     menu = 'null'
-    settings = 'display'
+    setting = 'display'
     
     while True:
         
@@ -53,7 +53,7 @@ def pause(clock):
         #Paused
         if gamePaused == True:
             if menu == 'paused':
-                settings = 'display'
+                setting = 'display'
                 elements.draw_text('PAUSED', header, '#FFFFFF', surface, (400,150))
                 
                 resume.draw(surface)
@@ -70,13 +70,38 @@ def pause(clock):
                 
             #Options
             if menu == 'options':
-                elements.draw_text('OPTIONS', header, '#FFFFFF', surface, (400,150))
-                
+                elements.draw_text('OPTIONS', header, '#FFFFFF', surface, (400,75))
                 display.draw(surface)
                 audio.draw(surface)
                 controls.draw(surface)
                 profile.draw(surface)
-            
+                
+                if display.checkClick(True) == True:
+                    setting = 'display'
+                if audio.checkClick(True) == True:
+                    setting = 'audio'
+                if controls.checkClick(True) == True:
+                    setting = 'controls'
+                if profile.checkClick(True) == True:
+                    setting = 'profile'
+                    
+                    
+                if setting == 'display':
+                    display.active('#FF0000')
+                    #Display Menu
+                    
+                if setting == 'audio':
+                    audio.active('#FF0000')
+                    #Audio Menu
+                    
+                if setting == 'controls':
+                    controls.active('#FF0000')
+                    #Controls Menu
+                    
+                if setting == 'profile':
+                    profile.active('#FF0000')
+                    #Profile Menu
+
         else:
             elements.draw_text('Press ESC to pause', font, '#FFFFFF', surface, (400,300))
 

@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, button
 #Elements is a place for premade functions like 'draw_text', just quality of life things...
 # *optional* values do not need to be enterd at the function call and will result in the default value specified by the function overload.
 
@@ -31,8 +31,3 @@ def draw_text(text, font, color, surface, pos = (0,0)):
     text_rect = text_obj.get_rect()
     text_rect.center = (pos)
     surface.blit(text_obj, text_rect)
-    
-    
-def get_center(rect):
-    center = rect.get_rect().center
-    return center
