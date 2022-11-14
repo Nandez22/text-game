@@ -42,7 +42,9 @@ class dropdown:
                 pygame.draw.rect(self.surface, self.rect_selected, self.rects[option], border_radius = self.rad)
                 self.surface.blit(self.txt_surfaces[option], self.txt_rects[option])
 
-            
+    #TODO May condence 'drop' and 'checkClick' into one method as I dont see much of a use for them as independents
+        #* Either way they work togeather well and it wouldn't make much of a difference (1 line of code)
+    
     def drop(self):
 
         if self.rects[self.active_rect].collidepoint(self.mouse_pos):
