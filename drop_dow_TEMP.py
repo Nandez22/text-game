@@ -10,7 +10,7 @@ size = (100,25)
 pos = (400,300)
 
 active_rect = 'Fullscreen'
-options = ['Fullscreen', 'Borderless', 'Windowed','Balls','cum','infinite','options','itssnowing']
+options = ['Fullscreen', 'Borderless', 'Windowed','infinite','options','itssnowing','Happy','Lets go!']
 options2 = ['Fullscreen', 'Borderless']
 
 format = pygame.font.SysFont('arialblack',10)
@@ -23,8 +23,8 @@ while True:
     
     d1.draw(surface)
     
-    d1.drop()
-    d1.checkClick(True)
+    d1.work(True) 
+
 
 
     for event in pygame.event.get():
