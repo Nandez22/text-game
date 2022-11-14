@@ -47,6 +47,7 @@ class dropdown:
     
     def drop(self):
 
+        order = []
         if self.rects[self.active_rect].collidepoint(self.mouse_pos):
             if pygame.mouse.get_pressed()[0] == 1:
                 self.dropped = True
@@ -60,7 +61,14 @@ class dropdown:
                     self.txt_surfaces[option] = self.format.render(option, True, self.txt_unselected)
                     self.txt_rects[option] = self.txt_surfaces[option].get_rect(center = self.rects[option].center)
                     
-                    self.rects[option].midtop = self.rects[self.active_rect].midbottom
+                    order.append(option)
+                    lstPos = 0
+                    for option in order:
+                        if option == order[0]:
+                            self.rects[option].midtop = self.rects[self.active_rect].midbottom
+                        else:
+                            self.rects[option].midtop = self.rects[order[(lstPos - 1)]].midbottom
+                        lstPos += 1
                     
                     pygame.draw.rect(self.surface, self.dyn_unselected, self.rects[option], border_radius = self.rad)
                     self.surface.blit(self.txt_surfaces[option], self.txt_rects[option])   
@@ -81,7 +89,7 @@ class dropdown:
                 else:
                     if self.pressed == True:
                         self.pressed = False
-                        return option
+
             else:
                 self.dyn_unselected = self.rect_unselected
                 

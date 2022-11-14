@@ -15,8 +15,8 @@ def pause(clock):
     header = pygame.font.SysFont('arialblack',60)
     
     #Shapes
-    divider = pygame.Rect(0,0,500,5)
-    divider.center = (400,110)
+    divider = pygame.Rect(0,0,630,40)
+    divider.center = (400,125)
         #BUTTONS
     #Text
     resume_txt = ('Resume',20,'#FFFFFF','arialblack',True)
@@ -77,7 +77,7 @@ def pause(clock):
             if menu == 'options':
                 elements.draw_text('OPTIONS', header, '#FFFFFF', surface, (400,75),'center')
                 #TODO MAKE THIS RECT MORE OF A BACKGROUND INSTEAD OF A DIVIDOR
-                pygame.draw.rect(surface,'#FFFFFF', divider,border_radius = 10)
+                pygame.draw.rect(surface,'#6169f2', divider,border_radius = 10)
                 
                 display.draw(surface)
                 audio.draw(surface)

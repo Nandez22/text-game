@@ -10,18 +10,19 @@ size = (100,25)
 pos = (400,300)
 
 active_rect = 'Fullscreen'
-options = ['Fullscreen', 'Borderless', 'Windowed']
+options = ['Fullscreen', 'Borderless', 'Windowed','Balls','cum','infinite','options','itssnowing']
 options2 = ['Fullscreen', 'Borderless']
 
 format = pygame.font.SysFont('arialblack',10)
 
-d1 = dropdown(options2,size,pos,'Fullscreen')
+d1 = dropdown(options,size,pos,'Fullscreen')
 
 while True:
     
     surface.fill((121,128,241))
     
     d1.draw(surface)
+    
     d1.drop()
     d1.checkClick(True)
 
