@@ -26,8 +26,12 @@ def set_screen(size, caption = False, resize = False):
     # -3. Color (can be any format but RGB must be a tuple and hex must be in quotes (IE; ((R, G, B)) or '#FFFFFF'))
     # -4. The screen surface (defined by set_screen (see above))
     # -5. Position (entered as (x,y))
-def draw_text(text, font, color, surface, pos = (0,0)):
+def draw_text(text, font, color, surface, pos = (0,0), orientation = 'center'):
     text_obj = font.render(text, 1, color)
     text_rect = text_obj.get_rect()
-    text_rect.center = (pos)
+    
+    if orientation == 'center':
+        text_rect.center = pos
+    if orientation == 'topleft':
+        text_rect.topleft = (pos)
     surface.blit(text_obj, text_rect)
