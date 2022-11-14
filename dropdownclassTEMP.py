@@ -93,25 +93,5 @@ class dropdown:
                     self.surface.blit(self.txt_surfaces[option], self.txt_rects[option])               
             
                     
-            
-            
-            
-    def checkClick(self,Hover = False, color = '#FF0000'):
-
-        for option in self.options:
-            if self.rects[option].collidepoint(self.mouse_pos) and self.rects[option] != self.active_rect:
-                if self.hover == True and self.rects[option] != self.active_rect:
-                    self.dyn_unselected = self.hover_color
-                
-                if pygame.mouse.get_pressed()[0] == 1:
-                    self.active_rect = option
-                    self.pressed = True
-                else:
-                    if self.pressed == True:
-                        self.pressed = False
-
-            else:
-                self.dyn_unselected = self.rect_unselected
-                
     #! As of current there is very little user customization that needs to change
         #! Still trying to determine if most should be done with setters of if they should be args in '__init__' / 'draw'
