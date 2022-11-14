@@ -8,21 +8,22 @@ pos = (400,300)
 
 active_rect = 'Fullscreen'
 options = ['Fullscreen', 'Windowed Borderless', 'Windowed']
-format = pygame.font.SysFont('arialblack',20)
-rects = {}
-txt_surfaces = {}
-txt_rects = {}
+format = pygame.font.SysFont('arialblack',10)
+
 primary = '#666666'
 actvie = '#FFFFFF'
 
-
+rects = {}
+txt_surfaces = {}
+txt_rects = {}
+#TODO This may get condenced into one dict containing Tuples as values, still need to determine if that is worth the conversion...
 #Generating background rects
 for option in options:
      rects[option] = pygame.Rect(pos,size)
 #Generating text rects
 for option in options:
     txt_surfaces[option] = format.render(option,True,primary)
-    txt_rects[option] = txt_surfaces[option].get_rect()    
+    txt_rects[option] = txt_surfaces[option].get_rect(center = rects[option].center)    
 
 print(txt_rects)
 
@@ -32,9 +33,15 @@ while True:
     
     surface.fill((121,128,241))
     
-    #if active_rect == 'Fullscreen':
-        
-      
+    for option in options:
+        if active_rect == option:
+            rects[option].center = pos
+        else:
+            rects[option].midtop = rects[active_rect].midbottom
+    
+    for option in options:
+        pygame.draw.rect(surface, primary, rects[option], border_radius = 5)
+        surface.blit(txt_surfaces[option], txt_rects[option])
     
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
