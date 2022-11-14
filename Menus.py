@@ -1,4 +1,4 @@
-import pygame, sys, elements, time, pygame_menu
+import pygame, sys, elements, time
 from button import *
 #Add menu functions / classes here instead of Main
 
@@ -14,6 +14,9 @@ def pause(clock):
     sub = pygame.font.SysFont('arialblack',25)
     header = pygame.font.SysFont('arialblack',60)
     
+    #Shapes
+    divider = pygame.Rect(0,0,500,5)
+    divider.center = (400,110)
         #BUTTONS
     #Text
     resume_txt = ('Resume',20,'#FFFFFF','arialblack',True)
@@ -55,6 +58,7 @@ def pause(clock):
         if gamePaused == True:
             if menu == 'paused':
                 setting = 'display'
+                
                 elements.draw_text('PAUSED', header, '#FFFFFF', surface, (400,150),'center')
                 
                 resume.draw(surface)
@@ -72,6 +76,9 @@ def pause(clock):
             #Options
             if menu == 'options':
                 elements.draw_text('OPTIONS', header, '#FFFFFF', surface, (400,75),'center')
+                #TODO MAKE THIS RECT MORE OF A BACKGROUND INSTEAD OF A DIVIDOR
+                pygame.draw.rect(surface,'#FFFFFF', divider,border_radius = 10)
+                
                 display.draw(surface)
                 audio.draw(surface)
                 controls.draw(surface)
@@ -93,12 +100,11 @@ def pause(clock):
                     elements.draw_text('Resolution', sub, '#FFFFFF', surface, (100,200),'topleft')
                     elements.draw_text('Window Mode', sub, '#FFFFFF', surface, (100,300),'topleft')
                     
-                    
                 if setting == 'audio':
                     audio.active('#FF0000')
-                    #Audio Menu
-                    pygame_menu.widgets.RangeSlider('volume')
                     
+                    #Audio Menu
+                    elements.draw_text('Master', sub, '#FFFFFF', surface, (100,200), 'topleft')
                     
                 if setting == 'controls':
                     controls.active('#FF0000')
