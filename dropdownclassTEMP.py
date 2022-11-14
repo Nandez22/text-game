@@ -6,6 +6,8 @@ class dropdown:
         self.size = size
         self.pos = pos
         self.rad = 0
+        
+        self.dropped = True
         self.pressed = False
         self.active_rect = active
         
@@ -39,17 +41,28 @@ class dropdown:
                 
                 pygame.draw.rect(self.surface, self.rect_selected, self.rects[option], border_radius = self.rad)
                 self.surface.blit(self.txt_surfaces[option], self.txt_rects[option])
+
+            
+    def drop(self):
+
+        if self.rects[self.active_rect].collidepoint(self.mouse_pos):
+            if pygame.mouse.get_pressed()[0] == 1:
+                self.dropped = True
+        elif not self.rects[self.active_rect].collidepoint(self.mouse_pos):
+            if pygame.mouse.get_pressed()[0] == 1:
+                self.dropped = False
                 
-            else:
-                #TODO This line needs to change in order for the options to cascade properly
+        if self.dropped == True:
+            for option in self.options:
+                if option != self.active_rect:
+                    self.txt_surfaces[option] = self.format.render(option, True, self.txt_unselected)
+                    self.txt_rects[option] = self.txt_surfaces[option].get_rect(center = self.rects[option].center)
+                    
+                    self.rects[option].midtop = self.rects[self.active_rect].midbottom
+                    
+                    pygame.draw.rect(self.surface, self.dyn_unselected, self.rects[option], border_radius = self.rad)
+                    self.surface.blit(self.txt_surfaces[option], self.txt_rects[option])   
                 
-                self.txt_surfaces[option] = self.format.render(option, True, self.txt_unselected)
-                self.txt_rects[option] = self.txt_surfaces[option].get_rect(center = self.rects[option].center)
-                
-                self.rects[option].midtop = self.rects[self.active_rect].midbottom
-                
-                pygame.draw.rect(self.surface, self.dyn_unselected, self.rects[option], border_radius = self.rad)
-                self.surface.blit(self.txt_surfaces[option], self.txt_rects[option])
             
     def checkClick(self,Hover = False, color = '#FF0000'):
         self.hover = Hover

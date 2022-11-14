@@ -22,6 +22,7 @@ while True:
     surface.fill((121,128,241))
     
     d1.draw(surface)
+    d1.drop()
     d1.checkClick(True)
 
 
