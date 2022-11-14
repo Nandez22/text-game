@@ -36,10 +36,10 @@ def pause(clock):
     exit = button(exit_txt,(400,400),(200,50),('#333333','#FFFFFF'),(5,5))
     
     #Option Buttons
-    display = button(display_txt,(205,125),(100,25),('#333333','#FFFFFF'),(5,5))
-    audio = button(audio_txt,(335,125),(100,25),('#333333','#FFFFFF'),(5,5))
-    controls = button(controls_txt,(465,125),(100,25),('#333333','#FFFFFF'),(5,5))
-    profile = button(profile_txt,(595,125),(100,25),('#333333','#FFFFFF'),(5,5))
+    display = button(display_txt,(210,125),(130,30),('#333333','#FFFFFF'),(5,5))
+    audio = button(audio_txt,(305,125),(130,30),('#333333','#FFFFFF'),(5,5))
+    controls = button(controls_txt,(495,125),(130,30),('#333333','#FFFFFF'),(5,5))
+    profile = button(profile_txt,(590,125),(130,30),('#333333','#FFFFFF'),(5,5))
     
         #Navigation
     #Menus
