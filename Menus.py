@@ -1,5 +1,4 @@
-import pygame, sys, elements, time
-from button import *
+import pygame, sys, elements
 #Add menu functions / classes here instead of Main
 
 def pause(clock):
@@ -35,15 +34,15 @@ def pause(clock):
     gamePaused = False
     
     #Pause Buttons
-    resume = button(resume_txt,(400,250),(200,50),('#333333','#FFFFFF'),(5,5))
-    options = button(options_txt,(400,325),(200,50),('#333333','#FFFFFF'),(5,5))
-    exit = button(exit_txt,(400,400),(200,50),('#333333','#FFFFFF'),(5,5))
+    resume = elements.button(resume_txt,(400,250),(200,50),('#333333','#FFFFFF'),(5,5))
+    options = elements.button(options_txt,(400,325),(200,50),('#333333','#FFFFFF'),(5,5))
+    exit = elements.button(exit_txt,(400,400),(200,50),('#333333','#FFFFFF'),(5,5))
     
     #Option Buttons
-    display = button(display_txt,(169,125),(130,30),('#333333','#FFFFFF'),(5,3))
-    audio = button(audio_txt,(323,125),(130,30),('#333333','#FFFFFF'),(5,3))
-    controls = button(controls_txt,(477,125),(130,30),('#333333','#FFFFFF'),(5,3))
-    profile = button(profile_txt,(631,125),(130,30),('#333333','#FFFFFF'),(5,3))
+    display = elements.button(display_txt,(169,125),(130,30),('#333333','#FFFFFF'),(5,3))
+    audio = elements.button(audio_txt,(323,125),(130,30),('#333333','#FFFFFF'),(5,3))
+    controls = elements.button(controls_txt,(477,125),(130,30),('#333333','#FFFFFF'),(5,3))
+    profile = elements.button(profile_txt,(631,125),(130,30),('#333333','#FFFFFF'),(5,3))
     
         #Navigation
     #Menus

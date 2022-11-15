@@ -26,7 +26,6 @@ class dropdown:
         
         for option in self.options:
             self.rects[option] = pygame.Rect(pos,size)
-
             
     def draw(self, surface):
         self.surface = surface
@@ -42,9 +41,6 @@ class dropdown:
                 pygame.draw.rect(self.surface, self.rect_selected, self.rects[option], border_radius = self.rad)
                 self.surface.blit(self.txt_surfaces[option], self.txt_rects[option])
 
-    #TODO May condence 'drop' and 'checkClick' into one method as I dont see much of a use for them as independents
-        #* Either way they work togeather well and it wouldn't make much of a difference (1 line of code)
-    
     def drop(self,Hover = False, color = '#FF0000'):
         self.hover = Hover
         self.hover_color = color
@@ -84,10 +80,8 @@ class dropdown:
                     
                     pygame.draw.rect(self.surface, self.dyn_unselected, self.rects[option], border_radius = self.rad)
                     self.surface.blit(self.txt_surfaces[option], self.txt_rects[option])   
-                
-            
+                      
     def checkClick(self):
-        
         
         for option in self.options:
             if self.rects[option].collidepoint(self.mouse_pos) and self.rects[option] != self.active_rect:
@@ -97,6 +91,18 @@ class dropdown:
                 else:
                     if self.pressed == True:
                         self.pressed = False
-                        
+    
+    def style(self, colors, txt_colors, font, rad = 0):
+        self.rect_selected = colors[0]
+        self.rect_unselected = colors[1]
+        self.dyn_unselected = colors[1]
+        
+        self.txt_selected = txt_colors[0]
+        self.txt_unselected = txt_colors[1]
+        
+        self.format = font
+        self.rad = rad
+        #! RAD not recommended -- Looks like dookie
+        
     #! As of current there is very little user customization that needs to change
         #! Still trying to determine if most should be done with setters of if they should be args in '__init__' / 'draw'
