@@ -22,9 +22,9 @@ while True:
     surface.fill((121,128,241))
     
     d1.draw(surface)
+    d1.drop(True) 
+    d1.checkClick()
     
-    d1.work(True) 
-
 
 
     for event in pygame.event.get():
