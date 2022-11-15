@@ -1,6 +1,8 @@
 import pygame, sys, elements
 #Add menu functions / classes here instead of Main
 
+
+
 def pause(clock):
     
     

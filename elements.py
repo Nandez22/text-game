@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, pygame.locals
 #Elements is a place for premade functions like 'draw_text', just quality of life things...
 # *optional* values do not need to be enterd at the function call and will result in the default value specified by the function overload.
 
@@ -9,21 +9,14 @@ import pygame, sys
     # -2. The 'name' of the window (set as "string") *optional* 
         #! If you do not set a window caption / name pygame will automatically set the name of the window to "Window"
     # -3. Set to true if you want the window resizable (input as True or False) *optional*
-class screen:
-    def set_screen(self, size, caption = False, resize = False):
-        self.size = size
-        if caption != False:
-            pygame.display.set_caption(caption)
-            
-        if resize == True:
-            return pygame.display.set_mode(((self.size[0],self.size[1])), pygame.RESIZABLE)
-        else:
-            return pygame.display.set_mode(((self.size[0],self.size[1])))
+def set_screen(size, caption = False, resize = False):
+    if caption != False:
+        pygame.display.set_caption(caption)
 
-    def set_res(size, resize = False):
-        
-        if resize == True:
-            
+    if resize == True:
+        return pygame.display.set_mode(((size[0],size[1])), pygame.RESIZABLE)
+    else:
+        return pygame.display.set_mode(((size[0],size[1])))
 #TODO make logic for display resizing to make vido menu functional
         
         

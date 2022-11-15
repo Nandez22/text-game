@@ -9,10 +9,11 @@ clock = pygame.time.Clock()
 
 #INSTANCE DEFINING OF SOME KIND
 #------------------------------
-img1 = pygame.image.load('Assets/Icons/AI.png').convert_alpha()
+
 
 #------------------------------
 
 
 
 Menus.pause(clock)
+img1 = pygame.image.load('Assets/Icons/AI.png').convert_alpha()
