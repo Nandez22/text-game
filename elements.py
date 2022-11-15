@@ -1,4 +1,4 @@
-import pygame, sys, Assets.Icons.vaulted.button as button
+import pygame, sys
 #Elements is a place for premade functions like 'draw_text', just quality of life things...
 # *optional* values do not need to be enterd at the function call and will result in the default value specified by the function overload.
 
@@ -9,15 +9,24 @@ import pygame, sys, Assets.Icons.vaulted.button as button
     # -2. The 'name' of the window (set as "string") *optional* 
         #! If you do not set a window caption / name pygame will automatically set the name of the window to "Window"
     # -3. Set to true if you want the window resizable (input as True or False) *optional*
-def set_screen(size, caption = False, resize = False):
-    if caption != False:
-        pygame.display.set_caption(caption)
-        
-    if resize == True:
-        return pygame.display.set_mode(((size[0],size[1])), pygame.RESIZABLE)
-    else:
-        return pygame.display.set_mode(((size[0],size[1])))
+class screen:
+    def set_screen(self, size, caption = False, resize = False):
+        self.size = size
+        if caption != False:
+            pygame.display.set_caption(caption)
+            
+        if resize == True:
+            return pygame.display.set_mode(((self.size[0],self.size[1])), pygame.RESIZABLE)
+        else:
+            return pygame.display.set_mode(((self.size[0],self.size[1])))
 
+    def set_res(size, resize = False):
+        
+        if resize == True:
+            
+#TODO make logic for display resizing to make vido menu functional
+        
+        
 
 #This is for setting text on the screen
 #If it wasnt obvious the inputs are as follows:
@@ -175,7 +184,7 @@ class dropdown:
         self.pos = pos
         self.rad = 0
         
-        self.dropped = True
+        self.dropped = False
         self.pressed = False
         self.active_rect = active
         
@@ -246,7 +255,7 @@ class dropdown:
                     
                     
                     
-                    pygame.draw.rect(self.surface, self.dyn_unselected, self.rects[option], border_radius = self.rad)
+                    pygame.draw.rect(self.surface, self.dyn_unselected, self.rects[option])
                     self.surface.blit(self.txt_surfaces[option], self.txt_rects[option])   
                       
     def checkClick(self):
@@ -260,7 +269,7 @@ class dropdown:
                     if self.pressed == True:
                         self.pressed = False
     
-    def style(self, colors, txt_colors, font, rad = 0):
+    def style(self, colors = ('#222222','#333333'), txt_colors = ('#FFFFFF','#e0e0e0'), font = 'none', size = 12, rad = 0):
         self.rect_selected = colors[0]
         self.rect_unselected = colors[1]
         self.dyn_unselected = colors[1]
@@ -268,6 +277,22 @@ class dropdown:
         self.txt_selected = txt_colors[0]
         self.txt_unselected = txt_colors[1]
         
-        self.format = font
+        self.format = pygame.font.SysFont(font,size)
         self.rad = rad
         #! RAD not recommended -- Looks like dookie
+
+def draw_box(surface, pos, size, color, rad, alignment = 'topleft'):
+
+    box = pygame.Rect(pos,size)
+
+    if alignment == 'topleft':
+        box.topleft = (pos)
+    if alignment == 'center':
+        box.center = (pos)
+    if alignment == 'midtop':
+        box.midtop = (pos)
+    if alignment == 'midbottom':
+        box.midbottom = (pos)
+        
+    pygame.draw.rect(surface, color, box, border_radius = rad)
+    
