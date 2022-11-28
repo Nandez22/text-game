@@ -31,6 +31,7 @@ def relative(width, height):
     dynSize = (ratio[0] * dynW), (ratio[1] * dynH)
     return dynSize
 
+
 #This is for setting the screen dimensions, especially helpful when making new windos / menus
 #Inputs as follows;
     # -1. Size of the window (set as (width,height))
@@ -84,6 +85,9 @@ class button():
             #Dynamic
         #Modifiers
         self.dyn_Elevation = radEl[1]
+            #*Its been like two weeks so Im changing the naming convention (I despise underscores).
+        self.dynScale = 1
+        
         
         #Colors
         self.dyn_primary = colors[0]
@@ -106,10 +110,10 @@ class button():
             
             self.format = pygame.font.SysFont((self.font_name),(self.font_size))
             #Rect Creation
-            self.top_rect = pygame.Rect(pos,(size[0],size[1]))
-            self.bottom_rect = pygame.Rect(pos,(size[0],self.elevation))
+            self.top_rect = pygame.Rect(self.pos,((self.size[0] * self.dynScale),(self.size[1] * self.dynScale)))
+            self.bottom_rect = pygame.Rect(self.pos,((self.size[0] * self.dynScale),(self.elevation * self.dynScale)))
             
-            self.top_rect.center = (pos)
+            self.top_rect.center = (self.pos)
             
             #Text Creation
             self.content_surface = self.format.render(self.text,self.anti_a,self.txt_color)
@@ -136,30 +140,32 @@ class button():
             #Rect attributes
             self.size = size
             
-            if size[0] == 'image':
-                self.rect_width = (img_width * self.scale)
+            if self.size[0] == 'image':
+                self.rect_width = ((img_width * self.scale) * self.dynScale)
             else:
-                self.rect_width = size[0]
+                self.rect_width = (self.size[0] * self.dynScale)
                 
-            if size[1] == 'image':
-                self.rect_height = (img_height * self.scale)
+            if self.size[1] == 'image':
+                self.rect_height = ((img_height * self.scale) * self.dynScale)
             else:
-                self.rect_height = size[1]
+                self.rect_height = (self.size[1] * self.dynScale)
             
             #Rect Creation
-            self.top_rect = pygame.Rect(pos,(self.rect_width,self.rect_height))
-            self.bottom_rect = pygame.Rect(pos,(self.rect_width,self.elevation))
+            self.top_rect = pygame.Rect(self.pos,((self.rect_width * self.dynScale),(self.rect_height * self.dynScale)))
+            self.bottom_rect = pygame.Rect(self.pos,((self.rect_width * self.dynScale),(self.elevation * self.dynScale)))
             
             #Image Creation
             self.content_rect = (self.content_surface.get_rect())
-            self.content_rect.center = (pos)
+            self.content_rect.center = (self.pos)
             
             #Centering
-            self.top_rect.center = (pos)
+            self.top_rect.center = (self.pos)
             self.content_rect.center = self.top_rect.center
 
     def draw(self,surface):
+        
         self.top_rect.y = self.pos[1] - self.dyn_Elevation
+        self.top_rect.center = self.pos
         self.content_rect.center = self.top_rect.center
         
         self.bottom_rect.midtop = self.top_rect.midtop
@@ -170,7 +176,9 @@ class button():
         pygame.draw.rect(surface, self.dyn_primary, self.top_rect, border_radius = self.rad)
         surface.blit(self.content_surface, self.content_rect)
         
-    def checkClick(self, hover = False, color = '#FF0000'):
+    def checkClick(self,surface, hover = False, color = '#FF0000'):
+        
+        self.draw(surface)
         
         mouse_pos = pygame.mouse.get_pos()
         
@@ -197,7 +205,13 @@ class button():
         self.dyn_primary = color
         self.dyn_Elevation = 0
 
-
+    def rePos(self, pos):
+        self.pos = pos
+            
+    def getSize(self):
+        print(f'Scale: {self.dynScale}')
+        print(f'Width: {self.size[0]}')
+        print(f'Height: {self.size[1]}')    
 class dropdown:
     def __init__(self, options, size, pos, active):
         self.options = options
@@ -240,6 +254,7 @@ class dropdown:
                 self.surface.blit(self.txt_surfaces[option], self.txt_rects[option])
 
     def drop(self,Hover = False, color = '#FF0000'):
+        
         self.hover = Hover
         self.hover_color = color
 
@@ -279,7 +294,10 @@ class dropdown:
                     pygame.draw.rect(self.surface, self.dyn_unselected, self.rects[option])
                     self.surface.blit(self.txt_surfaces[option], self.txt_rects[option])   
                       
-    def checkClick(self):
+    def checkClick(self, surface, Hover = False, color = '#FF0000'):
+        
+        self.draw(surface)
+        self.drop(Hover, color)
         
         for option in self.options:
             if self.rects[option].collidepoint(self.mouse_pos) and self.rects[option] != self.active_rect:
@@ -317,3 +335,9 @@ def draw_box(surface, pos, size, color, rad, alignment = 'topleft'):
         
     pygame.draw.rect(surface, color, box, border_radius = rad)
     
+def relativeNum(num):
+    surface = pygame.display.get_surface()
+    dynW = surface.get_width()
+
+    ratio = (1 / 800)
+    return((dynW * ratio) * num)

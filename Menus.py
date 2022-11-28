@@ -7,7 +7,6 @@ from level import Level
 #Add menu functions / classes here instead of Main
 def pause(clock):
     
-    
         #ASSETS
     #Display
     surface = elements.set_screen((800,600),'Paused',True)
@@ -52,7 +51,6 @@ def pause(clock):
     controls = elements.button(controls_txt,(elements.relative(477,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
     profile = elements.button(profile_txt,(elements.relative(631,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
     
-    test = elements.button(yes_txt,(elements.relative(400,300)),(elements.relative(125,65)),('#333333','#FFFFFF'),(5,5))
     
     #Option Dropdowns
     displaymode = elements.dropdown(['FULLSCREEN','WINDOWED','BORDERLESS'], (elements.relative(180, 35)), (elements.relative(657,239)), 'WINDOWED')
@@ -75,7 +73,7 @@ def pause(clock):
     while True:
         
         surface.fill((121,128,241))
-        
+            
         #Paused
         if gamePaused == True:
             if menu == 'paused':
@@ -83,49 +81,37 @@ def pause(clock):
                 
                 elements.draw_text('PAUSED', header, '#FFFFFF', surface, (elements.relative(400,150)),'center')
                 
-                resume.draw(surface)
-                options.draw(surface)
-                exit.draw(surface)
-                
-                test.draw(surface)
-                
-                if resume.checkClick(True) == True:
+                if resume.checkClick(surface, True) == True:
                     gamePaused = False
-                if options.checkClick(True) == True:
+                if options.checkClick(surface, True) == True:
                     menu = 'options'
-                if exit.checkClick(True) == True:
+                if exit.checkClick(surface, True) == True:
                     menu = 'exit'
-                    
+                
+                resume.getSize()
+                
             #Options
             if menu == 'exit':
                 elements.draw_text('ARE YOU SURE?', header, '#FFFFFF', surface, (elements.relative(400,200)),'center')
 
-                yes.draw(surface)
-                no.draw(surface)
-                
-                if yes.checkClick(True) == True:
+                if yes.checkClick(surface, True) == True:
                     pygame.QUIT()
                     sys.exit()
                     
-                if no.checkClick(True) == True:
+                if no.checkClick(surface, True) == True:
                     menu = 'paused'
 
             if menu == 'options':
                 elements.draw_text('OPTIONS', header, '#FFFFFF', surface, (elements.relative(400,75)),'center')
                 elements.draw_box(surface,(elements.relative(400,140)), (elements.relative(610,46)), '#6169f2', 10, 'center')
                 
-                display.draw(surface)
-                audio.draw(surface)
-                controls.draw(surface)
-                profile.draw(surface)
-                
-                if display.checkClick(True) == True:
+                if display.checkClick(surface, True) == True:
                     setting = 'display'
-                if audio.checkClick(True) == True:
+                if audio.checkClick(surface, True) == True:
                     setting = 'audio'
-                if controls.checkClick(True) == True:
+                if controls.checkClick(surface, True) == True:
                     setting = 'controls'
-                if profile.checkClick(True) == True:
+                if profile.checkClick(surface, True) == True:
                     setting = 'profile'
                     
                     
@@ -135,18 +121,12 @@ def pause(clock):
                     elements.draw_box(surface,(elements.relative(400,240)), (elements.relative(700,40)), '#6169f2', 2, 'center')
                     elements.draw_box(surface,(elements.relative(400,315)), (elements.relative(700,40)), '#6169f2', 2, 'center')
                     
-                    resolution.draw(surface)
-                    resolution.drop(True)
-                    resolution.checkClick()
-                    
-                    displaymode.draw(surface)
-                    displaymode.drop(True)
-                    displaymode.checkClick()
+                    resolution.checkClick(surface, True)
+
+                    displaymode.checkClick(surface, True)
                     
                     elements.draw_text('WINDOW MODE', sub, '#FFFFFF', surface, (elements.relative(60,225)),'topleft')
                     elements.draw_text('RESOLUTION', sub, '#FFFFFF', surface, (elements.relative(60,300)),'topleft')
-                    
-                    
                     
                     
                 if setting == 'audio':
@@ -172,11 +152,35 @@ def pause(clock):
             
             level.play()
 
-
+        #Handles events such as window resizing and exiting
         for event in pygame.event.get():
             if event.type == pygame.VIDEORESIZE:
                 screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+                #Adjusting size of buttons and menus (that have predefined size and pos outside of a loop)
+                 #TODO (NOT-TODO) Anthing below happens when the window is resized
+        
+                #! This is super dumb but this is how things resize, I'm also putting this in red to help divide things..
                 
+                #Pause Buttons
+                resume = elements.button(resume_txt,(elements.relative(400,250)),(elements.relative(200,50)),('#333333','#FFFFFF'),(5,5))
+                options = elements.button(options_txt,(elements.relative(400,325)),(elements.relative(200,50)),('#333333','#FFFFFF'),(5,5))
+                exit = elements.button(exit_txt,(elements.relative(400,400)),(elements.relative(200,50)),('#333333','#FFFFFF'),(5,5))
+                
+                #Exit Buttons
+                yes = elements.button(yes_txt,(elements.relative(300,300)),(elements.relative(125,65)),('#333333','#FFFFFF'),(5,5))
+                no = elements.button(no_txt,(elements.relative(500,300)),(elements.relative(125,65)),('#333333','#FFFFFF'),(5,5))
+                
+                #Option Buttons
+                display = elements.button(display_txt,(elements.relative(169,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+                audio = elements.button(audio_txt,(elements.relative(323,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+                controls = elements.button(controls_txt,(elements.relative(477,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+                profile = elements.button(profile_txt,(elements.relative(631,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+             
+                #Fonts
+                regular = pygame.font.SysFont('arialblack',(elements.relativeNum(40)))
+                sub = pygame.font.SysFont('arialblack',(elements.relativeNum(20)))
+                header = pygame.font.SysFont('arialblack',(elements.relativeNum(60)))
+             
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     gamePaused = True
@@ -185,5 +189,7 @@ def pause(clock):
                 pygame.quit()
                 sys.exit()
         
+        #Believe it or not this updates the display...
         pygame.display.update()
+        #This ticks the clock.
         clock.tick(60)
