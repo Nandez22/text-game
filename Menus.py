@@ -5,10 +5,6 @@ from level import Level
 
 
 #Add menu functions / classes here instead of Main
-
-def launch(clock):
-    surface =  elements.set_screen((800,600),'Start')
-
 def pause(clock):
     
     
@@ -172,6 +168,9 @@ def pause(clock):
             
 
         for event in pygame.event.get():
+            if event.type == pygame.VIDEORESIZE:
+                screen = pygame.display.set_mode((event.w, event. h))
+                
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     gamePaused = True
