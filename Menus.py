@@ -1,14 +1,20 @@
 import pygame, sys, elements
+from settings import *
+from sprites import *
+from level import Level
+
+
 #Add menu functions / classes here instead of Main
 
-
+def launch(clock):
+    surface =  elements.set_screen((800,600),'Start')
 
 def pause(clock):
     
     
         #ASSETS
     #Display
-    surface = elements.set_screen((800,600),'Weeeee')
+    surface = elements.set_screen((800,600),'Paused')
     
     #Fonts
     regular = pygame.font.SysFont('arialblack',40)
@@ -60,6 +66,13 @@ def pause(clock):
     #Menus
     menu = 'null'
     setting = 'display'
+    
+    #Settings up level
+    screen = pygame.display.set_mode((screen_width,screen_height))
+    clock = pygame.time.Clock()
+    level = Level(level_map, screen)
+    
+    
     
     while True:
         
@@ -151,7 +164,12 @@ def pause(clock):
                     #Profile Menu
 
         else:
-            elements.draw_text('Press ESC to pause', regular, '#FFFFFF', surface, (400,300),'center')
+            
+            #GAME GOES HERE?
+            
+            level.play()
+            
+            
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:

@@ -1,4 +1,4 @@
-import pygame, sys, Menus, elements
+import pygame, sys, Menus
 
 pygame.init()
 app_icon = pygame.image.load('Assets/Icons/AI.png')
@@ -14,8 +14,12 @@ clock = pygame.time.Clock()
 #------------------------------
 
 
+#1#connect.play
 
 Menus.pause(clock)
+
+
+
 img1 = pygame.image.load('Assets/Icons/AI.png').convert_alpha()
 
 
