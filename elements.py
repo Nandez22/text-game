@@ -1,7 +1,35 @@
 import pygame, sys, pygame.locals
+#Im also quite mad that all of the comments I had written have been discarded and have to be re-written...
+    #* Maybe they are on the github...
+        #* nope.
+
 #Elements is a place for premade functions like 'draw_text', just quality of life things...
+    #* Scratch that, its a place for everything I need and don't want to make a new file for.
+        #* I know thats a little unorganized but given that python can only import from parallel files my hands are kinda tied.
+        
 # *optional* values do not need to be enterd at the function call and will result in the default value specified by the function overload.
 
+#Im making these two things (relPos / relSize) so that when the user resizes the window, stuff on screen actually adjusts.
+    #They are pretty simple so I'm not gonna go too in depth but basically they just grab the current size of the window, divide that by 2 (width and height)
+        # -- and then add the desired coords to that, so that everything is x, y distance from center (which is now effectivly 0,0)
+        
+    #* I am now realizing that relSize does relPos' job better than relPos so, oops?
+
+#Here lies relPos ('You didn't do anything')
+
+#Since I'm too tired to think of a better way to make relative size, I'm just going to make width and height a percentage of the widow size.
+    #* Im trying to figure the best way to make it so that all things on screen maintain the same praportionality.
+        #After saying that, I guess the best solution would be to make it so that one dimension (say width) is scaled according to the screen size and the width is just adjusted to a given ratio.
+        #Im trying to make this in a way that can be implemented to what I currently have, I could make this so that it works in a vaccume or I could just make everything relative to my test window size and be done with it...
+        #Im done with it...
+def relative(width, height):
+    surface = pygame.display.get_surface()
+    dynW = surface.get_width()
+    dynH = surface.get_height()
+
+    ratio = (width / 800), (height / 600)
+    dynSize = (ratio[0] * dynW), (ratio[1] * dynH)
+    return dynSize
 
 #This is for setting the screen dimensions, especially helpful when making new windos / menus
 #Inputs as follows;

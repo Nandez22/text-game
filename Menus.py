@@ -10,7 +10,7 @@ def pause(clock):
     
         #ASSETS
     #Display
-    surface = elements.set_screen((800,600),'Paused')
+    surface = elements.set_screen((800,600),'Paused',True)
     
     #Fonts
     regular = pygame.font.SysFont('arialblack',40)
@@ -38,23 +38,25 @@ def pause(clock):
     gamePaused = False
     
     #Pause Buttons
-    resume = elements.button(resume_txt,(400,250),(200,50),('#333333','#FFFFFF'),(5,5))
-    options = elements.button(options_txt,(400,325),(200,50),('#333333','#FFFFFF'),(5,5))
-    exit = elements.button(exit_txt,(400,400),(200,50),('#333333','#FFFFFF'),(5,5))
+    resume = elements.button(resume_txt,(elements.relative(400,250)),(elements.relative(200,50)),('#333333','#FFFFFF'),(5,5))
+    options = elements.button(options_txt,(elements.relative(400,325)),(elements.relative(200,50)),('#333333','#FFFFFF'),(5,5))
+    exit = elements.button(exit_txt,(elements.relative(400,400)),(elements.relative(200,50)),('#333333','#FFFFFF'),(5,5))
     
     #Exit Buttons
-    yes = elements.button(yes_txt,(300,300),(125,65),('#333333','#FFFFFF'),(5,5))
-    no = elements.button(no_txt,(500,300),(125,65),('#333333','#FFFFFF'),(5,5))
+    yes = elements.button(yes_txt,(elements.relative(300,300)),(elements.relative(125,65)),('#333333','#FFFFFF'),(5,5))
+    no = elements.button(no_txt,(elements.relative(500,300)),(elements.relative(125,65)),('#333333','#FFFFFF'),(5,5))
     
     #Option Buttons
-    display = elements.button(display_txt,(169,125),(130,30),('#333333','#FFFFFF'),(5,1))
-    audio = elements.button(audio_txt,(323,125),(130,30),('#333333','#FFFFFF'),(5,1))
-    controls = elements.button(controls_txt,(477,125),(130,30),('#333333','#FFFFFF'),(5,1))
-    profile = elements.button(profile_txt,(631,125),(130,30),('#333333','#FFFFFF'),(5,1))
+    display = elements.button(display_txt,(elements.relative(169,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+    audio = elements.button(audio_txt,(elements.relative(323,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+    controls = elements.button(controls_txt,(elements.relative(477,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+    profile = elements.button(profile_txt,(elements.relative(631,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+    
+    test = elements.button(yes_txt,(elements.relative(400,300)),(elements.relative(125,65)),('#333333','#FFFFFF'),(5,5))
     
     #Option Dropdowns
-    displaymode = elements.dropdown(['FULLSCREEN','WINDOWED','BORDERLESS'], (180, 35), (657,239), 'WINDOWED')
-    resolution = elements.dropdown(['2560 x 1440','1920 x 1080','1280 x 720', '800 x 600', '640 x 480', '500 x 500'], (180, 35), (657,314), '800 x 600')
+    displaymode = elements.dropdown(['FULLSCREEN','WINDOWED','BORDERLESS'], (elements.relative(180, 35)), (elements.relative(657,239)), 'WINDOWED')
+    resolution = elements.dropdown(['2560 x 1440','1920 x 1080','1280 x 720', '800 x 600', '640 x 480', '500 x 500'], (elements.relative(180, 35)), (elements.relative(657,314)), '800 x 600')
     
     displaymode.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',12,2)
     resolution.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',12,2)
@@ -64,7 +66,7 @@ def pause(clock):
     setting = 'display'
     
     #Settings up level
-    screen = pygame.display.set_mode((screen_width,screen_height))
+    screen = pygame.display.set_mode((1200,700),pygame.RESIZABLE)
     clock = pygame.time.Clock()
     level = Level(level_map, screen)
     
@@ -79,11 +81,13 @@ def pause(clock):
             if menu == 'paused':
                 setting = 'display'
                 
-                elements.draw_text('PAUSED', header, '#FFFFFF', surface, (400,150),'center')
+                elements.draw_text('PAUSED', header, '#FFFFFF', surface, (elements.relative(400,150)),'center')
                 
                 resume.draw(surface)
                 options.draw(surface)
                 exit.draw(surface)
+                
+                test.draw(surface)
                 
                 if resume.checkClick(True) == True:
                     gamePaused = False
@@ -94,7 +98,7 @@ def pause(clock):
                     
             #Options
             if menu == 'exit':
-                elements.draw_text('ARE YOU SURE?', header, '#FFFFFF', surface, (400,200),'center')
+                elements.draw_text('ARE YOU SURE?', header, '#FFFFFF', surface, (elements.relative(400,200)),'center')
 
                 yes.draw(surface)
                 no.draw(surface)
@@ -107,8 +111,8 @@ def pause(clock):
                     menu = 'paused'
 
             if menu == 'options':
-                elements.draw_text('OPTIONS', header, '#FFFFFF', surface, (400,75),'center')
-                elements.draw_box(surface,(400,140), (610,46), '#6169f2', 10, 'center')
+                elements.draw_text('OPTIONS', header, '#FFFFFF', surface, (elements.relative(400,75)),'center')
+                elements.draw_box(surface,(elements.relative(400,140)), (elements.relative(610,46)), '#6169f2', 10, 'center')
                 
                 display.draw(surface)
                 audio.draw(surface)
@@ -128,8 +132,8 @@ def pause(clock):
                 if setting == 'display':
                     display.active('#FF0000')
                     #Display Menu
-                    elements.draw_box(surface,(400,240), (700,40), '#6169f2', 2, 'center')
-                    elements.draw_box(surface,(400,315), (700,40), '#6169f2', 2, 'center')
+                    elements.draw_box(surface,(elements.relative(400,240)), (elements.relative(700,40)), '#6169f2', 2, 'center')
+                    elements.draw_box(surface,(elements.relative(400,315)), (elements.relative(700,40)), '#6169f2', 2, 'center')
                     
                     resolution.draw(surface)
                     resolution.drop(True)
@@ -139,8 +143,8 @@ def pause(clock):
                     displaymode.drop(True)
                     displaymode.checkClick()
                     
-                    elements.draw_text('WINDOW MODE', sub, '#FFFFFF', surface, (60,225),'topleft')
-                    elements.draw_text('RESOLUTION', sub, '#FFFFFF', surface, (60,300),'topleft')
+                    elements.draw_text('WINDOW MODE', sub, '#FFFFFF', surface, (elements.relative(60,225)),'topleft')
+                    elements.draw_text('RESOLUTION', sub, '#FFFFFF', surface, (elements.relative(60,300)),'topleft')
                     
                     
                     
@@ -149,7 +153,7 @@ def pause(clock):
                     audio.active('#FF0000')
                     
                     #Audio Menu
-                    elements.draw_text('Master', sub, '#FFFFFF', surface, (100,200), 'topleft')
+                    elements.draw_text('Master', sub, '#FFFFFF', surface, (elements.relative(100,200)), 'topleft')
                     
                 if setting == 'controls':
                     controls.active('#FF0000')
@@ -162,14 +166,16 @@ def pause(clock):
         else:
             
             #GAME GOES HERE?
+            #* I understand that there are better ways to make the game run alongside the menus, but since this is python and since this is last minute this will have to do.
+            #* Given the chance to re-do things (if I hadn't already), I would make methods for both the menus and game, where the inputs are grabbed by main and then sent to load, logic and draw functions, ending with a screen update. (following proper game loops.)
+            #---------------
             
             level.play()
-            
-            
+
 
         for event in pygame.event.get():
             if event.type == pygame.VIDEORESIZE:
-                screen = pygame.display.set_mode((event.w, event. h))
+                screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
                 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
