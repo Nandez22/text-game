@@ -48,10 +48,10 @@ def pause(clock):
     no = elements.button(no_txt,(elements.relative(500,300)),(elements.relative(125,65)),('#333333','#FFFFFF'),(5,5))
     
     #Option Buttons
-    display = elements.button(display_txt,(elements.relative(169,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
-    audio = elements.button(audio_txt,(elements.relative(323,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
-    controls = elements.button(controls_txt,(elements.relative(477,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
-    profile = elements.button(profile_txt,(elements.relative(631,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+    display = elements.button(display_txt,(elements.relative(169,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+    audio = elements.button(audio_txt,(elements.relative(323,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+    controls = elements.button(controls_txt,(elements.relative(477,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+    profile = elements.button(profile_txt,(elements.relative(631,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
     
     
     #Option Dropdowns
@@ -123,6 +123,8 @@ def pause(clock):
                     #Display Menu
                     elements.draw_box(surface,(elements.relative(400,240)), (elements.relative(700,40)), '#6169f2', 2, 'center')
                     elements.draw_box(surface,(elements.relative(400,315)), (elements.relative(700,40)), '#6169f2', 2, 'center')
+                    elements.draw_text('WINDOW MODE', sub, '#FFFFFF', surface, (elements.relative(60,240)),'midleft')
+                    elements.draw_text('RESOLUTION', sub, '#FFFFFF', surface, (elements.relative(60,315)),'midleft')
                     
                 displaymode.checkClick(surface,True, '#888888')
                 
@@ -214,11 +216,18 @@ def pause(clock):
                 no = elements.button(no_txt,(elements.relative(500,300)),(elements.relative(125,65)),('#333333','#FFFFFF'),(5,5))
                 
                 #OPTION BUTTONS
-                display = elements.button(display_txt,(elements.relative(169,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
-                audio = elements.button(audio_txt,(elements.relative(323,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
-                controls = elements.button(controls_txt,(elements.relative(477,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
-                profile = elements.button(profile_txt,(elements.relative(631,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
-             
+                display = elements.button(display_txt,(elements.relative(169,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+                audio = elements.button(audio_txt,(elements.relative(323,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+                controls = elements.button(controls_txt,(elements.relative(477,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+                profile = elements.button(profile_txt,(elements.relative(631,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
+                
+                #Option Dropdowns
+                displaymode = elements.dropdown(['FULLSCREEN','WINDOWED','BORDERLESS'], (elements.relative(180, 35)), (elements.relative(657,239)), displaymode.getActive())
+                resolution = elements.dropdown(['2560 x 1440','1920 x 1080','1280 x 720', '800 x 600', '640 x 480', '500 x 500'], (elements.relative(180, 35)), (elements.relative(657,315)), '800 x 600')
+                
+                displaymode.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',(round(elements.relativeNum(12))),2)
+                resolution.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',(round(elements.relativeNum(12))),2)
+                
                 #FONTS
                 regular = pygame.font.SysFont('arialblack',(round(elements.relativeNum(40))))
                 sub = pygame.font.SysFont('arialblack',(round(elements.relativeNum(20))))

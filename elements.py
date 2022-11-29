@@ -1,4 +1,5 @@
-import pygame, sys, pygame.locals
+import pygame, sys
+from pygame.locals import *
 #Im also quite mad that all of the comments I had written have been discarded and have to be re-written...
     #* Maybe they are on the github...
         #* nope.
@@ -62,9 +63,11 @@ def draw_text(text, font, color, surface, pos = (0,0), orientation = 'center'):
     text_rect = text_obj.get_rect()
     
     if orientation == 'center':
-        text_rect.center = pos
+        text_rect.center = (pos)
     if orientation == 'topleft':
         text_rect.topleft = (pos)
+    if orientation == 'midleft':
+        text_rect.midleft = (pos)
     surface.blit(text_obj, text_rect)
 
 
