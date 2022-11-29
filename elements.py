@@ -207,11 +207,16 @@ class button():
 
     def rePos(self, pos):
         self.pos = pos
-            
+    
+    #Some of this is just diagnostic and I'd rather spend more effort declaring that then removing said 'things'
     def getSize(self):
         print(f'Scale: {self.dynScale}')
         print(f'Width: {self.size[0]}')
         print(f'Height: {self.size[1]}')    
+    
+    def reFont(self,size):
+        self.font_size = size
+        
 class dropdown:
     def __init__(self, options, size, pos, active):
         self.options = options
@@ -307,6 +312,9 @@ class dropdown:
                 else:
                     if self.pressed == True:
                         self.pressed = False
+                        
+    def getActive(self):
+        return self.active_rect
     
     def style(self, colors = ('#222222','#333333'), txt_colors = ('#FFFFFF','#e0e0e0'), font = 'none', size = 12, rad = 0):
         self.rect_selected = colors[0]
@@ -335,9 +343,14 @@ def draw_box(surface, pos, size, color, rad, alignment = 'topleft'):
         
     pygame.draw.rect(surface, color, box, border_radius = rad)
     
-def relativeNum(num):
+def relativeNum(num, max = False):
     surface = pygame.display.get_surface()
-    dynW = surface.get_width()
+    width = surface.get_width()
 
-    ratio = (1 / 800)
-    return((dynW * ratio) * num)
+    ratio = (num / 800)
+    
+    
+    if max == False:
+        return (ratio * width)
+    if ratio >= max:
+        return max * num

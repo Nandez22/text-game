@@ -1,16 +1,17 @@
-import pygame, sys, elements
+import pygame, sys, elements, os
 from settings import *
 from sprites import *
 from level import Level
-
+from pygame.locals import *
 
 #Add menu functions / classes here instead of Main
 def pause(clock):
     
         #ASSETS
     #Display
+    hardwareDisp = (pygame.display.Info().current_w, pygame.display.Info().current_h)
     surface = elements.set_screen((800,600),'Paused',True)
-    
+
     #Fonts
     regular = pygame.font.SysFont('arialblack',40)
     sub = pygame.font.SysFont('arialblack',20)
@@ -18,14 +19,15 @@ def pause(clock):
     
         #BUTTONS
     #Text
-    resume_txt = ('Resume',20,'#FFFFFF','arialblack',True)
-    options_txt = ('Options',20,'#FFFFFF','arialblack',True)
-    exit_txt = ('Exit',20,'#FFFFFF','arialblack',True)
     
-    display_txt = ('Display',15,'#FFFFFF','arialblack',True)
-    audio_txt = ('Sound',15,'#FFFFFF','arialblack',True)
-    controls_txt = ('Controls',15,'#FFFFFF','arialblack',True)
-    profile_txt = ('Profile',15,'#FFFFFF','arialblack',True)
+    resume_txt = ('RESUME',20,'#FFFFFF','arialblack',True)
+    options_txt = ('OPTIONS',20,'#FFFFFF','arialblack',True)
+    exit_txt = ('EXIT',20,'#FFFFFF','arialblack',True)
+    
+    display_txt = ('DISPLAY',15,'#FFFFFF','arialblack',True)
+    audio_txt = ('SOUND',15,'#FFFFFF','arialblack',True)
+    controls_txt = ('CONTROLS',15,'#FFFFFF','arialblack',True)
+    profile_txt = ('PROFILE',15,'#FFFFFF','arialblack',True)
     
     yes_txt = ('YES',30,'#FFFFFF','arialblack',True)
     no_txt = ('NO',30,'#FFFFFF','arialblack',True)
@@ -64,16 +66,19 @@ def pause(clock):
     setting = 'display'
     
     #Settings up level
-    screen = pygame.display.set_mode((1200,700),pygame.RESIZABLE)
+    #screen = pygame.display.set_mode((1200,700),pygame.RESIZABLE)
     clock = pygame.time.Clock()
-    level = Level(level_map, screen)
+    level = Level(level_map, surface)
     
-    
+    #Setters (no not that kind).
+    Fullscreen = False
+    Borderless = False
+    Windowed = True
     
     while True:
         
         surface.fill((121,128,241))
-            
+        print(gamePaused, menu, setting)
         #Paused
         if gamePaused == True:
             if menu == 'paused':
@@ -87,8 +92,6 @@ def pause(clock):
                     menu = 'options'
                 if exit.checkClick(surface, True) == True:
                     menu = 'exit'
-                
-                resume.getSize()
                 
             #Options
             if menu == 'exit':
@@ -121,10 +124,30 @@ def pause(clock):
                     elements.draw_box(surface,(elements.relative(400,240)), (elements.relative(700,40)), '#6169f2', 2, 'center')
                     elements.draw_box(surface,(elements.relative(400,315)), (elements.relative(700,40)), '#6169f2', 2, 'center')
                     
-                    resolution.checkClick(surface, True)
-
-                    displaymode.checkClick(surface, True)
+                displaymode.checkClick(surface,True, '#888888')
+                
+                if displaymode.getActive() == 'FULLSCREEN':
+                    if Fullscreen == False:
+                        surface = pygame.display.set_mode((hardwareDisp), pygame.FULLSCREEN)
+                        Fullscreen = True
+                else:
+                    Fullscreen = False
                     
+                if displaymode.getActive() == 'BORDERLESS':
+                    if Borderless == False:
+                        os.environ['SDL_VIDEO_WINDOW_POS'] = '0,0'
+                        surface = pygame.display.set_mode((hardwareDisp), NOFRAME)
+                        Borderless = True
+                else:
+                    Borderless = False
+                
+                if displaymode.getActive() == 'WINDOWED':
+                    if Windowed == False:
+                        surface = pygame.display.set_mode((1920,1080), RESIZABLE)
+                        Windowed = True
+                else:
+                    Windowed = False
+        
                     elements.draw_text('WINDOW MODE', sub, '#FFFFFF', surface, (elements.relative(60,225)),'topleft')
                     elements.draw_text('RESOLUTION', sub, '#FFFFFF', surface, (elements.relative(60,300)),'topleft')
                     
@@ -152,43 +175,69 @@ def pause(clock):
             
             level.play()
 
+            
         #Handles events such as window resizing and exiting
         for event in pygame.event.get():
+                
             if event.type == pygame.VIDEORESIZE:
-                screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+                print('resize')
+                if Fullscreen == False:
+                    surface = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+                    
                 #Adjusting size of buttons and menus (that have predefined size and pos outside of a loop)
                  #TODO (NOT-TODO) Anthing below happens when the window is resized
-        
-                #! This is super dumb but this is how things resize, I'm also putting this in red to help divide things..
+                 #! This is super dumb but this is how things resize, I'm also putting this in red to help divide things..
                 
-                #Pause Buttons
+                print(elements.relativeNum(20))
+                print(round(elements.relativeNum(20)))
+                
+                #CONTENT
+                resume_txt = ('RESUME',(round(elements.relativeNum(20))),'#FFFFFF','arialblack',True)
+                options_txt = ('OPTIONS',(round(elements.relativeNum(20))),'#FFFFFF','arialblack',True)
+                exit_txt = ('EXIT',(round(elements.relativeNum(20))),'#FFFFFF','arialblack',True)
+                
+                display_txt = ('DISPLAY',(round(elements.relativeNum(15))),'#FFFFFF','arialblack',True)
+                audio_txt = ('SOUND',(round(elements.relativeNum(15))),'#FFFFFF','arialblack',True)
+                controls_txt = ('CONTROLS',(round(elements.relativeNum(15))),'#FFFFFF','arialblack',True)
+                profile_txt = ('PROFILE',(round(elements.relativeNum(15))),'#FFFFFF','arialblack',True)
+                
+                yes_txt = ('YES',(round(elements.relativeNum(30))),'#FFFFFF','arialblack',True)
+                no_txt = ('NO',(round(elements.relativeNum(30))),'#FFFFFF','arialblack',True)
+                
+                #PAUSE BUTTONS
                 resume = elements.button(resume_txt,(elements.relative(400,250)),(elements.relative(200,50)),('#333333','#FFFFFF'),(5,5))
                 options = elements.button(options_txt,(elements.relative(400,325)),(elements.relative(200,50)),('#333333','#FFFFFF'),(5,5))
                 exit = elements.button(exit_txt,(elements.relative(400,400)),(elements.relative(200,50)),('#333333','#FFFFFF'),(5,5))
                 
-                #Exit Buttons
+                #EXIT BUTTONS
                 yes = elements.button(yes_txt,(elements.relative(300,300)),(elements.relative(125,65)),('#333333','#FFFFFF'),(5,5))
                 no = elements.button(no_txt,(elements.relative(500,300)),(elements.relative(125,65)),('#333333','#FFFFFF'),(5,5))
                 
-                #Option Buttons
+                #OPTION BUTTONS
                 display = elements.button(display_txt,(elements.relative(169,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
                 audio = elements.button(audio_txt,(elements.relative(323,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
                 controls = elements.button(controls_txt,(elements.relative(477,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
                 profile = elements.button(profile_txt,(elements.relative(631,125)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
              
-                #Fonts
-                regular = pygame.font.SysFont('arialblack',(elements.relativeNum(40)))
-                sub = pygame.font.SysFont('arialblack',(elements.relativeNum(20)))
-                header = pygame.font.SysFont('arialblack',(elements.relativeNum(60)))
-             
+                #FONTS
+                regular = pygame.font.SysFont('arialblack',(round(elements.relativeNum(40))))
+                sub = pygame.font.SysFont('arialblack',(round(elements.relativeNum(20))))
+                header = pygame.font.SysFont('arialblack',(round(elements.relativeNum(60))))
+              
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    gamePaused = True
-                    menu = 'paused'
+                    if menu == 'paused':
+                        menu = 'null'
+                        gamePaused = False
+                    else:
+                        menu = 'paused'
+                        gamePaused = True
+                        
             if event.type == pygame.QUIT:
-                pygame.quit()
+                pygame.QUIT()
                 sys.exit()
-        
+
+
         #Believe it or not this updates the display...
         pygame.display.update()
         #This ticks the clock.
