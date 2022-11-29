@@ -126,33 +126,29 @@ def pause(clock):
                     elements.draw_text('WINDOW MODE', sub, '#FFFFFF', surface, (elements.relative(60,240)),'midleft')
                     elements.draw_text('RESOLUTION', sub, '#FFFFFF', surface, (elements.relative(60,315)),'midleft')
                     
-                displaymode.checkClick(surface,True, '#888888')
+                    displaymode.checkClick(surface,True, '#888888')
                 
-                if displaymode.getActive() == 'FULLSCREEN':
-                    if Fullscreen == False:
-                        surface = pygame.display.set_mode((hardwareDisp), pygame.FULLSCREEN)
-                        Fullscreen = True
-                else:
-                    Fullscreen = False
+                    if displaymode.getActive() == 'FULLSCREEN':
+                        if Fullscreen == False:
+                            surface = pygame.display.set_mode((hardwareDisp), pygame.FULLSCREEN)
+                            Fullscreen = True
+                    else:
+                        Fullscreen = False
+                        
+                    if displaymode.getActive() == 'BORDERLESS':
+                        if Borderless == False:
+                            os.environ['SDL_VIDEO_WINDOW_POS'] = '0,0'
+                            surface = pygame.display.set_mode((hardwareDisp), NOFRAME)
+                            Borderless = True
+                    else:
+                        Borderless = False
                     
-                if displaymode.getActive() == 'BORDERLESS':
-                    if Borderless == False:
-                        os.environ['SDL_VIDEO_WINDOW_POS'] = '0,0'
-                        surface = pygame.display.set_mode((hardwareDisp), NOFRAME)
-                        Borderless = True
-                else:
-                    Borderless = False
-                
-                if displaymode.getActive() == 'WINDOWED':
-                    if Windowed == False:
-                        surface = pygame.display.set_mode((1920,1080), RESIZABLE)
-                        Windowed = True
-                else:
-                    Windowed = False
-        
-                    elements.draw_text('WINDOW MODE', sub, '#FFFFFF', surface, (elements.relative(60,225)),'topleft')
-                    elements.draw_text('RESOLUTION', sub, '#FFFFFF', surface, (elements.relative(60,300)),'topleft')
-                    
+                    if displaymode.getActive() == 'WINDOWED':
+                        if Windowed == False:
+                            surface = pygame.display.set_mode((1920,1080), RESIZABLE)
+                            Windowed = True
+                    else:
+                        Windowed = False
                     
                 if setting == 'audio':
                     audio.active('#FF0000')
