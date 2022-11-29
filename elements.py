@@ -293,6 +293,8 @@ class dropdown:
                     if self.rects[option].collidepoint(self.mouse_pos):
                         if self.hover == True:
                             self.dyn_unselected = self.hover_color
+                            if self.rects[option] == 'BORDERLESS':
+                                print('Borderless')
                     else:
                         self.dyn_unselected = self.rect_unselected
                     #--------------------------------------------------

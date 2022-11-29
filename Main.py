@@ -1,4 +1,4 @@
-import pygame, sys, Menus
+import pygame, sys, Menus, os
 
 pygame.init()
 app_icon = pygame.image.load('Assets/Icons/AI.png')

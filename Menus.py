@@ -75,6 +75,8 @@ def pause(clock):
     Borderless = False
     Windowed = True
     
+    update = False
+    
     while True:
         
         surface.fill((121,128,241))
@@ -132,14 +134,16 @@ def pause(clock):
                         if Fullscreen == False:
                             surface = pygame.display.set_mode((hardwareDisp), pygame.FULLSCREEN)
                             Fullscreen = True
+                            update = True
                     else:
                         Fullscreen = False
                         
                     if displaymode.getActive() == 'BORDERLESS':
                         if Borderless == False:
-                            os.environ['SDL_VIDEO_WINDOW_POS'] = '0,0'
+                            
                             surface = pygame.display.set_mode((hardwareDisp), NOFRAME)
                             Borderless = True
+                            update = True
                     else:
                         Borderless = False
                     
@@ -147,6 +151,7 @@ def pause(clock):
                         if Windowed == False:
                             surface = pygame.display.set_mode((1920,1080), RESIZABLE)
                             Windowed = True
+                            update = True
                     else:
                         Windowed = False
                     
@@ -169,26 +174,30 @@ def pause(clock):
             #GAME GOES HERE?
             #* I understand that there are better ways to make the game run alongside the menus, but since this is python and since this is last minute this will have to do.
             #* Given the chance to re-do things (if I hadn't already), I would make methods for both the menus and game, where the inputs are grabbed by main and then sent to load, logic and draw functions, ending with a screen update. (following proper game loops.)
+            #* Actually it was more of a me thing... I digress (again), if I had a complaint about how I did something it would be the section up next...
             #---------------
             
             level.play()
 
-            
+        
         #Handles events such as window resizing and exiting
+        #* I hate this
+            #* - This section of the program not the comments, I love the comments.
+            #I hope this section looks familiar because it is. One thing I lacked when making a dropdown menu / buttons was foresight.
+                #I didn't realize that to make things scale properly with window resizes I needed to initialize them within the game loop, or at least the size and pos for each (among other items).
+                #This sucks because I'm not completley redoing the button for a 3rd time, nor am I making heavy modifications for the 1000th.
+                #Again, heindsight is 50/50 and although this is not elegant by any means, it at least allows me to adjust things for screen size.
+                
+            #Ranting aside it works as follows:
+            #   - Starts when the window changes states (event.type == pygame.VIDEORESIZE) or when the update var is triggered (update == True)\
+            #   - At that point all items that are not initialized within the game loop (everything listed below) will re-initalize to adjust for the new screen size.
+            #   - This mostly uses two functions that I wrote that take the ratio of a number (or number set) compared to the origin window (800 x 600) and apply it to the new window size
+            #       - These functions are super simple, I'm just stating this so there is no need to wander all the way to elements.py (trust me you don't want to go there.)
+            #   - Once it is done re-initalizing it resets the update var to false (if the game reinitializes every loop itteration everything breaks, not to mention is horribly slow)
+            #       - Thats done to prevent the game from constantly re-initalizing the on screen elements (as stated above; I just ran out of space and hate scrolling).
         for event in pygame.event.get():
-                
-            if event.type == pygame.VIDEORESIZE:
-                print('resize')
-                if Fullscreen == False:
-                    surface = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
-                    
-                #Adjusting size of buttons and menus (that have predefined size and pos outside of a loop)
-                 #TODO (NOT-TODO) Anthing below happens when the window is resized
-                 #! This is super dumb but this is how things resize, I'm also putting this in red to help divide things..
-                
-                print(elements.relativeNum(20))
-                print(round(elements.relativeNum(20)))
-                
+            if event.type == pygame.VIDEORESIZE or update == True:
+
                 #CONTENT
                 resume_txt = ('RESUME',(round(elements.relativeNum(20))),'#FFFFFF','arialblack',True)
                 options_txt = ('OPTIONS',(round(elements.relativeNum(20))),'#FFFFFF','arialblack',True)
@@ -228,7 +237,23 @@ def pause(clock):
                 regular = pygame.font.SysFont('arialblack',(round(elements.relativeNum(40))))
                 sub = pygame.font.SysFont('arialblack',(round(elements.relativeNum(20))))
                 header = pygame.font.SysFont('arialblack',(round(elements.relativeNum(60))))
-              
+                
+                #RESET
+                update = False
+            
+            # This handles the user input, well some of it. (Actually its handled really inconsistantly and doesn't follow proper game loop flow what so ever).
+            #   Works as follows:
+            #   - Looks to see if a key is pressed
+            #   - If so, what key
+            #   - If key is the escape key do something
+            #   - Something is tell the game to go to the paused menu
+            #       - If the game is already there go back to the game
+            #       - If game is not there bring it there
+            
+            #   - If the user quits game (hits 'X' on window or alt f4's, etc.)
+            #       - Quit
+            #       - Exit (quit but with a different package)
+            
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     if menu == 'paused':
@@ -244,6 +269,9 @@ def pause(clock):
 
 
         #Believe it or not this updates the display...
+        #* Refreshes everything thats supposed to be there.
+            #* Without display just sits there black, hence the need for a literal game loop.
         pygame.display.update()
         #This ticks the clock.
+        #* Ticks are the game speed, measured by tps, ever play Minecraft?
         clock.tick(60)
