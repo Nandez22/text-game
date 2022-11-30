@@ -430,14 +430,18 @@ class slider:
     #HOVER LOGIC // DRAG LOGIC
         mousePos = pygame.mouse.get_pos()
 
-        if self.slider.collidepoint(mousePos):
+        if self.slider.collidepoint(mousePos) or self.rail.collidepoint(mousePos):
             if hover == True:
                 self.dynPrimary = color
+                if pygame.mouse.get_pressed()[0] == 1:
+                    self.stick = True
         else:
             self.dynPrimary = self.sPrimary
-            if pygame.mouse.get_pressed()[0] == 1:
-                self.stick = True
+            
                 
+        if pygame.mouse.get_pressed()[0] == 0:
+            self.stick = False 
+                      
         if self.stick == True:
             if hover == True:
                 self.dynPrimary = color
@@ -449,8 +453,100 @@ class slider:
             if self.sPos[0] > self.rail.midright[0]:
                 self.sPos[0] = self.rail.midright[0]
             
-        if pygame.mouse.get_pressed()[0] == 0:
-            self.stick = False        
+              
 
         self.val = round(((self.sPos[0] - self.rail.midleft[0]) / self.rSize[0]),2)
         return self.val
+    
+class txtField:
+    def __init__(self, colors, default):
+        self.val = f'{default}%'
+        self.typing = False
+        
+        self.primary = colors[0]
+        self.dynPrimary = colors[0]
+        self.textColor = colors[1]
+        
+        self.stroke = False
+        self.input = ''
+        
+    def draw(self, surface, pos, size, style):
+        
+        self.surface = surface
+        self.pos = pos
+        self.size = size
+        self.rad = style[2]
+        
+        self.font = style[0]
+        self.antiAlias = style[1]
+
+        self.fieldRect = pygame.Rect(self.pos, self.size)
+        self.fieldRect.center = self.pos
+        
+        if self.typing == True:
+            self.dynPrimary = self.hPrimary
+            
+            if self.stroke == True:
+                self.sRect = pygame.Rect(self.fieldRect.center,(self.size[0] + self.sRad, self.size[1] + self.sRad))
+                self.sRect.center = self.fieldRect.center
+                pygame.draw.rect(self.surface, self.secondary, self.sRect, border_radius = self.rad)
+            
+        pygame.draw.rect(self.surface, self.dynPrimary, self.fieldRect, border_radius = self.rad)
+        
+        self.txtObj = self.font.render(self.val ,self.antiAlias, self.textColor)
+        self.txtRect = self.txtObj.get_rect()
+        self.txtRect.center = self.fieldRect.center
+        self.surface.blit(self.txtObj, self.txtRect)
+        
+    def edit(self,event, slider, hover = (False,'#FF0000'), stroke = (0,'#000000')):
+        
+        self.slid = round(100 * (slider.drag(True)))
+        
+        self.hover = hover[0]
+        self.hPrimary = hover[1]
+        self.sRad = stroke[0]
+        self.secondary = stroke[1]
+        
+        self.val = f'{self.slid}%'
+        
+        if stroke[0] > 0:
+            self.stroke = True
+        else:
+            self.stroke = False
+            
+        mousePos = pygame.mouse.get_pos()
+        if self.fieldRect.collidepoint(mousePos):
+            self.dynPrimary = self.hPrimary
+            if pygame.mouse.get_pressed()[0] == 1:
+                self.input = ''
+                self.typing = True
+        else:
+            self.dynPrimary = self.primary
+            if pygame.mouse.get_pressed()[0] == 1:
+                self.typing = False
+                
+        if event.type == QUIT:
+            pygame.quit()
+        if event.type == KEYDOWN:
+            if self.typing == True:
+                if event.key == K_RETURN:
+                    try:
+                        slider.setVal(float(self.input))
+                    except:
+                        pass
+                    self.typing = False
+                elif event.key == K_BACKSPACE:
+                    self.input = self.input[:-1]
+                    if not len(self.input) == 0:
+                        slider.setVal(float(self.input))
+                    else:
+                        slider.setVal(0)
+                else:
+                    try:
+                        if self.slid < 100:
+                            if type(float(event.unicode)) == float:
+                                self.input += event.unicode
+                                print(self.input)
+                                slider.setVal(float(self.input))
+                    except:
+                        pass

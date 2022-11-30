@@ -168,7 +168,7 @@ def pause(clock):
                     elements.draw_text('MASTER', sub, '#FFFFFF', surface, (elements.relative(60,240)),'midleft')
                     
                     master.addStroke([2,'#000000'],[1,'#000000'])
-                    master.draw((200,12), (10), (575,240), (5,5))
+                    master.draw((200,12), (8), (575,240), (5,5))
                     
                     
                     elements.draw_text((f'{round(master.drag(True) * 100)}%'), regular, '#FFFFFF', surface, (elements.relative(715, 240)), 'center')
