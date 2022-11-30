@@ -62,10 +62,10 @@ def pause(clock):
     resolution.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',12,2)
     
     #Option Sliders
-    slider = elements.slider(surface,('#FFFFFF','#FFFFFF'),(400,300))
+    master = elements.slider(surface, ((121,128,241),'#FFFFFF'), (elements.relative(500,240)))
     
     #Text Fields
-    abc = elements.txtField(('#333333','#FFFFFF'),'50')
+    masterTxt = elements.txtField(('#333333','#FFFFFF'),'50')
     
         #Navigation
     #Menus
@@ -85,9 +85,7 @@ def pause(clock):
     update = False
     
     while True:
-        
         surface.fill((121,128,241))
-        print(gamePaused, menu, setting)
         #Paused
         if gamePaused == True:
             if menu == 'paused':
@@ -164,17 +162,14 @@ def pause(clock):
                     
                 if setting == 'audio':
                     audio.active('#FF0000')
-                    
-                    
                     #Audio Menu
-                    elements.draw_box(surface,(elements.relative(400,240)), (elements.relative(700,40)), '#6169f2', 2, 'center')
+                    elements.draw_box(surface,(elements.relative(400,240)), (elements.relative(700,40)), '#6169f2', round(elements.relativeNum(2)), 'center')
                     elements.draw_text('MASTER', sub, '#FFFFFF', surface, (elements.relative(60,240)),'midleft')
                     
-                    slider.addStroke([2,'#FF0000'],[2,'#FF0000'])
-                    slider.draw((300,10), (8), (400,300), (5,0))        
-                    abc.draw(surface, (400,350),(60,30),(sub,1,5))
-                    
-                    
+                    master.addStroke([2,'#000000'],[1,'#000000'])
+                    master.draw((elements.relative(200,12)),((elements.relativeNum(8))),(elements.relative(565,240)),((round(elements.relativeNum(5)),round(elements.relativeNum(5)))))
+                    masterTxt.draw(surface,(elements.relative(715,240)),(elements.relative(60,30)),(regular,(round(elements.relativeNum(1))),(round(elements.relativeNum(2)))))
+                         
                 if setting == 'controls':
                     controls.active('#FF0000')
                     #Controls Menu
@@ -210,7 +205,10 @@ def pause(clock):
             #   - Once it is done re-initalizing it resets the update var to false (if the game reinitializes every loop itteration everything breaks, not to mention is horribly slow)
             #       - Thats done to prevent the game from constantly re-initalizing the on screen elements (as stated above; I just ran out of space and hate scrolling).
         for event in pygame.event.get():
-            abc.edit(surface, slider, (True,'#444444'), (2,'#FF0000'))
+            if gamePaused == True:
+                if setting == 'audio':
+                    masterTxt.edit(event, master, (True,'#444444'), (round(elements.relativeNum(2)),'#FF0000'))
+                        
             if event.type == pygame.VIDEORESIZE or update == True:
                 #CONTENT
                 resume_txt = ('RESUME',(round(elements.relativeNum(20))),'#FFFFFF','arialblack',True)

@@ -389,7 +389,7 @@ class slider:
         
         self.sRad = mod[1]
         
-        if type(slider) == int:
+        if type(slider) == float:
             self.rad = slider
             self.shape = 'circle'
         else:
@@ -410,7 +410,7 @@ class slider:
                 self.sStroke.center = self.sPos
                 pygame.draw.rect(self.surface, self.sSecondary, self.sStroke, border_radius = self.sRad)
         
-        if type(slider) == int:
+        if type(slider) == float:
             self.slider = pygame.draw.circle(self.surface, self.dynPrimary, (self.sPos[0], self.pos[1]), self.rad)
         else:
             self.slider = pygame.rect.Rect(self.sPos, self.sSize)
@@ -550,10 +550,9 @@ class txtField:
                         rail.setVal(0)
                 else:
                     try:
-                        if self.slid < 100:
+                        if self.slid <= 100:
                             if type(float(event.unicode)) == float:
                                 self.input += event.unicode
-                                print(self.input)
                                 rail.setVal(float(self.input))
                     except:
                         pass
