@@ -411,22 +411,22 @@ class slider:
                 pygame.draw.rect(self.surface, self.sSecondary, self.sStroke, border_radius = self.sRad)
         
         if type(slider) == int:
-            self.slider = pygame.draw.circle(self.surface, self.dynPrimary, self.sPos, self.rad)
+            self.slider = pygame.draw.circle(self.surface, self.dynPrimary, (self.sPos[0], self.pos[1]), self.rad)
         else:
             self.slider = pygame.rect.Rect(self.sPos, self.sSize)
             self.slider.center = self.sPos
             pygame.draw.rect(self.surface, self.dynPrimary, self.slider, border_radius = self.sRad)
 
     def addStroke(self, rail, slider):
-            
+         
         self.rWidth = rail[0]
         self.rSecondary = rail[1]
         
         self.sWidth = slider[0]
         self.sSecondary = rail[1]
-
+    
     def drag(self, hover, color = '#FF0000'):
-
+    
     #HOVER LOGIC // DRAG LOGIC
         mousePos = pygame.mouse.get_pos()
 
@@ -446,17 +446,24 @@ class slider:
             if hover == True:
                 self.dynPrimary = color
                 
+
             if self.sPos[0] >= self.rail.midleft[0] and self.sPos[0] <= self.rail.midright[0]:
                 self.sPos[0] = mousePos[0]
-            if self.sPos[0] < self.rail.midleft[0]:
-                self.sPos[0] = self.rail.midleft[0]
-            if self.sPos[0] > self.rail.midright[0]:
-                self.sPos[0] = self.rail.midright[0]
+        if self.sPos[0] < self.rail.midleft[0]:
+            self.sPos[0] = self.rail.midleft[0]
+        if self.sPos[0] > self.rail.midright[0]:
+            self.sPos[0] = self.rail.midright[0]
             
               
 
         self.val = round(((self.sPos[0] - self.rail.midleft[0]) / self.rSize[0]),2)
         return self.val
+    
+    def setVal(self, num):
+        #Takes a percentage input IE 90% - the % sign and converts back to coords to set the slider pos.
+        val = num / 100
+        newVal =((val * self.rSize[0]) + self.rail.midleft[0])
+        self.sPos[0] = newVal
     
 class txtField:
     def __init__(self, colors, default):
@@ -498,9 +505,9 @@ class txtField:
         self.txtRect.center = self.fieldRect.center
         self.surface.blit(self.txtObj, self.txtRect)
         
-    def edit(self,event, slider, hover = (False,'#FF0000'), stroke = (0,'#000000')):
+    def edit(self,event, rail, hover = (False,'#FF0000'), stroke = (0,'#000000')):
         
-        self.slid = round(100 * (slider.drag(True)))
+        self.slid = round(100 * (rail.drag(True)))
         
         self.hover = hover[0]
         self.hPrimary = hover[1]
@@ -531,22 +538,23 @@ class txtField:
             if self.typing == True:
                 if event.key == K_RETURN:
                     try:
-                        slider.setVal(float(self.input))
+                        rail.setVal(float(self.input))
                     except:
                         pass
                     self.typing = False
                 elif event.key == K_BACKSPACE:
                     self.input = self.input[:-1]
                     if not len(self.input) == 0:
-                        slider.setVal(float(self.input))
+                        rail.setVal(float(self.input))
                     else:
-                        slider.setVal(0)
+                        rail.setVal(0)
                 else:
                     try:
                         if self.slid < 100:
                             if type(float(event.unicode)) == float:
                                 self.input += event.unicode
                                 print(self.input)
-                                slider.setVal(float(self.input))
+                                rail.setVal(float(self.input))
                     except:
                         pass
+                        

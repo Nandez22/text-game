@@ -62,7 +62,10 @@ def pause(clock):
     resolution.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',12,2)
     
     #Option Sliders
-    master = elements.slider(surface, ((121,128,241),'#FFFFFF'), (elements.relative(500,240)))
+    slider = elements.slider(surface,('#FFFFFF','#FFFFFF'),(400,300))
+    
+    #Text Fields
+    abc = elements.txtField(('#333333','#FFFFFF'),'50')
     
         #Navigation
     #Menus
@@ -167,11 +170,10 @@ def pause(clock):
                     elements.draw_box(surface,(elements.relative(400,240)), (elements.relative(700,40)), '#6169f2', 2, 'center')
                     elements.draw_text('MASTER', sub, '#FFFFFF', surface, (elements.relative(60,240)),'midleft')
                     
-                    master.addStroke([2,'#000000'],[1,'#000000'])
-                    master.draw((200,12), (8), (575,240), (5,5))
+                    slider.addStroke([2,'#FF0000'],[2,'#FF0000'])
+                    slider.draw((300,10), (8), (400,300), (5,0))        
+                    abc.draw(surface, (400,350),(60,30),(sub,1,5))
                     
-                    
-                    elements.draw_text((f'{round(master.drag(True) * 100)}%'), regular, '#FFFFFF', surface, (elements.relative(715, 240)), 'center')
                     
                 if setting == 'controls':
                     controls.active('#FF0000')
@@ -208,6 +210,7 @@ def pause(clock):
             #   - Once it is done re-initalizing it resets the update var to false (if the game reinitializes every loop itteration everything breaks, not to mention is horribly slow)
             #       - Thats done to prevent the game from constantly re-initalizing the on screen elements (as stated above; I just ran out of space and hate scrolling).
         for event in pygame.event.get():
+            abc.edit(surface, slider, (True,'#444444'), (2,'#FF0000'))
             if event.type == pygame.VIDEORESIZE or update == True:
                 #CONTENT
                 resume_txt = ('RESUME',(round(elements.relativeNum(20))),'#FFFFFF','arialblack',True)
@@ -277,7 +280,6 @@ def pause(clock):
             if event.type == pygame.QUIT:
                 pygame.QUIT()
                 sys.exit()
-
 
         #Believe it or not this updates the display...
         #* Refreshes everything thats supposed to be there.
