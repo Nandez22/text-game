@@ -359,3 +359,98 @@ def relativeNum(num, max = False):
         return (ratio * width)
     if ratio >= max:
         return max * num
+    
+class slider:
+    def __init__(self,surface, colors, startPos):
+        self.surface = surface
+        self.sPos = []
+        
+        for coord in startPos:
+            self.sPos.append(coord)
+            
+        self.rWidth = 0
+        self.sWidth = 0
+        
+        self.rPrimary = colors[0]
+        self.sPrimary = colors[1]
+        self.dynPrimary = colors[1]
+        
+        self.stick = False
+
+    def draw(self, rail, slider, pos, mod = (0,0)):
+        
+        self.pos = pos
+        
+        self.rSize = rail
+        self.rRad = mod[0]
+        
+        self.rail = pygame.rect.Rect(pos, self.rSize)
+        self.rail.center = self.pos
+        
+        self.sRad = mod[1]
+        
+        if type(slider) == int:
+            self.rad = slider
+            self.shape = 'circle'
+        else:
+            self.sSize = slider
+        
+        if self.rWidth > 0:
+            self.rStroke = pygame.rect.Rect(self.pos,(self.rSize[0] + self.rWidth, self.rSize[1] + self.rWidth))
+            self.rStroke.center = self.rail.center
+            pygame.draw.rect(self.surface, self.rSecondary, self.rStroke, border_radius = self.rRad)
+            
+        pygame.draw.rect(self.surface, self.rPrimary, self.rail, border_radius = self.rRad)    
+            
+        if self.sWidth > 0:
+            if self.shape == 'circle':
+                self.sStroke = pygame.draw.circle(self.surface, self.sSecondary, self.sPos, (self.rad + self.sWidth))
+            else:
+                self.sStroke = pygame.rect.Rect(self.sPos, (self.sSize + self.sWidth))
+                self.sStroke.center = self.sPos
+                pygame.draw.rect(self.surface, self.sSecondary, self.sStroke, border_radius = self.sRad)
+        
+        if type(slider) == int:
+            self.slider = pygame.draw.circle(self.surface, self.dynPrimary, self.sPos, self.rad)
+        else:
+            self.slider = pygame.rect.Rect(self.sPos, self.sSize)
+            self.slider.center = self.sPos
+            pygame.draw.rect(self.surface, self.dynPrimary, self.slider, border_radius = self.sRad)
+
+    def addStroke(self, rail, slider):
+            
+        self.rWidth = rail[0]
+        self.rSecondary = rail[1]
+        
+        self.sWidth = slider[0]
+        self.sSecondary = rail[1]
+
+    def drag(self, hover, color = '#FF0000'):
+
+    #HOVER LOGIC // DRAG LOGIC
+        mousePos = pygame.mouse.get_pos()
+
+        if self.slider.collidepoint(mousePos):
+            if hover == True:
+                self.dynPrimary = color
+        else:
+            self.dynPrimary = self.sPrimary
+            if pygame.mouse.get_pressed()[0] == 1:
+                self.stick = True
+                
+        if self.stick == True:
+            if hover == True:
+                self.dynPrimary = color
+                
+            if self.sPos[0] >= self.rail.midleft[0] and self.sPos[0] <= self.rail.midright[0]:
+                self.sPos[0] = mousePos[0]
+            if self.sPos[0] < self.rail.midleft[0]:
+                self.sPos[0] = self.rail.midleft[0]
+            if self.sPos[0] > self.rail.midright[0]:
+                self.sPos[0] = self.rail.midright[0]
+            
+        if pygame.mouse.get_pressed()[0] == 0:
+            self.stick = False        
+
+        self.val = round(((self.sPos[0] - self.rail.midleft[0]) / self.rSize[0]),2)
+        return self.val

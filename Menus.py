@@ -13,7 +13,7 @@ def pause(clock):
     surface = elements.set_screen((800,600),'Paused',True)
 
     #Fonts
-    regular = pygame.font.SysFont('arialblack',40)
+    regular = pygame.font.SysFont('arialblack',15)
     sub = pygame.font.SysFont('arialblack',20)
     header = pygame.font.SysFont('arialblack',60)
     
@@ -60,6 +60,10 @@ def pause(clock):
     
     displaymode.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',12,2)
     resolution.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',12,2)
+    
+    #Option Sliders
+    master = elements.slider(surface, ((121,128,241),'#FFFFFF'), (elements.relative(500,240)))
+    
         #Navigation
     #Menus
     menu = 'null'
@@ -158,8 +162,16 @@ def pause(clock):
                 if setting == 'audio':
                     audio.active('#FF0000')
                     
+                    
                     #Audio Menu
-                    elements.draw_text('Master', sub, '#FFFFFF', surface, (elements.relative(100,200)), 'topleft')
+                    elements.draw_box(surface,(elements.relative(400,240)), (elements.relative(700,40)), '#6169f2', 2, 'center')
+                    elements.draw_text('MASTER', sub, '#FFFFFF', surface, (elements.relative(60,240)),'midleft')
+                    
+                    master.addStroke([2,'#000000'],[1,'#000000'])
+                    master.draw((200,12), (10), (575,240), (5,5))
+                    
+                    
+                    elements.draw_text((f'{round(master.drag(True) * 100)}%'), regular, '#FFFFFF', surface, (elements.relative(715, 240)), 'center')
                     
                 if setting == 'controls':
                     controls.active('#FF0000')
@@ -197,7 +209,6 @@ def pause(clock):
             #       - Thats done to prevent the game from constantly re-initalizing the on screen elements (as stated above; I just ran out of space and hate scrolling).
         for event in pygame.event.get():
             if event.type == pygame.VIDEORESIZE or update == True:
-
                 #CONTENT
                 resume_txt = ('RESUME',(round(elements.relativeNum(20))),'#FFFFFF','arialblack',True)
                 options_txt = ('OPTIONS',(round(elements.relativeNum(20))),'#FFFFFF','arialblack',True)
@@ -234,7 +245,7 @@ def pause(clock):
                 resolution.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',(round(elements.relativeNum(12))),2)
                 
                 #FONTS
-                regular = pygame.font.SysFont('arialblack',(round(elements.relativeNum(40))))
+                regular = pygame.font.SysFont('arialblack',(round(elements.relativeNum(15))))
                 sub = pygame.font.SysFont('arialblack',(round(elements.relativeNum(20))))
                 header = pygame.font.SysFont('arialblack',(round(elements.relativeNum(60))))
                 
