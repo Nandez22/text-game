@@ -29,8 +29,9 @@ def pause(clock):
     controls_txt = ('CONTROLS',15,'#FFFFFF','arialblack',True)
     profile_txt = ('PROFILE',15,'#FFFFFF','arialblack',True)
     
-    yes_txt = ('YES',30,'#FFFFFF','arialblack',True)
-    no_txt = ('NO',30,'#FFFFFF','arialblack',True)
+    exitMainTxt = ('MAIN MENU',20,'#FFFFFF','arialblack',True)
+    exitDeskTxt = ('DESKTOP',20,'#FFFFFF','arialblack',True)
+    exitCancelTxt = ('CANCEL',20,'#FFFFFF','arialblack',True)
     
     #Images
     
@@ -44,8 +45,9 @@ def pause(clock):
     exit = elements.button(exit_txt,(elements.relative(400,400)),(elements.relative(200,50)),('#333333','#FFFFFF'),(5,5))
     
     #Exit Buttons
-    yes = elements.button(yes_txt,(elements.relative(300,300)),(elements.relative(125,65)),('#333333','#FFFFFF'),(5,5))
-    no = elements.button(no_txt,(elements.relative(500,300)),(elements.relative(125,65)),('#333333','#FFFFFF'),(5,5))
+    exitMain = elements.button(exitMainTxt,(elements.relative(400,250)),(elements.relative(225,50)),('#333333','#FFFFFF'),(5,5))
+    exitDesk = elements.button(exitDeskTxt,(elements.relative(400,325)),(elements.relative(225,50)),('#333333','#FFFFFF'),(5,5))
+    exitCancel = elements.button(exitCancelTxt,(elements.relative(400,400)),(elements.relative(225,50)),('#222222','#FFFFFF'),(5,5))
     
     #Option Buttons
     display = elements.button(display_txt,(elements.relative(169,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
@@ -63,7 +65,8 @@ def pause(clock):
     
     #Option Sliders
     master = elements.slider(surface, ((121,128,241),'#FFFFFF'), (elements.relative(500,240)))
-    
+    music = elements.slider(surface, ((121,128,241),'#FFFFFF'), (elements.relative(500,240)))
+    sfx = elements.slider(surface, ((121,128,241),'#FFFFFF'), (elements.relative(500,240)))
     #Text Fields
     masterTxt = elements.txtField(('#333333','#FFFFFF'),'50')
     
@@ -88,6 +91,7 @@ def pause(clock):
         surface.fill((121,128,241))
         #Paused
         if gamePaused == True:
+            pygame.display.set_caption('Jumpr - Paused')
             if menu == 'paused':
                 setting = 'display'
                 
@@ -102,13 +106,14 @@ def pause(clock):
                 
             #Options
             if menu == 'exit':
-                elements.draw_text('ARE YOU SURE?', header, '#FFFFFF', surface, (elements.relative(400,200)),'center')
+                elements.draw_text('EXIT GAME ', header, '#FFFFFF', surface, (elements.relative(400,150)),'center')
 
-                if yes.checkClick(surface, True) == True:
+                if exitMain.checkClick(surface, True) == True:
+                    pygame.QUIT()
+                if exitDesk.checkClick(surface, True) == True:
                     pygame.QUIT()
                     sys.exit()
-                    
-                if no.checkClick(surface, True) == True:
+                if exitCancel.checkClick(surface,True) == True:
                     menu = 'paused'
 
             if menu == 'options':
@@ -166,7 +171,7 @@ def pause(clock):
                     elements.draw_box(surface,(elements.relative(400,240)), (elements.relative(700,40)), '#6169f2', round(elements.relativeNum(2)), 'center')
                     elements.draw_text('MASTER', sub, '#FFFFFF', surface, (elements.relative(60,240)),'midleft')
                     
-                    master.addStroke([2,'#000000'],[1,'#000000'])
+                    master.addStroke([2,'#000000'],[0])
                     master.draw((elements.relative(200,12)),((elements.relativeNum(8))),(elements.relative(565,240)),((round(elements.relativeNum(5)),round(elements.relativeNum(5)))))
                     masterTxt.draw(surface,(elements.relative(715,240)),(elements.relative(60,30)),(regular,(round(elements.relativeNum(1))),(round(elements.relativeNum(2)))))
                          
@@ -179,7 +184,7 @@ def pause(clock):
                     #Profile Menu
 
         else:
-            
+            pygame.display.set_caption('Jumpr')
             #GAME GOES HERE?
             #* I understand that there are better ways to make the game run alongside the menus, but since this is python and since this is last minute this will have to do.
             #* Given the chance to re-do things (if I hadn't already), I would make methods for both the menus and game, where the inputs are grabbed by main and then sent to load, logic and draw functions, ending with a screen update. (following proper game loops.)
@@ -208,7 +213,6 @@ def pause(clock):
             if gamePaused == True:
                 if setting == 'audio':
                     masterTxt.edit(event, master, (True,'#444444'), (round(elements.relativeNum(2)),'#FF0000'))
-                        
             if event.type == pygame.VIDEORESIZE or update == True:
                 #CONTENT
                 resume_txt = ('RESUME',(round(elements.relativeNum(20))),'#FFFFFF','arialblack',True)

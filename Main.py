@@ -1,9 +1,10 @@
 import pygame, sys, Menus, os
 
 pygame.init()
+
 app_icon = pygame.image.load('Assets/Icons/AI.png')
 pygame.display.set_icon(app_icon)
-
+pygame.mixer.init()
 mouse_pos = pygame.mouse.get_pos()       
 clock = pygame.time.Clock()
 

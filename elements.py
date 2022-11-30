@@ -294,7 +294,7 @@ class dropdown:
                         if self.hover == True:
                             self.dyn_unselected = self.hover_color
                             if self.rects[option] == 'BORDERLESS':
-                                print('Borderless')
+                                pass
                     else:
                         self.dyn_unselected = self.rect_unselected
                     #--------------------------------------------------
