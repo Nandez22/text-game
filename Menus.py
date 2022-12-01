@@ -4,28 +4,66 @@ from sprites import *
 from level import Level
 from pygame.locals import *
 
+# ^ Imports for stuff to work ^
+#* Things like pygame locals need full import for quality of life, hence why its a seperate package and almost all variables from it are in ALLCAPS
+#* I'd also prefer it if settings, sprites and level were not fully imported either but I was being lazy when following the tutorial and didn't want to rewrite a bunch of stuff
+#! Antthing to do with elements."something" will be explained further in depth in 'elements.py', if you need further explination go there.
 #Add menu functions / classes here instead of Main
+#This opens the main menu and is the first thing called upon running main (outside of package initilizations)
 def mainMenu():
+    #Hardware display is here to capture the resolution of the users main or current monitor #*(have not tested monitor switching but I am using two)
+    #Typically when you use 'pygame.display.Info()' it grabs the size of the current window, but since no window has been generated yet, pygame grabs the display dimensions instead (thats why it needs to be passed into run() to be used) 
     hardwareDisp = (pygame.display.Info().current_w, pygame.display.Info().current_h)
+    #Sets app icon
     app_icon = pygame.image.load('JumpGame/Assets/Icons/AI.png')
     pygame.display.set_icon(app_icon)
-
+    #initilizes game clock
     clock = pygame.time.Clock()
 
+    #Sets up start menu window (400 x 450 and borderless (NOFRAME) with no option to change, captioned 'Start' (which is redundent since you can't see the border))
     pygame.display.set_caption('Start')
     surface = pygame.display.set_mode((400,450), NOFRAME)
     pygame.display.set_mode((400,450),NOFRAME)
 
+    #Declaring some basic text styles for use ('fontName',size)
     header = pygame.font.SysFont('arialblack',70)
     sub = pygame.font.SysFont('arialblack',25)
     reg = pygame.font.SysFont('arialblack',17)
+    #These are attributes of the buttons below so I didn't have to keep resizing them individually.
+    #Button is font size and bSize is the size of the buttons
     button = 30
     bSize = (269,55)
+    
+    #* Instead of explaining buttons line by line I am just going to explain them here, and will refrence this section upon encountering other buttons (or not)
+        #* Buttons require a few parts
+            #* -1. Content -- The specifics of content depends on what you want on the button, (image or text)
+                    #* IMAGE BUTTON content
+                        #* -1. Image file (must first import image with 'pygame.image.load('imagePath')') 
+                        #* -2. Image scale or size, depending on if it recieves a single int or a tuple it will either scale the image by the int(percent scale), or to the size given as (width,height)
+                    #* TEXT BUTTON content
+                        #* -1. Text ('strText')
+                        #* -2. Font Size (size)
+                        #* -3. Text color (can be hex or RGB but RGB must be given as a Tuple ((r,g,b))*)
+                        #* -4. Font Name ('fontName'), here I've elected to use system fonts, so there is a chance that some instances of this game will not work (need ArialBlack)
+                        #* -5. Anti-Aliasing (True if you want a smooth looking typeface, else for a more pixilated one turn to False)
+            #* -2. Position -- Given as (xPos, yPos)
+            #* -3. Size -- Dependent on content
+                    #* IMAGE BUTTON size (respective to the size of the button surface not size of image (will make more sense if you get to 'elements.py')) THERE ARE TWO OPTIONS:
+                        #* -1. ('image','image') -- Will make top of button the same size as the image meaning no background will show (unless your image has alpha channles and transparency)
+                        #* -2. (width, height) -- Will make top of button the width and height provided (can be smaller or larger than image)
+                    #*TEXT BUTTON size
+                        #* (Width, Height) -- Will make top of button width and height provided
+            #* -4. Colors -- Given as ('primary','secondary') (primary being the top surface of button and secondary being the "chin" (if elevation > 0))
+            #* -5. Modifiers -- Given as (cornerRadius, elevation) (cornerRadius being the radius of the corners of the rectangular buttons, elevation being the size of the "chin" (makes the button look 3D))
+            
         #BUTTON THINGS
     #Image
+    # Loads Image
+    #* Should be noted that using "\"'s in the image path works on windows but breaks on macos, but "/"'s work on both curiously.
     logoLoad = pygame.image.load('JumpGame/Assets/Icons/AI.png')
     logoimg = (logoLoad,0.05)
     #Text
+    #* The rest of this is button stuff, see above
     startTxt = ('PLAY',button,'#FFFFFF','arialblack',True)
     creditsTxt = ('CREDITS',button,'#FFFFFF','arialblack',True)
     exitTxt = ('EXIT',button,'#FFFFFF','arialblack',True)
@@ -36,47 +74,82 @@ def mainMenu():
     exit = elements.button(exitTxt,(200,370),bSize,('#333333','#FFFFFF'),(5,5))
     back = elements.button(backTxt,(200,370),bSize,('#333333','#FFFFFF'),(5,5))
     logo = elements.button(logoimg,(200,250),('image','image'),('#333333','#FFFFFF'),(5,5))
+    #Toggle for the credits menu
     cred = False
 
+    #Pygame needs evething to be looped to display properly, hence the while loop
     while True:
+        #Sets the background color
         surface.fill((121,128,241))
+        #This draws a rect (rectangle) on screen, Its explained further in elements but I'll give it a small go here
+        #elements.draw_bos(surfaceToDrawOn, (xPosition, yPosition), (width, height), color, borderRadius, anchor point)
         elements.draw_box(surface,(200,125), (340,310), '#6169f2', 5, 'midtop')
+        
+        #If the credit button has NOT been pressed...
         if cred != True:
+            #Setting basic UI elements
             elements.draw_text('JUMPR', header, '#FFFFFF', surface, (200, 60))
+            #This draws text, fun!
+            #I'll also explain how this work further in 'elements.py' but heres the basics...
+            #elements.draw_text('textToDisplay', font(designated aboce), textColor, surfaceToDrawOn, (xPosition, yPosition))
             elements.draw_text('(For lack of a better name)', reg, '#FFFFFF', surface, (200, 102))
             
-            
+            #start is a button and .checkClick() is a button method that draws the button, and checks for hover and clicks
+            #checkClick(surfaceToDraw, changeOnHover(optional, default False), hoverColor(optional, default red))
+            #checkClick() returns true if a click has been detected.
             if start.checkClick(surface, True) == True:
+                #This runs the main game function (found below)
                 run(clock,hardwareDisp)
+                #Then breaks the loop (which may be redundent as running the run() function opens a new while loop breaking the current one)
                 break
             if credits.checkClick(surface,True):
+                #Opens credits menu
                 cred = True
             if exit.checkClick(surface,True) == True:
+                #Quits the game in two ways
+                #* Not sure why both but thats the standardl.
+                    #? Sue Me.
                 pygame.quit()
                 sys.exit()
-        
+            #If the credits button has been pressed...    
         else:
+            #Draw the title, subtitle and the credit info (group name)
             elements.draw_text('CREDITS', header, '#FFFFFF', surface, (200, 60))
             elements.draw_text('Kind of game but mostly menus by:', reg, '#FFFFFF', surface, (200, 110))
             elements.draw_text('ARTIFICIAL IDIOTS', sub, '#FFFFFF', surface, (200, 160))
             
+            #Imports group logo #? yeah we have one... sue us.
+            #If said logo gets clicked open link to the repository (idk we dont have a website and I'm bad at spelling what else was I supposed to do)
             if logo.checkClick(surface,True) == True:
                 webbrowser.open('https://github.com/Nandez22/text-game')
+            #If back button below logo button is pressed then return to the main menu
             if back.checkClick(surface,True) == True:
                 cred = False
 
+        #display.update() is necessary for anything related to pygame to run. Since it follows standard game loop (getInput --> updateContent --> updateDisplay -- Repeat)
+        # -- The display must update each itteration to redraw whats there, or eles it will only display 1 frame once.
         pygame.display.update()
+        
+        #This cycles through all events, (problematic later)
         for event in pygame.event.get():
+            #Looks to see if the game has been told to quit, either window 'X' pressed, pygame.QUIT is run or possibly alt+f4?
+            #If so it will quit / forcibly crash the game.
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
+#This is the meat and potatos now, if some explinations seem a little abreviated I am sorry but I recommend you check 'elements.py' where more in depth explinations of different "elements" can be found
+    #*-- There is a metric fuck ton of messy code in hree and If I were to write 1+ lines per line in here we would break 1000 lines (inluding comments) and I don't want that to happen, since I ame still yet to write elements.py's comments
 def run(clock,disp):
+    #imports hardwareDisp mentioned earlier
     hardwareDisp = disp
+    
+    #This opens the save file, well tries to. If no save file exists the game used default settings designated under except:
     try:
         with open('JumpGame/Save/settings.json') as saveFile:
             settings = json.load(saveFile)
     except:
+        print('fda')
         settings = {
             'displayData':{
                 'displaymode':'WINDOWED',
@@ -87,6 +160,7 @@ def run(clock,disp):
                 'sfx':50,
                 'device':'DEFAULT'}}
 
+    #This converts the double dictionary into usable variables for ease of use while coding.
     loadDisplay = settings['displayData']['displaymode']
     loadResolution = settings['displayData']['resolution']
     loadMaster = settings['audioData']['master']
@@ -94,6 +168,14 @@ def run(clock,disp):
     loadSfx = settings['audioData']['sfx']
     loadDevice = settings['audioData']['device']
     
+    #This is where some things are going to get redundet (specifically with display settings)
+        #* Some work some don't which is why there are so many, as some would work in specific instances and I just kept adding them to cover the holes (them is code bits to make sure fullscreen and resolution play nice with eachother)
+        #* Also a good time to mention... Borderless is shit on multimonitor and probably shit on single monitor as well, just avoid using it.
+        #* (kinda my fault but also there is a lot on the internet saying that pygame is really bad at handling its 'NOFRAME' mode and can only be resolved using os, but that does other wierd things that I don't care to explain just trust that it didn't work)
+    #* Enough said:
+    #This checks to see if the players settings designate full screen. If so, it will match the resolution setting to their monitor
+    #(resolution is not the res of textures like in most games, its actually the winndow size, but also if its glitched out properly it will streatch like a normal game would, but I took that out for consistancy)
+    #It will then check to see if the resolution is the same as the display, if so it will set the display setting to full screen
     if loadDisplay == 'FULLSCREEN':
         loadResolution = f'{hardwareDisp[0]} x {hardwareDisp[1]}'
     if loadResolution == f'{hardwareDisp[0]} x {hardwareDisp[1]}':
@@ -102,11 +184,14 @@ def run(clock,disp):
     
         #ASSETS
     #Display
+    #get mode gets the mode of the display, (not in str format)
+    #Like I mentioned before this essencially does the same thing as above but instead of doing it to the save vars it does it to the active vars that actually change the window size and settings.
     mode = elements.getMode(loadDisplay)
     if mode == FULLSCREEN:
         res = hardwareDisp
     res = elements.getRes(loadResolution)
     
+    #sets surface(window) to the settings loaded in and possibly manipulated above.
     surface = pygame.display.set_mode(res,mode)
             
     #Fonts
@@ -115,8 +200,8 @@ def run(clock,disp):
     header = pygame.font.SysFont('arialblack',60)
     
         #BUTTONS
+    #*More button stuff; explained above and in 'elements.py'
     #Text
-    
     resume_txt = ('RESUME',20,'#FFFFFF','arialblack',True)
     options_txt = ('OPTIONS',20,'#FFFFFF','arialblack',True)
     exit_txt = ('EXIT',20,'#FFFFFF','arialblack',True)
@@ -134,8 +219,10 @@ def run(clock,disp):
     
 
     #Attributes
+    #Sets var to be used later
     gamePaused = False
     
+    #*Again Buttons...
     #Pause Buttons
     resume = elements.button(resume_txt,(elements.relative(400,250)),(elements.relative(200,50)),('#333333','#FFFFFF'),(5,5))
     options = elements.button(options_txt,(elements.relative(400,325)),(elements.relative(200,50)),('#333333','#FFFFFF'),(5,5))
@@ -152,6 +239,7 @@ def run(clock,disp):
     controls = elements.button(controls_txt,(elements.relative(477,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
     profile = elements.button(profile_txt,(elements.relative(631,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
 
+    #* Oh boy! Dropdowns :(
     #Option Dropdowns
     displaymode = elements.dropdown(['FULLSCREEN','WINDOWED','BORDERLESS'], (elements.relative(180, 35)), (elements.relative(657,239)), loadDisplay)
     resolution = elements.dropdown(['2560 x 1440','1920 x 1080','1280 x 720', '800 x 600', '640 x 480', '500 x 500'], (elements.relative(180, 35)), (elements.relative(657,314)), loadResolution)
@@ -188,7 +276,8 @@ def run(clock,disp):
     firstItt = True
     isThisTheFirstItterationForASecondTimeBecauseIProgrammedThegetValFunctionForTheSliderClassPoorlySoINeedToRelyOnTwoVariablesToCountTheInitialItterationOfTheLoopBecauseIAmABadProgrammer = True
     usrQuit =False
-    save = False
+    saveData = False
+    retrunMain = False
     
 #! BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- 
     while True:
@@ -200,9 +289,18 @@ def run(clock,disp):
             res = elements.getRes(resolution.getActive())
             if res == hardwareDisp:
                 displaymode.setActive('FULLSCREEN')
-            surface = elements.set_screen(res,'Jumpr - Paused', elements.getMode(displaymode.getActive()))
+            else:
+                displaymode.setActive('WINDOWED')
+            surface = elements.set_screen(res,'Jumpr', elements.getMode(displaymode.getActive()))
             update = True
+                
 
+
+        if  elements.getMode(displaymode.getActive()) != mode:
+            mode = elements.getMode(displaymode.getActive())
+            if mode == FULLSCREEN:
+                resolution.setActive(f'{hardwareDisp[0]} x {hardwareDisp[1]}')
+            surface = elements.set_screen(res, 'Jumpr', elements.getMode(displaymode.getActive()))
             
         
         surface.fill((121,128,241))
@@ -227,11 +325,9 @@ def run(clock,disp):
 
                 if exitMain.checkClick(surface, True) == True:
                     save = True
-                    mainMenu()
-                    break
+                    retrunMain = True
                     
                 if exitDesk.checkClick(surface, True) == True:
-                    save = True
                     usrQuit = True
                     
                 if exitCancel.checkClick(surface,True) == True:
@@ -261,30 +357,30 @@ def run(clock,disp):
                     resolution.checkClick(surface,True)
                     displaymode.checkClick(surface,True)
                     
-            if displaymode.getActive() == 'FULLSCREEN':
-                if Fullscreen == False:
-                    surface = pygame.display.set_mode((hardwareDisp), pygame.FULLSCREEN)
-                    Fullscreen = True
-                    update = True
-            else:
-                Fullscreen = False
-                
-            if displaymode.getActive() == 'BORDERLESS':
-                if Borderless == False:
+                if displaymode.getActive() == 'FULLSCREEN':
+                    if Fullscreen == False:
+                        surface = pygame.display.set_mode((hardwareDisp), pygame.FULLSCREEN)
+                        Fullscreen = True
+                        update = True
+                else:
+                    Fullscreen = False
                     
-                    surface = pygame.display.set_mode((hardwareDisp), NOFRAME)
-                    Borderless = True
-                    update = True
-            else:
-                Borderless = False
-            
-            if displaymode.getActive() == 'WINDOWED':
-                if Windowed == False:
-                    surface = pygame.display.set_mode((1920,1080), RESIZABLE)
-                    Windowed = True
-                    update = True
-            else:
-                Windowed = False
+                if displaymode.getActive() == 'BORDERLESS':
+                    if Borderless == False:
+                        
+                        surface = pygame.display.set_mode((hardwareDisp), NOFRAME)
+                        Borderless = True
+                        update = True
+                else:
+                    Borderless = False
+                
+                if displaymode.getActive() == 'WINDOWED':
+                    if Windowed == False:
+                        surface = pygame.display.set_mode((1920,1080), RESIZABLE)
+                        Windowed = True
+                        update = True
+                else:
+                    Windowed = False
                     
 
                 if setting == 'audio':
@@ -321,13 +417,15 @@ def run(clock,disp):
                         music.setVal(loadMusic)
                         sfx.setVal(loadSfx)
                         firstItt = False
-                        
+                    
                 if setting == 'controls':
                     controls.active('#FF0000')
+                    elements.draw_text('NOTHING TO SEE HERE.', sub, '#FFFFFF', surface, (elements.relative(400,300)),'center')
                     #Controls Menu
                     
                 if setting == 'profile':
                     profile.active('#FF0000')
+                    elements.draw_text('NOTHING TO SEE HERE.', sub, '#FFFFFF', surface, (elements.relative(400,300)),'center')
                     #Profile Menu
 
         else:
@@ -435,24 +533,9 @@ def run(clock,disp):
                     else:
                         menu = 'paused'
                         gamePaused = True
-                        
-            if save == True:
-                with open('JumpGame/Save/settings.json','w') as saveFile:
-                    settings = {
-                        'displayData':{
-                            'displaymode':displaymode.getActive(),
-                            'resolution':resolution.getActive()},
-                        'audioData':{
-                            'master':masterVal,
-                            'music':musicVal,
-                            'sfx':sfxVal,
-                            'device':outDevice.getActive()}
-                    }
-                    json.dump(settings, saveFile, indent = 6)
-                    saveFile.close()
-                        
-            if event.type == pygame.QUIT or usrQuit == True:
-                
+            
+            def save():
+                    
                 try:
                     masterVal = master.getVal()
                     musicVal = music.getVal()
@@ -461,7 +544,7 @@ def run(clock,disp):
                     masterVal = loadMaster
                     musicVal = loadMusic
                     sfxVal = loadSfx
-
+            
                 with open('JumpGame/Save/settings.json','w') as saveFile:
                     settings = {
                         'displayData':{
@@ -474,10 +557,21 @@ def run(clock,disp):
                             'device':outDevice.getActive()}
                     }
                     json.dump(settings, saveFile, indent = 6)
-                    saveFile.close()
-                    
-                pygame.QUIT()
-                sys.exit()
+                saveFile.close()   
+        
+            if retrunMain == True:
+                save()
+                mainMenu()
+                break
+        
+            if saveData == True:
+                save()
+                saveData = False
+        
+            if event.type == pygame.QUIT or usrQuit == True:
+                save()
+                pygame.quit()
+                sys.exit
 
         #Believe it or not this updates the display...
         #* Refreshes everything thats supposed to be there.
