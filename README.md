@@ -6,6 +6,8 @@ In full transparency the 'game' aspect of this project is fully tutorial based. 
 
 I digress, Its a menu system with a small game attached. I spent too long making buttons and dropdown menus to even think of making something remotly appealing so we are adding it as a last minute \**Jazz hands\** pizzaz \**end Jazz hands\**. 
 
+I'd also like to quickly mention that the code is messy, very messy. A big problem I ran into was myself and learning. While my more recent code looks much better, certain elements were made when I was unaware of how certain game functions worked, resulting in messy workarounds to avoid redoing everything.
+
 The rest of my wonderful explination minus Jazz Hands are in the hundreds of comments in the code.
 
 Thanks,
