@@ -113,7 +113,7 @@ def pause(clock):
     firstItt = True
     isThisTheFirstItterationForASecondTimeBecauseIProgrammedThegetValFunctionForTheSliderClassPoorlySoINeedToRelyOnTwoVariablesToCountTheInitialItterationOfTheLoopBecauseIAmABadProgrammer = True
     usrQuit =False
-    
+#! BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- 
     while True:
         if isThisTheFirstItterationForASecondTimeBecauseIProgrammedThegetValFunctionForTheSliderClassPoorlySoINeedToRelyOnTwoVariablesToCountTheInitialItterationOfTheLoopBecauseIAmABadProgrammer == True:
             update = True
@@ -167,9 +167,9 @@ def pause(clock):
                     elements.draw_text('WINDOW MODE', sub, '#FFFFFF', surface, (elements.relative(60,240)),'midleft')
                     elements.draw_text('RESOLUTION', sub, '#FFFFFF', surface, (elements.relative(60,315)),'midleft')
                     
-                    displaymode.checkClick(surface,True)
                     resolution.checkClick(surface,True)
-
+                    displaymode.checkClick(surface,True)
+                    
                     if displaymode.getActive() == 'FULLSCREEN':
                         if Fullscreen == False:
                             surface = pygame.display.set_mode((hardwareDisp), pygame.FULLSCREEN)
@@ -361,7 +361,7 @@ def pause(clock):
                     masterVal = loadMaster
                     musicVal = loadMusic
                     sfxVal = loadSfx
-                    
+
                 with open('JumpGame/Save/settings.json','w') as saveFile:
                     settings = {
                         'displayData':{

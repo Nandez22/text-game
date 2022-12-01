@@ -517,7 +517,6 @@ class txtField:
         
     def edit(self,event, rail, hover = (False,'#FF0000'), stroke = (0,'#000000')):
         
-        rail.setVal(float(self.val[:-1]))
         self.slid = round(100 * (rail.drag(True)))
         
         self.hover = hover[0]
