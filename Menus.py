@@ -1,12 +1,78 @@
-import pygame, sys, elements, os, json
+import pygame, sys, elements, os, json, webbrowser
 from settings import *
 from sprites import *
 from level import Level
 from pygame.locals import *
 
 #Add menu functions / classes here instead of Main
-def pause(clock):
+def mainMenu():
     hardwareDisp = (pygame.display.Info().current_w, pygame.display.Info().current_h)
+    app_icon = pygame.image.load('JumpGame/Assets/Icons/AI.png')
+    pygame.display.set_icon(app_icon)
+
+    clock = pygame.time.Clock()
+
+    pygame.display.set_caption('Start')
+    surface = pygame.display.set_mode((400,450), NOFRAME)
+    pygame.display.set_mode((400,450),NOFRAME)
+
+    header = pygame.font.SysFont('arialblack',70)
+    sub = pygame.font.SysFont('arialblack',25)
+    reg = pygame.font.SysFont('arialblack',17)
+    button = 30
+    bSize = (269,55)
+        #BUTTON THINGS
+    #Image
+    logoLoad = pygame.image.load('JumpGame/Assets/Icons/AI.png')
+    logoimg = (logoLoad,0.05)
+    #Text
+    startTxt = ('PLAY',button,'#FFFFFF','arialblack',True)
+    creditsTxt = ('CREDITS',button,'#FFFFFF','arialblack',True)
+    exitTxt = ('EXIT',button,'#FFFFFF','arialblack',True)
+    backTxt = ('BACK',button,'#FFFFFF','arialblack',True)
+    #Element
+    start = elements.button(startTxt,(200,190),bSize,('#333333','#FFFFFF'),(5,5))
+    credits = elements.button(creditsTxt,(200,280),bSize,('#333333','#FFFFFF'),(5,5))
+    exit = elements.button(exitTxt,(200,370),bSize,('#333333','#FFFFFF'),(5,5))
+    back = elements.button(backTxt,(200,370),bSize,('#333333','#FFFFFF'),(5,5))
+    logo = elements.button(logoimg,(200,250),('image','image'),('#333333','#FFFFFF'),(5,5))
+    cred = False
+
+    while True:
+        surface.fill((121,128,241))
+        elements.draw_box(surface,(200,125), (340,310), '#6169f2', 5, 'midtop')
+        if cred != True:
+            elements.draw_text('JUMPR', header, '#FFFFFF', surface, (200, 60))
+            elements.draw_text('(For lack of a better name)', reg, '#FFFFFF', surface, (200, 102))
+            
+            
+            if start.checkClick(surface, True) == True:
+                run(clock,hardwareDisp)
+                break
+            if credits.checkClick(surface,True):
+                cred = True
+            if exit.checkClick(surface,True) == True:
+                pygame.quit()
+                sys.exit()
+        
+        else:
+            elements.draw_text('CREDITS', header, '#FFFFFF', surface, (200, 60))
+            elements.draw_text('Kind of game but mostly menus by:', reg, '#FFFFFF', surface, (200, 110))
+            elements.draw_text('ARTIFICIAL IDIOTS', sub, '#FFFFFF', surface, (200, 160))
+            
+            if logo.checkClick(surface,True) == True:
+                webbrowser.open('https://github.com/Nandez22/text-game')
+            if back.checkClick(surface,True) == True:
+                cred = False
+
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+def run(clock,disp):
+    hardwareDisp = disp
     try:
         with open('JumpGame/Save/settings.json') as saveFile:
             settings = json.load(saveFile)
@@ -28,11 +94,20 @@ def pause(clock):
     loadSfx = settings['audioData']['sfx']
     loadDevice = settings['audioData']['device']
     
+    if loadDisplay == 'FULLSCREEN':
+        loadResolution = f'{hardwareDisp[0]} x {hardwareDisp[1]}'
+    if loadResolution == f'{hardwareDisp[0]} x {hardwareDisp[1]}':
+        loadDisplay = 'FULLSCREEN'
+
+    
         #ASSETS
     #Display
-    res = elements.getRes(loadResolution)
     mode = elements.getMode(loadDisplay)
-    surface = elements.set_screen(res,'Jumpr',mode)
+    if mode == FULLSCREEN:
+        res = hardwareDisp
+    res = elements.getRes(loadResolution)
+    
+    surface = pygame.display.set_mode(res,mode)
             
     #Fonts
     regular = pygame.font.SysFont('arialblack',15)
@@ -113,12 +188,23 @@ def pause(clock):
     firstItt = True
     isThisTheFirstItterationForASecondTimeBecauseIProgrammedThegetValFunctionForTheSliderClassPoorlySoINeedToRelyOnTwoVariablesToCountTheInitialItterationOfTheLoopBecauseIAmABadProgrammer = True
     usrQuit =False
+    save = False
+    
 #! BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- 
     while True:
         if isThisTheFirstItterationForASecondTimeBecauseIProgrammedThegetValFunctionForTheSliderClassPoorlySoINeedToRelyOnTwoVariablesToCountTheInitialItterationOfTheLoopBecauseIAmABadProgrammer == True:
             update = True
             isThisTheFirstItterationForASecondTimeBecauseIProgrammedThegetValFunctionForTheSliderClassPoorlySoINeedToRelyOnTwoVariablesToCountTheInitialItterationOfTheLoopBecauseIAmABadProgrammer = False
             
+        if elements.getRes(resolution.getActive()) != res:
+            res = elements.getRes(resolution.getActive())
+            if res == hardwareDisp:
+                displaymode.setActive('FULLSCREEN')
+            surface = elements.set_screen(res,'Jumpr - Paused', elements.getMode(displaymode.getActive()))
+            update = True
+
+            
+        
         surface.fill((121,128,241))
         #Paused
         if gamePaused == True:
@@ -140,9 +226,14 @@ def pause(clock):
                 elements.draw_text('EXIT GAME ', header, '#FFFFFF', surface, (elements.relative(400,150)),'center')
 
                 if exitMain.checkClick(surface, True) == True:
-                    usrQuit = True
+                    save = True
+                    mainMenu()
+                    break
+                    
                 if exitDesk.checkClick(surface, True) == True:
+                    save = True
                     usrQuit = True
+                    
                 if exitCancel.checkClick(surface,True) == True:
                     menu = 'paused'
 
@@ -170,38 +261,32 @@ def pause(clock):
                     resolution.checkClick(surface,True)
                     displaymode.checkClick(surface,True)
                     
-                    if displaymode.getActive() == 'FULLSCREEN':
-                        if Fullscreen == False:
-                            surface = pygame.display.set_mode((hardwareDisp), pygame.FULLSCREEN)
-                            Fullscreen = True
-                            update = True
-                    else:
-                        Fullscreen = False
-                        
-                    if displaymode.getActive() == 'BORDERLESS':
-                        if Borderless == False:
-                            
-                            surface = pygame.display.set_mode((hardwareDisp), NOFRAME)
-                            Borderless = True
-                            update = True
-                    else:
-                        Borderless = False
+            if displaymode.getActive() == 'FULLSCREEN':
+                if Fullscreen == False:
+                    surface = pygame.display.set_mode((hardwareDisp), pygame.FULLSCREEN)
+                    Fullscreen = True
+                    update = True
+            else:
+                Fullscreen = False
+                
+            if displaymode.getActive() == 'BORDERLESS':
+                if Borderless == False:
                     
-                    if displaymode.getActive() == 'WINDOWED':
-                        if Windowed == False:
-                            surface = pygame.display.set_mode((1920,1080), RESIZABLE)
-                            Windowed = True
-                            update = True
-                    else:
-                        Windowed = False
+                    surface = pygame.display.set_mode((hardwareDisp), NOFRAME)
+                    Borderless = True
+                    update = True
+            else:
+                Borderless = False
+            
+            if displaymode.getActive() == 'WINDOWED':
+                if Windowed == False:
+                    surface = pygame.display.set_mode((1920,1080), RESIZABLE)
+                    Windowed = True
+                    update = True
+            else:
+                Windowed = False
                     
-                    if elements.getRes(resolution.getActive()) != res:
-                        res = elements.getRes(resolution.getActive())
-                        if res == hardwareDisp:
-                            displaymode.setActive('FULLSCREEN')
-                        surface = elements.set_screen(res,'Jumpr - Paused', elements.getMode(displaymode.getActive()))
-                        update = True
-                    
+
                 if setting == 'audio':
                     audio.active('#FF0000')
                     #Audio Menu
@@ -350,6 +435,21 @@ def pause(clock):
                     else:
                         menu = 'paused'
                         gamePaused = True
+                        
+            if save == True:
+                with open('JumpGame/Save/settings.json','w') as saveFile:
+                    settings = {
+                        'displayData':{
+                            'displaymode':displaymode.getActive(),
+                            'resolution':resolution.getActive()},
+                        'audioData':{
+                            'master':masterVal,
+                            'music':musicVal,
+                            'sfx':sfxVal,
+                            'device':outDevice.getActive()}
+                    }
+                    json.dump(settings, saveFile, indent = 6)
+                    saveFile.close()
                         
             if event.type == pygame.QUIT or usrQuit == True:
                 

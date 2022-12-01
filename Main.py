@@ -1,29 +1,14 @@
-import pygame, sys, Menus, os
+import pygame, sys, Menus, os, elements, webbrowser
+from pygame.locals import *
 
 pygame.init()
+pygame.mixer.init() 
 
-app_icon = pygame.image.load('JumpGame/Assets/Icons/AI.png')
-pygame.display.set_icon(app_icon)
-pygame.mixer.init()
-mouse_pos = pygame.mouse.get_pos()       
-clock = pygame.time.Clock()
-
-#INSTANCE DEFINING OF SOME KIND
-#------------------------------
-
-
-#------------------------------
-
-
-#1#connect.play
-
-Menus.pause(clock)
-
-
-
-img1 = pygame.image.load('Assets/Icons/AI.png').convert_alpha()
-
-
+#Main looks really sad this empty :(
+Menus.mainMenu()
 
 #TODO Fix overlap issue with dropdown menus
-#TODO Continue outfitting settings menu / UI / UX
+#TODO Profiles
+#TODO Json For Profiles
+#TODO DropDown Fix
+#TODO Finish Tut for game
