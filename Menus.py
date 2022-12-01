@@ -240,35 +240,71 @@ def run(clock,disp):
     profile = elements.button(profile_txt,(elements.relative(631,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
 
     #* Oh boy! Dropdowns :(
+        #* I've said it before and I will say it again... Go to elements.py if you want to see how dropdowns actually work.
+            #* This section will just be explaining how to initilize one and set it on screen.
+    #DROPDOWN RUNDOWN
+    #   Dropdowns need 4 things to initialize:
+    #       1. List of options -- (list not Tuple) (items are strings)
+    #       2. Size -- (width, height)
+    #       3. Position -- (xPosition, yPosition)
+    #       4. Default Value -- Must be an item from the list of options. (Exact same as one of the options)
+            #See much easier than a button, unfortunatley there is a touch more...
+    #   Dropdowns need 5 things to be styled properly: #* (should be mentioned that active refers to the item that is currently selected and inactive is all else)
+    #       1. Rect Colors -- (rectangleActive, rectangleInactive)
+    #       2. Text Colors -- (textActive, textInactive)
+    #       3. Font -- str(fontName)
+    #       4. Font Size -- int(fontSize)
+    #       5. Border Radius -- float(borderRadius)
+
     #Option Dropdowns
     displaymode = elements.dropdown(['FULLSCREEN','WINDOWED','BORDERLESS'], (elements.relative(180, 35)), (elements.relative(657,239)), loadDisplay)
     resolution = elements.dropdown(['2560 x 1440','1920 x 1080','1280 x 720', '800 x 600', '640 x 480', '500 x 500'], (elements.relative(180, 35)), (elements.relative(657,314)), loadResolution)
-    displaymode.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',12,2)
+    displaymode.style(('#333333', '#444444'),('#FFFFFF','#e0e0e0'),'arialblack',12,2)
     resolution.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',12,2)
     
     outDevice = elements.dropdown(['DEFAULT','LIST','HERE','OF','AVALIBLE','AUDIO','DEVICES'],(elements.relative(180, 35)), (elements.relative(657,399)), loadDevice)
     outDevice.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',12,2)
     
     #Option Sliders
+    #? Annnnnd we didn't even make it 20 lines...
+    #SLIDERS
+    #   Sliders need 3 things to initialize #* Note that the long "range" that the slider is on I call the 'rail' and the dot you drag is the 'slider'
+    #       1. Surface -- (surfaceToDrawOn) aka Window
+    #       2. Colors -- (railPrimary, sliderSecondary)
+    #       3. Position -- (xPosition, yPosition)
+    # And thats it. See I've gotten a touch better at this...
     master = elements.slider(surface, ((121,128,241),'#FFFFFF'), (elements.relative(500,240)))
     music = elements.slider(surface, ((121,128,241),'#FFFFFF'), (elements.relative(500,240)))
     sfx = elements.slider(surface, ((121,128,241),'#FFFFFF'), (elements.relative(500,240)))
     
     #Text Fields
+    #? Really?
+    #TEXT FIELDS
+    #   Text Fields need 2 things to initialize:
+    #       1. Colors -- (rectColor, textColor)
+    #       2. Default Value -- str('number')
+    #* Better!
+    #* Except not really, I kinda rushed making this, so it only really works in conjunction with sliders, sliders do not need text fields but text fields need sliders.
     masterTxt = elements.txtField(('#333333','#FFFFFF'),loadMaster)
     musicTxt = elements.txtField(('#333333','#FFFFFF'),loadMusic)
     sfxTxt = elements.txtField(('#333333','#FFFFFF'),loadSfx)
         #Navigation
+    #* Here I'm creating variables that designate navigation, like where the user is in the menu and setting them to a default state
     #Menus
     menu = 'null'
     setting = 'display'
     
-    #Settings up level
-    clock = pygame.time.Clock()
+    #* initializing a new clock for some reason?
+    #? genuinly not sure about this one, but I'm not going to remove it to be safe...
     level = Level(level_map, surface)
     
+    #* Here im just making one off variables that the program needs defined before the loop, I feel there are too many, but I don't want to look into changing it.
     #Setters (no not that kind).
     Fullscreen = False
+    #*Here I initialize some parts of the game, again since the game isn't really part of this project I'm not going to explain it.
+        #? -- Not that I'm not explaining out of bad practice, but commenting is on the rubric and I don't feel its fair to have something graded that is basically copied from the internet.
+    #Settings up level
+    clock = pygame.time.Clock()
     Borderless = False
     Windowed = True
     
@@ -280,11 +316,14 @@ def run(clock,disp):
     retrunMain = False
     
 #! BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- BIG RED LINE SO I CAN SEE WHERE THE LOOP BEGINS --- 
+    #? Wow 319 and not even at the loop :(
     while True:
+        #Checks if this is the first itteration of the loop, if so then it will cause the game to reinitialize everything... More on that at the bottom.
         if isThisTheFirstItterationForASecondTimeBecauseIProgrammedThegetValFunctionForTheSliderClassPoorlySoINeedToRelyOnTwoVariablesToCountTheInitialItterationOfTheLoopBecauseIAmABadProgrammer == True:
             update = True
             isThisTheFirstItterationForASecondTimeBecauseIProgrammedThegetValFunctionForTheSliderClassPoorlySoINeedToRelyOnTwoVariablesToCountTheInitialItterationOfTheLoopBecauseIAmABadProgrammer = False
-            
+        
+        #* Like I mentioned above this is to check to see if display mode and res are playing well togeather.
         if elements.getRes(resolution.getActive()) != res:
             res = elements.getRes(resolution.getActive())
             if res == hardwareDisp:
@@ -293,25 +332,30 @@ def run(clock,disp):
                 displaymode.setActive('WINDOWED')
             surface = elements.set_screen(res,'Jumpr', elements.getMode(displaymode.getActive()))
             update = True
-                
-
-
+        
+        #* Essencially the inverse of whats above, explained towards the top of the doc (roughly 171)
         if  elements.getMode(displaymode.getActive()) != mode:
             mode = elements.getMode(displaymode.getActive())
             if mode == FULLSCREEN:
                 resolution.setActive(f'{hardwareDisp[0]} x {hardwareDisp[1]}')
             surface = elements.set_screen(res, 'Jumpr', elements.getMode(displaymode.getActive()))
             
-        
+        #* Sets background color (window color technically)
         surface.fill((121,128,241))
         #Paused
+        #Checks to see if the user paused the game
         if gamePaused == True:
+            #Changes the caption of the window, because why not?
             pygame.display.set_caption('Jumpr - Paused')
+            #Checks to see where the user is (paused, options or exit)
             if menu == 'paused':
+                #If they are on the paused screen it will default the options tab back to display so its the same every time it's opened
                 setting = 'display'
-                
+                #Text header
                 elements.draw_text('PAUSED', header, '#FFFFFF', surface, (elements.relative(400,150)),'center')
-                
+                #If you click the resume button the game resumes 
+                #If you click the options button the game goes to the options menu
+                #If you click the exit button it will take you to the exit menu
                 if resume.checkClick(surface, True) == True:
                     gamePaused = False
                 if options.checkClick(surface, True) == True:
@@ -319,24 +363,27 @@ def run(clock,disp):
                 if exit.checkClick(surface, True) == True:
                     menu = 'exit'
                 
-            #Options
+            #This is the exit menu
             if menu == 'exit':
+                #Draws header
                 elements.draw_text('EXIT GAME ', header, '#FFFFFF', surface, (elements.relative(400,150)),'center')
-
+                #If player presses mainmenu button, save and then go back to the main menu
                 if exitMain.checkClick(surface, True) == True:
                     save = True
                     retrunMain = True
-                    
+                #If the player presses exit to desktop then quit (will also save more on that later)
                 if exitDesk.checkClick(surface, True) == True:
                     usrQuit = True
-                    
+                #If they click retrun, set menu back to pause
                 if exitCancel.checkClick(surface,True) == True:
                     menu = 'paused'
-
+            #If the menu is set to options open options
             if menu == 'options':
+                #Add text
                 elements.draw_text('OPTIONS', header, '#FFFFFF', surface, (elements.relative(400,75)),'center')
                 elements.draw_box(surface,(elements.relative(400,140)), (elements.relative(610,46)), '#6169f2', 10, 'center')
-                
+                #This sets up all of the settings navigation buttons.
+                #For each if you click them it will toggle it's respective menu. The default menu (mentioned earlier) is display    
                 if display.checkClick(surface, True) == True:
                     setting = 'display'
                 if audio.checkClick(surface, True) == True:
@@ -345,18 +392,22 @@ def run(clock,disp):
                     setting = 'controls'
                 if profile.checkClick(surface, True) == True:
                     setting = 'profile'
-                                  
+                
                 if setting == 'display':
+                    #This sets the display buttons color to the red ('#FF0000')
                     display.active('#FF0000')
                     #Display Menu
+                    #This displays the dark rectangles in the background as well as the text on them
                     elements.draw_box(surface,(elements.relative(400,240)), (elements.relative(700,40)), '#6169f2', 2, 'center')
                     elements.draw_box(surface,(elements.relative(400,315)), (elements.relative(700,40)), '#6169f2', 2, 'center')
                     elements.draw_text('WINDOW MODE', sub, '#FFFFFF', surface, (elements.relative(60,240)),'midleft')
                     elements.draw_text('RESOLUTION', sub, '#FFFFFF', surface, (elements.relative(60,315)),'midleft')
                     
+                    #This draws the sliders (surface, hover, hoverColor)
                     resolution.checkClick(surface,True)
                     displaymode.checkClick(surface,True)
-                    
+                #If the selected item is fullscreen set the window to fullscreen and set the toggle var to true and update, if not the set temp var to false
+                #This logic applies to the two other display modes
                 if displaymode.getActive() == 'FULLSCREEN':
                     if Fullscreen == False:
                         surface = pygame.display.set_mode((hardwareDisp), pygame.FULLSCREEN)
@@ -382,10 +433,12 @@ def run(clock,disp):
                 else:
                     Windowed = False
                     
-
+                #Opens audio menu
                 if setting == 'audio':
+                    #Sets audio button to red
                     audio.active('#FF0000')
                     #Audio Menu
+                    #Draws the background boxes and text
                     elements.draw_box(surface,(elements.relative(400,240)), (elements.relative(700,40)), '#6169f2', round(elements.relativeNum(2)), 'center')
                     elements.draw_text('MASTER', sub, '#FFFFFF', surface, (elements.relative(60,240)),'midleft')
                     
@@ -395,6 +448,14 @@ def run(clock,disp):
                     elements.draw_box(surface,(elements.relative(400,340)), (elements.relative(700,40)), '#6169f2', round(elements.relativeNum(2)), 'center')
                     elements.draw_text('SFX', sub, '#FFFFFF', surface, (elements.relative(60,340)),'midleft')
                     
+                    #Adds sliders and a few more gems
+                    #.addStroke([strokeSize,color],[strokeSize,color]) for the rail and slider respectivly
+                    #.draw((railSize),(sliderSize(float for circle, Tuple for rect)),(railPosition),(railCornerRadius,sliderCornerRadius))
+                    
+                    #Txt Field
+                    #.draw(surface, position, size, font, (font, anti-Aliasing(1 for true), cornerRadius)))
+                    
+                    #This section adds sliders and their respective textFields
                     master.addStroke([2,'#000000'],[0])
                     master.draw((elements.relative(200,12)),((elements.relativeNum(8))),(elements.relative(565,240)),((round(elements.relativeNum(5)),round(elements.relativeNum(5)))))
                     masterTxt.draw(surface,(elements.relative(715,240)),(elements.relative(60,30)),(regular,(round(elements.relativeNum(1))),(round(elements.relativeNum(2)))))
@@ -406,25 +467,29 @@ def run(clock,disp):
                     music.addStroke([2,'#000000'],[0])
                     music.draw((elements.relative(200,12)),((elements.relativeNum(8))),(elements.relative(565,340)),((round(elements.relativeNum(5)),round(elements.relativeNum(5)))))
                     musicTxt.draw(surface,(elements.relative(715,340)),(elements.relative(60,30)),(regular,(round(elements.relativeNum(1))),(round(elements.relativeNum(2)))))
-                    
+                    #Adds more rects and texts
                     elements.draw_box(surface,(elements.relative(400,400)), (elements.relative(700,40)), '#6169f2', round(elements.relativeNum(2)), 'center')
                     elements.draw_text('AUDIO DEVICE', sub, '#FFFFFF', surface, (elements.relative(60,400)),'midleft')
-                    
+                    #Dropdown menu for audio devices (does nothing functionally, same as all the other audio settings)
                     outDevice.checkClick(surface,True)
-                    
+                    #Checks to see if this is the first itteration of the loop to avoid locking the slider values
+                    #This loads the default (or user set) values from the settings flie (if one exists)
                     if firstItt == True:
                         master.setVal(loadMaster)
                         music.setVal(loadMusic)
                         sfx.setVal(loadSfx)
                         firstItt = False
-                    
+                
+                #Opens controls
                 if setting == 'controls':
                     controls.active('#FF0000')
+                    #Basically a 404 page
                     elements.draw_text('NOTHING TO SEE HERE.', sub, '#FFFFFF', surface, (elements.relative(400,300)),'center')
                     #Controls Menu
-                    
+                #Opens profile
                 if setting == 'profile':
                     profile.active('#FF0000')
+                    #404 page.
                     elements.draw_text('NOTHING TO SEE HERE.', sub, '#FFFFFF', surface, (elements.relative(400,300)),'center')
                     #Profile Menu
 
@@ -448,7 +513,7 @@ def run(clock,disp):
                 #Again, heindsight is 50/50 and although this is not elegant by any means, it at least allows me to adjust things for screen size.
                 
             #Ranting aside it works as follows:
-            #   - Starts when the window changes states (event.type == pygame.VIDEORESIZE) or when the update var is triggered (update == True)\
+            #   - Starts when the window changes states (event.type == pygame.VIDEORESIZE) or when the update var is triggered (update == True)
             #   - At that point all items that are not initialized within the game loop (everything listed below) will re-initalize to adjust for the new screen size.
             #   - This mostly uses two functions that I wrote that take the ratio of a number (or number set) compared to the origin window (800 x 600) and apply it to the new window size
             #       - These functions are super simple, I'm just stating this so there is no need to wander all the way to elements.py (trust me you don't want to go there.)
@@ -533,9 +598,16 @@ def run(clock,disp):
                     else:
                         menu = 'paused'
                         gamePaused = True
-            
+            #Welcome to the save function .json pt.2:
+            #SAVE
+            #   1. Tries to grab the user set values from settings
+            #   2. If it suceeds it will move on
+            #      2b. If it fails it will keep the settings the same.
+            #   3. After that it opens the save file (with permission to write), if no file exists it will make one.
+            #   4. With the file open it creates a dict of two dicts of settings (dictception) #? NOT "Dick - Ception"
+            #   5. It then 'dumps' (saves) the info to the file, overwriting the initial info on it.
+            #   6. Closes file and moves on like a boss
             def save():
-                    
                 try:
                     masterVal = master.getVal()
                     musicVal = music.getVal()
@@ -558,16 +630,16 @@ def run(clock,disp):
                     }
                     json.dump(settings, saveFile, indent = 6)
                 saveFile.close()   
-        
+            #Returns to main menu after saving
             if retrunMain == True:
                 save()
                 mainMenu()
                 break
-        
+            #Saves the game
             if saveData == True:
                 save()
                 saveData = False
-        
+            #Quits the game
             if event.type == pygame.QUIT or usrQuit == True:
                 save()
                 pygame.quit()
