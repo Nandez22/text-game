@@ -298,9 +298,7 @@ class dropdown:
                     else:
                         self.dyn_unselected = self.rect_unselected
                     #--------------------------------------------------
-                    
-                    
-                    
+
                     pygame.draw.rect(self.surface, self.dyn_unselected, self.rects[option])
                     self.surface.blit(self.txt_surfaces[option], self.txt_rects[option])   
                       
@@ -320,6 +318,9 @@ class dropdown:
                         
     def getActive(self):
         return self.active_rect
+    
+    def setActive(self,active):
+        self.active_rect = active
     
     def style(self, colors = ('#222222','#333333'), txt_colors = ('#FFFFFF','#e0e0e0'), font = 'none', size = 12, rad = 0):
         self.rect_selected = colors[0]
@@ -465,6 +466,15 @@ class slider:
         newVal =((val * self.rSize[0]) + self.rail.midleft[0])
         self.sPos[0] = newVal
     
+    def getVal(self):
+        return (self.val * 100)
+    
+    def getX(self):
+        return self.sPos[0]
+    
+    def setX(self, x):
+        self.sPos[0] = x
+    
 class txtField:
     def __init__(self, colors, default):
         self.val = f'{default}%'
@@ -507,6 +517,7 @@ class txtField:
         
     def edit(self,event, rail, hover = (False,'#FF0000'), stroke = (0,'#000000')):
         
+        rail.setVal(float(self.val[:-1]))
         self.slid = round(100 * (rail.drag(True)))
         
         self.hover = hover[0]
@@ -556,4 +567,26 @@ class txtField:
                                 rail.setVal(float(self.input))
                     except:
                         pass
-                        
+                    
+def getRes(resolution):
+    res = ''
+    for char in  resolution:
+        try:
+            int(char)
+            res += char
+        except:
+            if char == 'x':
+                res += ','
+            pass
+    res = res.split(',')
+    res = int(res[0]),int(res[1])
+    return res
+
+def getMode(input):
+    if input == 'FULLSCREEN':
+        mode = FULLSCREEN
+    if input == 'BORDERLESS':
+        mode = NOFRAME
+    if input == 'WINDOWED':
+        mode = RESIZABLE
+    return mode

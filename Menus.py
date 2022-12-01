@@ -1,4 +1,4 @@
-import pygame, sys, elements, os
+import pygame, sys, elements, os, json
 from settings import *
 from sprites import *
 from level import Level
@@ -6,12 +6,34 @@ from pygame.locals import *
 
 #Add menu functions / classes here instead of Main
 def pause(clock):
+    hardwareDisp = (pygame.display.Info().current_w, pygame.display.Info().current_h)
+    try:
+        with open('JumpGame/Save/settings.json') as saveFile:
+            settings = json.load(saveFile)
+    except:
+        settings = {
+            'displayData':{
+                'displaymode':'WINDOWED',
+                'resolution':'800 x 600'},
+            'audioData':{
+                'master':50,
+                'music':50,
+                'sfx':50,
+                'device':'DEFAULT'}}
+
+    loadDisplay = settings['displayData']['displaymode']
+    loadResolution = settings['displayData']['resolution']
+    loadMaster = settings['audioData']['master']
+    loadMusic = settings['audioData']['music']
+    loadSfx = settings['audioData']['sfx']
+    loadDevice = settings['audioData']['device']
     
         #ASSETS
     #Display
-    hardwareDisp = (pygame.display.Info().current_w, pygame.display.Info().current_h)
-    surface = elements.set_screen((800,600),'Paused',True)
-
+    res = elements.getRes(loadResolution)
+    mode = elements.getMode(loadDisplay)
+    surface = elements.set_screen(res,'Jumpr',mode)
+            
     #Fonts
     regular = pygame.font.SysFont('arialblack',15)
     sub = pygame.font.SysFont('arialblack',20)
@@ -54,29 +76,31 @@ def pause(clock):
     audio = elements.button(audio_txt,(elements.relative(323,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
     controls = elements.button(controls_txt,(elements.relative(477,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
     profile = elements.button(profile_txt,(elements.relative(631,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
-    
-    
+
     #Option Dropdowns
-    displaymode = elements.dropdown(['FULLSCREEN','WINDOWED','BORDERLESS'], (elements.relative(180, 35)), (elements.relative(657,239)), 'WINDOWED')
-    resolution = elements.dropdown(['2560 x 1440','1920 x 1080','1280 x 720', '800 x 600', '640 x 480', '500 x 500'], (elements.relative(180, 35)), (elements.relative(657,314)), '800 x 600')
-    
+    displaymode = elements.dropdown(['FULLSCREEN','WINDOWED','BORDERLESS'], (elements.relative(180, 35)), (elements.relative(657,239)), loadDisplay)
+    resolution = elements.dropdown(['2560 x 1440','1920 x 1080','1280 x 720', '800 x 600', '640 x 480', '500 x 500'], (elements.relative(180, 35)), (elements.relative(657,314)), loadResolution)
     displaymode.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',12,2)
     resolution.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',12,2)
+    
+    outDevice = elements.dropdown(['DEFAULT','LIST','HERE','OF','AVALIBLE','AUDIO','DEVICES'],(elements.relative(180, 35)), (elements.relative(657,399)), loadDevice)
+    outDevice.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',12,2)
     
     #Option Sliders
     master = elements.slider(surface, ((121,128,241),'#FFFFFF'), (elements.relative(500,240)))
     music = elements.slider(surface, ((121,128,241),'#FFFFFF'), (elements.relative(500,240)))
     sfx = elements.slider(surface, ((121,128,241),'#FFFFFF'), (elements.relative(500,240)))
-    #Text Fields
-    masterTxt = elements.txtField(('#333333','#FFFFFF'),'50')
     
+    #Text Fields
+    masterTxt = elements.txtField(('#333333','#FFFFFF'),loadMaster)
+    musicTxt = elements.txtField(('#333333','#FFFFFF'),loadMusic)
+    sfxTxt = elements.txtField(('#333333','#FFFFFF'),loadSfx)
         #Navigation
     #Menus
     menu = 'null'
     setting = 'display'
     
     #Settings up level
-    #screen = pygame.display.set_mode((1200,700),pygame.RESIZABLE)
     clock = pygame.time.Clock()
     level = Level(level_map, surface)
     
@@ -86,8 +110,15 @@ def pause(clock):
     Windowed = True
     
     update = False
+    firstItt = True
+    isThisTheFirstItterationForASecondTimeBecauseIProgrammedThegetValFunctionForTheSliderClassPoorlySoINeedToRelyOnTwoVariablesToCountTheInitialItterationOfTheLoopBecauseIAmABadProgrammer = True
+    usrQuit =False
     
     while True:
+        if isThisTheFirstItterationForASecondTimeBecauseIProgrammedThegetValFunctionForTheSliderClassPoorlySoINeedToRelyOnTwoVariablesToCountTheInitialItterationOfTheLoopBecauseIAmABadProgrammer == True:
+            update = True
+            isThisTheFirstItterationForASecondTimeBecauseIProgrammedThegetValFunctionForTheSliderClassPoorlySoINeedToRelyOnTwoVariablesToCountTheInitialItterationOfTheLoopBecauseIAmABadProgrammer = False
+            
         surface.fill((121,128,241))
         #Paused
         if gamePaused == True:
@@ -109,10 +140,9 @@ def pause(clock):
                 elements.draw_text('EXIT GAME ', header, '#FFFFFF', surface, (elements.relative(400,150)),'center')
 
                 if exitMain.checkClick(surface, True) == True:
-                    pygame.QUIT()
+                    usrQuit = True
                 if exitDesk.checkClick(surface, True) == True:
-                    pygame.QUIT()
-                    sys.exit()
+                    usrQuit = True
                 if exitCancel.checkClick(surface,True) == True:
                     menu = 'paused'
 
@@ -128,8 +158,7 @@ def pause(clock):
                     setting = 'controls'
                 if profile.checkClick(surface, True) == True:
                     setting = 'profile'
-                    
-                    
+                                  
                 if setting == 'display':
                     display.active('#FF0000')
                     #Display Menu
@@ -138,8 +167,9 @@ def pause(clock):
                     elements.draw_text('WINDOW MODE', sub, '#FFFFFF', surface, (elements.relative(60,240)),'midleft')
                     elements.draw_text('RESOLUTION', sub, '#FFFFFF', surface, (elements.relative(60,315)),'midleft')
                     
-                    displaymode.checkClick(surface,True, '#888888')
-                
+                    displaymode.checkClick(surface,True)
+                    resolution.checkClick(surface,True)
+
                     if displaymode.getActive() == 'FULLSCREEN':
                         if Fullscreen == False:
                             surface = pygame.display.set_mode((hardwareDisp), pygame.FULLSCREEN)
@@ -165,16 +195,48 @@ def pause(clock):
                     else:
                         Windowed = False
                     
+                    if elements.getRes(resolution.getActive()) != res:
+                        res = elements.getRes(resolution.getActive())
+                        if res == hardwareDisp:
+                            displaymode.setActive('FULLSCREEN')
+                        surface = elements.set_screen(res,'Jumpr - Paused', elements.getMode(displaymode.getActive()))
+                        update = True
+                    
                 if setting == 'audio':
                     audio.active('#FF0000')
                     #Audio Menu
                     elements.draw_box(surface,(elements.relative(400,240)), (elements.relative(700,40)), '#6169f2', round(elements.relativeNum(2)), 'center')
                     elements.draw_text('MASTER', sub, '#FFFFFF', surface, (elements.relative(60,240)),'midleft')
                     
+                    elements.draw_box(surface,(elements.relative(400,290)), (elements.relative(700,40)), '#6169f2', round(elements.relativeNum(2)), 'center')
+                    elements.draw_text('MUSIC', sub, '#FFFFFF', surface, (elements.relative(60,290)),'midleft')
+                    
+                    elements.draw_box(surface,(elements.relative(400,340)), (elements.relative(700,40)), '#6169f2', round(elements.relativeNum(2)), 'center')
+                    elements.draw_text('SFX', sub, '#FFFFFF', surface, (elements.relative(60,340)),'midleft')
+                    
                     master.addStroke([2,'#000000'],[0])
                     master.draw((elements.relative(200,12)),((elements.relativeNum(8))),(elements.relative(565,240)),((round(elements.relativeNum(5)),round(elements.relativeNum(5)))))
                     masterTxt.draw(surface,(elements.relative(715,240)),(elements.relative(60,30)),(regular,(round(elements.relativeNum(1))),(round(elements.relativeNum(2)))))
                          
+                    sfx.addStroke([2,'#000000'],[0])
+                    sfx.draw((elements.relative(200,12)),((elements.relativeNum(8))),(elements.relative(565,290)),((round(elements.relativeNum(5)),round(elements.relativeNum(5)))))
+                    sfxTxt.draw(surface,(elements.relative(715,290)),(elements.relative(60,30)),(regular,(round(elements.relativeNum(1))),(round(elements.relativeNum(2)))))
+                    
+                    music.addStroke([2,'#000000'],[0])
+                    music.draw((elements.relative(200,12)),((elements.relativeNum(8))),(elements.relative(565,340)),((round(elements.relativeNum(5)),round(elements.relativeNum(5)))))
+                    musicTxt.draw(surface,(elements.relative(715,340)),(elements.relative(60,30)),(regular,(round(elements.relativeNum(1))),(round(elements.relativeNum(2)))))
+                    
+                    elements.draw_box(surface,(elements.relative(400,400)), (elements.relative(700,40)), '#6169f2', round(elements.relativeNum(2)), 'center')
+                    elements.draw_text('AUDIO DEVICE', sub, '#FFFFFF', surface, (elements.relative(60,400)),'midleft')
+                    
+                    outDevice.checkClick(surface,True)
+                    
+                    if firstItt == True:
+                        master.setVal(loadMaster)
+                        music.setVal(loadMusic)
+                        sfx.setVal(loadSfx)
+                        firstItt = False
+                        
                 if setting == 'controls':
                     controls.active('#FF0000')
                     #Controls Menu
@@ -213,7 +275,13 @@ def pause(clock):
             if gamePaused == True:
                 if setting == 'audio':
                     masterTxt.edit(event, master, (True,'#444444'), (round(elements.relativeNum(2)),'#FF0000'))
-            if event.type == pygame.VIDEORESIZE or update == True:
+                    musicTxt.edit(event, music, (True,'#444444'), (round(elements.relativeNum(2)),'#FF0000'))
+                    sfxTxt.edit(event, sfx, (True,'#444444'), (round(elements.relativeNum(2)),'#FF0000'))
+                    
+            if event.type == pygame.VIDEORESIZE or update == True or event.type == FULLSCREEN:
+                master.setX(elements.relativeNum(master.getX()))
+                music.setX(elements.relativeNum(music.getX()))
+                sfx.setX(elements.relativeNum(sfx.getX()))
                 #CONTENT
                 resume_txt = ('RESUME',(round(elements.relativeNum(20))),'#FFFFFF','arialblack',True)
                 options_txt = ('OPTIONS',(round(elements.relativeNum(20))),'#FFFFFF','arialblack',True)
@@ -224,8 +292,9 @@ def pause(clock):
                 controls_txt = ('CONTROLS',(round(elements.relativeNum(15))),'#FFFFFF','arialblack',True)
                 profile_txt = ('PROFILE',(round(elements.relativeNum(15))),'#FFFFFF','arialblack',True)
                 
-                yes_txt = ('YES',(round(elements.relativeNum(30))),'#FFFFFF','arialblack',True)
-                no_txt = ('NO',(round(elements.relativeNum(30))),'#FFFFFF','arialblack',True)
+                exitMainTxt = ('MAIN MENU',(round(elements.relativeNum(20))),'#FFFFFF','arialblack',True)
+                exitDeskTxt = ('DESKTOP',(round(elements.relativeNum(20))),'#FFFFFF','arialblack',True)
+                exitCancelTxt = ('CANCEL',(round(elements.relativeNum(20))),'#FFFFFF','arialblack',True)
                 
                 #PAUSE BUTTONS
                 resume = elements.button(resume_txt,(elements.relative(400,250)),(elements.relative(200,50)),('#333333','#FFFFFF'),(5,5))
@@ -233,8 +302,9 @@ def pause(clock):
                 exit = elements.button(exit_txt,(elements.relative(400,400)),(elements.relative(200,50)),('#333333','#FFFFFF'),(5,5))
                 
                 #EXIT BUTTONS
-                yes = elements.button(yes_txt,(elements.relative(300,300)),(elements.relative(125,65)),('#333333','#FFFFFF'),(5,5))
-                no = elements.button(no_txt,(elements.relative(500,300)),(elements.relative(125,65)),('#333333','#FFFFFF'),(5,5))
+                exitMain = elements.button(exitMainTxt,(elements.relative(400,250)),(elements.relative(225,50)),('#333333','#FFFFFF'),(5,5))
+                exitDesk = elements.button(exitDeskTxt,(elements.relative(400,325)),(elements.relative(225,50)),('#333333','#FFFFFF'),(5,5))
+                exitCancel = elements.button(exitCancelTxt,(elements.relative(400,400)),(elements.relative(225,50)),('#222222','#FFFFFF'),(5,5))
                 
                 #OPTION BUTTONS
                 display = elements.button(display_txt,(elements.relative(169,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
@@ -243,11 +313,13 @@ def pause(clock):
                 profile = elements.button(profile_txt,(elements.relative(631,140)),(elements.relative(130,30)),('#333333','#FFFFFF'),(5,1))
                 
                 #Option Dropdowns
-                displaymode = elements.dropdown(['FULLSCREEN','WINDOWED','BORDERLESS'], (elements.relative(180, 35)), (elements.relative(657,239)), displaymode.getActive())
-                resolution = elements.dropdown(['2560 x 1440','1920 x 1080','1280 x 720', '800 x 600', '640 x 480', '500 x 500'], (elements.relative(180, 35)), (elements.relative(657,315)), '800 x 600')
+                displaymode = elements.dropdown(['FULLSCREEN','WINDOWED','BORDERLESS'], (elements.relative(180, 35)), (elements.relative(657,240)), displaymode.getActive())
+                resolution = elements.dropdown(['2560 x 1440','1920 x 1080','1280 x 720', '800 x 600', '640 x 480', '500 x 500'], (elements.relative(180, 35)), (elements.relative(657,315)), resolution.getActive())
+                outDevice = elements.dropdown(['DEFAULT','LIST','HERE','OF','AVALIBLE','AUDIO','DEVICES'],(elements.relative(180, 35)), (elements.relative(657,400)), outDevice.getActive())
                 
                 displaymode.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',(round(elements.relativeNum(12))),2)
                 resolution.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',(round(elements.relativeNum(12))),2)
+                outDevice.style(('#333333','#444444'),('#FFFFFF','#e0e0e0'),'arialblack',(round(elements.relativeNum(12))),2)
                 
                 #FONTS
                 regular = pygame.font.SysFont('arialblack',(round(elements.relativeNum(15))))
@@ -279,7 +351,31 @@ def pause(clock):
                         menu = 'paused'
                         gamePaused = True
                         
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT or usrQuit == True:
+                
+                try:
+                    masterVal = master.getVal()
+                    musicVal = music.getVal()
+                    sfxVal = sfx.getVal()
+                except:
+                    masterVal = loadMaster
+                    musicVal = loadMusic
+                    sfxVal = loadSfx
+                    
+                with open('JumpGame/Save/settings.json','w') as saveFile:
+                    settings = {
+                        'displayData':{
+                            'displaymode':displaymode.getActive(),
+                            'resolution':resolution.getActive()},
+                        'audioData':{
+                            'master':masterVal,
+                            'music':musicVal,
+                            'sfx':sfxVal,
+                            'device':outDevice.getActive()}
+                    }
+                    json.dump(settings, saveFile, indent = 6)
+                    saveFile.close()
+                    
                 pygame.QUIT()
                 sys.exit()
 
