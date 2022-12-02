@@ -1,9 +1,9 @@
 # INSTRUCTIONS
 
-
+## Pygame
 If you do not have pygame installed alreat, do so.
 
-You can do it by running
+You can do so by running
 ```
 python3 -m pip install -U pygame --user
 ```
