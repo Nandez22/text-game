@@ -1,0 +1,12 @@
+{
+      "displayData": {
+            "displaymode": "FULLSCREEN",
+            "resolution": "2560 x 1440"
+      },
+      "audioData": {
+            "master": 66.0,
+            "music": 77.0,
+            "sfx": 39.0,
+            "device": "OF"
+      }
+}
