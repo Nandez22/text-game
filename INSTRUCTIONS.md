@@ -7,7 +7,7 @@ You can do so by running
 ```
 python3 -m pip install -U pygame --user
 ```
-
+## Running The Game
 You can also find the most up to date install info on [Pygame's Wiki](https://www.pygame.org/wiki/GettingStarted)
 
 
