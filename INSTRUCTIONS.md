@@ -1,7 +1,11 @@
 # INSTRUCTIONS
 
+## Python
+While this may seem a little redundent, you need python installed to run this.
+You can find the install information on (Python's Website)[https://www.python.org/downloads/]
+
 ## Pygame
-If you do not have pygame installed alreat, do so.
+If you do not have pygame installed already, it's required to run this "game".
 
 You can do so by running
 ```
