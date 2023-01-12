@@ -1,6 +1,7 @@
-# text-game "Thing"
+# TEXT GAME "Thing"
  Unfortunatley this thing lacks and identity or spelling.
 
+## Intro
 This is our project, I understand that a README seems a touch redundent, but I figured you might want to recieve your explination outside of my nonsensical python comments.
 In full transparency the 'game' aspect of this project is fully tutorial based. Before you bring down the hammer on our grade, I'd like to note that this was only done to give this project a sense of 'completion'... The menus (which are original) cover the entire rubric. Meaning that without any spec of actual game code we have fully fufilled the reqs for this project. Just wanted to add something shinny for shinny thing sake.
 
